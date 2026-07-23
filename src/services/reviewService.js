@@ -116,6 +116,23 @@ export async function recordLessonReviews(userId, outcomes) {
   if (upsertError) throw upsertError;
 }
 
+// Erros mais recentes do usuário (alimenta a prática adaptativa da Fase 6).
+export async function fetchRecentMistakes(userId, limit = 15) {
+  const { data, error } = await supabase
+    .from('mistakes')
+    .select('mistake_type, user_answer, correct_answer')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
+    .limit(limit);
+
+  if (error) throw error;
+  return (data ?? []).map((m) => ({
+    type: m.mistake_type,
+    userAnswer: m.user_answer,
+    correctAnswer: m.correct_answer,
+  }));
+}
+
 // Registra erros em `mistakes` (alimenta a IA professora na Fase 3).
 // items: [{ exerciseId, userAnswer, correctAnswer, mistakeType }]
 export async function logMistakes(userId, items) {

@@ -122,6 +122,37 @@ function buildRequest(task: string, payload: Record<string, unknown>) {
     };
   }
 
+  if (task === 'generate_practice') {
+    const mistakes = Array.isArray(payload.mistakes) ? payload.mistakes.slice(-15) : [];
+    const list = mistakes
+      .map(
+        (m: { type: unknown; userAnswer: unknown; correctAnswer: unknown }) =>
+          `- (${clamp(m.type, 20)}) escreveu "${clamp(m.userAnswer, 120)}" em vez de "${clamp(m.correctAnswer, 120)}"`
+      )
+      .join('\n');
+
+    return {
+      maxTokens: 1400,
+      system:
+        `Você é um professor de inglês. Crie 5 exercícios curtos de reforço de nível ${level}, ` +
+        `focados nos erros do aluno. O inglês deve estar correto e no nível do aluno. ` +
+        `Responda SOMENTE com um JSON válido, sem texto extra, no formato: ` +
+        `{"exercises": [EXERCICIO, ...]}. Cada EXERCICIO é de um destes dois tipos: ` +
+        `{"type": "multiple_choice", "content": {"question": "", "options": ["","","",""], "correct_index": 0}} ` +
+        `ou {"type": "fill_blank", "content": {"sentence": "frase com ___ no lugar da lacuna", "options": ["","",""], "correct": "", "translation": "tradução em pt-BR"}}. ` +
+        `Em fill_blank, "correct" precisa ser uma das "options" e a frase precisa conter "___". ` +
+        `As opções erradas devem ser plausíveis. Misture os dois tipos.`,
+      messages: [
+        {
+          role: 'user' as const,
+          content: list
+            ? `Erros recentes do aluno:\n${list}`
+            : `O aluno tem poucos erros registrados. Gere exercícios gerais de nível ${level}.`,
+        },
+      ],
+    };
+  }
+
   if (task === 'chat_feedback') {
     const history = Array.isArray(payload.messages) ? payload.messages : [];
     const transcript = history

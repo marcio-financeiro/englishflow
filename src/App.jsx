@@ -8,6 +8,7 @@ import { LessonPlayer } from './features/lessons/LessonPlayer';
 import { ReviewPage } from './features/review/ReviewPage';
 import { ChatPage } from './features/chat/ChatPage';
 import { DashboardPage } from './features/dashboard/DashboardPage';
+import { PracticePage } from './features/practice/PracticePage';
 
 function App() {
   return (
@@ -53,6 +54,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/practice"
+            element={
+              <ProtectedRoute>
+                <PracticePage />
               </ProtectedRoute>
             }
           />

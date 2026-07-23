@@ -119,6 +119,12 @@ export function DashboardPage() {
           <section className="rounded-lg bg-white p-4 shadow">
             <h3 className="mb-3 font-semibold text-slate-900">Onde praticar mais</h3>
             <SkillBreakdown mistakesByType={data.mistakesByType} />
+            <Link
+              to="/practice"
+              className="mt-4 block rounded bg-indigo-600 px-4 py-2 text-center font-medium text-white hover:bg-indigo-700"
+            >
+              🧠 Praticar meus erros
+            </Link>
           </section>
         )}
 
