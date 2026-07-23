@@ -63,7 +63,9 @@ export function newRecognition(lang = 'en-US') {
   if (!Recognition) return null;
   const recognition = new Recognition();
   recognition.lang = lang;
-  recognition.interimResults = false;
+  // interimResults = true: captura o texto durante a fala. No iOS o stop()
+  // manual não devolve o resultado final, então usamos o parcial mais recente.
+  recognition.interimResults = true;
   recognition.maxAlternatives = 1;
   recognition.continuous = false;
   return recognition;

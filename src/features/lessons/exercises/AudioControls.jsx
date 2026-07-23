@@ -18,9 +18,13 @@ const LISTEN_ERRORS = {
 // target: texto a pronunciar (a palavra). example: frase opcional para ouvir.
 export function AudioControls({ target, example }) {
   const [listening, setListening] = useState(false);
+  const [liveText, setLiveText] = useState('');
   const [feedback, setFeedback] = useState(null); // { transcript, score }
   const [error, setError] = useState('');
+
   const recRef = useRef(null);
+  const transcriptRef = useRef('');
+  const erroredRef = useRef(false);
 
   const canSpeak = isSpeakSupported();
   const canListen = isListenSupported();
@@ -39,7 +43,7 @@ export function AudioControls({ target, example }) {
   }, []);
 
   function toggleMic() {
-    // Segundo toque: encerra a gravação (o mic desliga no onend).
+    // Segundo toque: encerra a gravação (o resultado é tratado no onend).
     if (listening) {
       try {
         recRef.current?.stop();
@@ -57,21 +61,33 @@ export function AudioControls({ target, example }) {
     }
     setError('');
     setFeedback(null);
+    setLiveText('');
+    transcriptRef.current = '';
+    erroredRef.current = false;
     recRef.current = rec;
 
     rec.onresult = (event) => {
-      const transcript = event.results[0][0].transcript;
-      setFeedback({ transcript, score: similarity(transcript, target) });
+      // Pega o texto mais recente (parcial ou final).
+      const text = event.results[event.results.length - 1][0].transcript.trim();
+      transcriptRef.current = text;
+      setLiveText(text);
     };
     rec.onerror = (event) => {
       // 'aborted' acontece ao parar sem fala — não é erro para o usuário.
       if (event.error !== 'aborted') {
+        erroredRef.current = true;
         setError(LISTEN_ERRORS[event.error] || LISTEN_ERRORS.error);
       }
     };
     rec.onend = () => {
       setListening(false);
       recRef.current = null;
+      const t = transcriptRef.current;
+      if (t) {
+        setFeedback({ transcript: t, score: similarity(t, target) });
+      } else if (!erroredRef.current) {
+        setError(LISTEN_ERRORS['no-speech']);
+      }
     };
 
     try {
@@ -120,7 +136,7 @@ export function AudioControls({ target, example }) {
 
       {listening && (
         <p className="mt-2 text-center text-sm text-slate-500">
-          Ouvindo... fale a palavra e toque em Parar.
+          {liveText ? `🎧 "${liveText}"` : 'Ouvindo... fale e toque em Parar.'}
         </p>
       )}
 
