@@ -5,6 +5,7 @@ import { LoginPage } from './features/auth/LoginPage';
 import { SignupPage } from './features/auth/SignupPage';
 import { LessonList } from './features/lessons/LessonList';
 import { LessonPlayer } from './features/lessons/LessonPlayer';
+import { ReviewPage } from './features/review/ReviewPage';
 
 function App() {
   return (
@@ -26,6 +27,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <LessonPlayer />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/review"
+            element={
+              <ProtectedRoute>
+                <ReviewPage />
               </ProtectedRoute>
             }
           />

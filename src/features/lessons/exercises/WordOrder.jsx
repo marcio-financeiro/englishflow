@@ -25,7 +25,10 @@ export function WordOrder({ content, onAnswer }) {
     const isCorrect = sentence === content.correct_sentence;
     setCorrect(isCorrect);
     setChecked(true);
-    onAnswer(isCorrect);
+    onAnswer(isCorrect, {
+      userAnswer: sentence,
+      correctAnswer: content.correct_sentence,
+    });
   }
 
   return (

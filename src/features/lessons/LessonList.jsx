@@ -11,7 +11,7 @@ const STATUS_LABEL = {
 };
 
 export function LessonList() {
-  const { user } = useAuth();
+  const { user, dueReviewCount } = useAuth();
   const [modules, setModules] = useState(null);
   const [error, setError] = useState('');
 
@@ -27,6 +27,19 @@ export function LessonList() {
       <main className="mx-auto max-w-3xl p-6">
         {error && <p className="text-red-600">{error}</p>}
         {!modules && !error && <p className="text-slate-500">Carregando lições...</p>}
+
+        {dueReviewCount > 0 && (
+          <Link
+            to="/review"
+            className="mb-6 flex items-center justify-between rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 hover:bg-amber-100"
+          >
+            <span className="font-medium text-amber-900">
+              📚 Você tem {dueReviewCount}{' '}
+              {dueReviewCount === 1 ? 'palavra' : 'palavras'} para revisar hoje
+            </span>
+            <span className="text-amber-700">Revisar →</span>
+          </Link>
+        )}
 
         {modules?.map((module) => (
           <section key={module.id} className="mb-8">

@@ -7,7 +7,10 @@ export function FillBlank({ content, onAnswer }) {
   function handleSelect(option) {
     if (selected !== null) return;
     setSelected(option);
-    onAnswer(option === content.correct);
+    onAnswer(option === content.correct, {
+      userAnswer: option,
+      correctAnswer: content.correct,
+    });
   }
 
   return (
