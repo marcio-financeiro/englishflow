@@ -25,3 +25,7 @@ export function chatTurn({ level, scenario, messages }) {
 export function chatFeedback({ level, messages }) {
   return aiRequest('chat_feedback', { level, messages });
 }
+
+export function generatePractice({ level, mistakes }) {
+  return aiRequest('generate_practice', { level, mistakes });
+}

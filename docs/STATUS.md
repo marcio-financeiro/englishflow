@@ -2,7 +2,7 @@
 
 > Documento vivo. Atualizado a cada avanço para servir de referência rápida do que existe.
 >
-> **Última atualização:** 2026-07-23 · **Estado:** MVP (Fases 0–5) concluído e em produção.
+> **Última atualização:** 2026-07-23 · **Estado:** MVP (Fases 0–5) em produção · Fase 6 em andamento (IA adaptativa).
 
 PWA de aprendizado de inglês (nível A1), gamificado, com IA. Deploy na Vercel (auto-deploy da `main`), banco no Supabase.
 
@@ -30,7 +30,7 @@ PWA de aprendizado de inglês (nível A1), gamificado, com IA. Deploy na Vercel 
 | 3 — IA | Edge Function, correção de escrita (typing), chat + feedback | ✅ |
 | 4 — Áudio | TTS/STT, ditado, listening, ouvir/falar nos flashcards | ✅ |
 | 5 — Gamificação + PWA | Dashboard, conquistas, meta diária, app instalável | ✅ |
-| 6 — Avançado (pós-MVP) | Score fonético, A2+, IA adaptativa, notificações | ⬜ |
+| 6 — Avançado (pós-MVP) | IA adaptativa ✅ · Score fonético, A2+, notificações ⬜ | 🔄 |
 
 ---
 
@@ -43,6 +43,7 @@ PWA de aprendizado de inglês (nível A1), gamificado, com IA. Deploy na Vercel 
 - **Áudio:** ouvir palavra/frase (TTS); prática de fala com % de acerto (STT, toggle Falar/Parar); ditado e listening.
 - **Gamificação:** XP, nível (100 XP/nível), streak, meta diária configurável (5/10/20/30 min), calendário de dias estudados, conquistas, "onde praticar mais".
 - **PWA:** instalável no iPhone (Safari → Adicionar à Tela de Início); cache básico offline.
+- **Prática adaptativa (Fase 6):** tela `/practice` que usa seus erros (`mistakes`) para a IA gerar exercícios de reforço (múltipla escolha / completar lacuna). Acesso pelo botão "Praticar meus erros" no dashboard.
 
 ---
 
@@ -59,6 +60,7 @@ src/
     review/       ReviewPage
     chat/         ChatPage
     dashboard/    DashboardPage, achievements.js
+    practice/     PracticePage (prática adaptativa via IA)
   services/       supabaseClient, lessonService, srsService, reviewService,
                   aiService, speechService, dashboardService
   lib/            dateUtils, textMatch
@@ -68,7 +70,7 @@ supabase/
 public/           manifest.json, sw.js, icons/
 ```
 
-**Rotas:** `/` · `/lesson/:id` · `/review` · `/chat` · `/dashboard` · `/login` · `/signup`
+**Rotas:** `/` · `/lesson/:id` · `/review` · `/chat` · `/dashboard` · `/practice` · `/login` · `/signup`
 
 ---
 
@@ -83,7 +85,7 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 - `004_ai_usage.sql` — rate limit de IA (tabela + RPC `consume_ai_usage`)
 - `005_daily_activity.sql` — tempo de estudo (tabela + RPC `add_study_minutes`)
 
-**Edge Function `ai-proxy`:** tasks `correct_writing`, `chat`, `chat_feedback`. Valida JWT, aplica rate limit, chave em secret `ANTHROPIC_API_KEY`. Modelo `claude-sonnet-5`.
+**Edge Function `ai-proxy`:** tasks `correct_writing`, `chat`, `chat_feedback`, `generate_practice`. Valida JWT, aplica rate limit, chave em secret `ANTHROPIC_API_KEY`. Modelo `claude-sonnet-5`.
 
 ---
 
@@ -91,7 +93,7 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 
 - **Deploy do front:** automático na Vercel ao mergear na `main`.
 - **Migrations e Edge Functions:** aplicadas manualmente no Supabase (o MCP desta sessão é somente-leitura).
-- **Cache do PWA:** ao mudar o app, incrementar `CACHE_VERSION` em `public/sw.js` (atual: `ef-v6`).
+- **Cache do PWA:** ao mudar o app, incrementar `CACHE_VERSION` em `public/sw.js` (atual: `ef-v7`).
 - **Ícone do app:** placeholder ("E" em índigo) — trocar por definitivo quando quiser.
 
 ---
@@ -109,6 +111,8 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 | #7 | Fase 5 — dashboard de gamificação |
 | #8 | Microfone com toggle Falar/Parar |
 | #9 | Microfone reconhece fala (resultados parciais) |
+| #10 | docs: STATUS.md |
+| #11 | Fase 6 — prática adaptativa (IA gera exercícios dos seus erros) |
 
 ---
 
@@ -116,6 +120,6 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 
 - Score de pronúncia por fonema (Azure Speech Pronunciation Assessment).
 - Conteúdo A2+.
-- IA adaptativa: gerar exercícios a partir dos erros registrados em `mistakes`.
+- ~~IA adaptativa: gerar exercícios a partir dos erros registrados em `mistakes`.~~ ✅ feito
 - Notificações de lembrete.
 - Ícone do app personalizado.
