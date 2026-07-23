@@ -133,9 +133,10 @@ export function ReviewPage() {
               {vocab.example_pt && (
                 <p className="text-sm text-slate-400">{vocab.example_pt}</p>
               )}
-              <AudioControls target={vocab.word} example={vocab.example_en} />
             </>
           )}
+          {/* Áudio sempre visível: ouça a palavra antes de revelar também. */}
+          <AudioControls target={vocab.word} example={vocab.example_en} />
         </div>
       </div>
 

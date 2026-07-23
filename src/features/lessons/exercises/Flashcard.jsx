@@ -46,9 +46,8 @@ export function Flashcard({ content, vocabulary, onAnswer }) {
         )}
       </button>
 
-      {revealed && (
-        <AudioControls target={vocabulary.word} example={vocabulary.example_en} />
-      )}
+      {/* Áudio visível desde o início: ouça a palavra antes de revelar. */}
+      <AudioControls target={vocabulary.word} example={vocabulary.example_en} />
     </div>
   );
 }
