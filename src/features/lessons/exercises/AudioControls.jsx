@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   speak,
-  listen,
+  newRecognition,
   isSpeakSupported,
   isListenSupported,
 } from '../../../services/speechService';
@@ -9,8 +9,8 @@ import { similarity } from '../../../lib/textMatch';
 
 const LISTEN_ERRORS = {
   'not-allowed': 'Permissão do microfone negada.',
-  'no-speech': 'Não entendi. Tente falar de novo.',
-  unsupported: 'Reconhecimento de fala não suportado neste navegador.',
+  'service-not-allowed': 'Permissão do microfone negada.',
+  'no-speech': 'Não entendi. Toque em Falar e tente de novo.',
   error: 'Erro no microfone. Tente de novo.',
 };
 
@@ -20,22 +20,66 @@ export function AudioControls({ target, example }) {
   const [listening, setListening] = useState(false);
   const [feedback, setFeedback] = useState(null); // { transcript, score }
   const [error, setError] = useState('');
+  const recRef = useRef(null);
 
   const canSpeak = isSpeakSupported();
   const canListen = isListenSupported();
 
-  async function practice() {
-    if (listening) return;
+  // Garante que o microfone seja desligado ao sair da tela.
+  useEffect(() => {
+    return () => {
+      if (recRef.current) {
+        try {
+          recRef.current.stop();
+        } catch {
+          /* ignora */
+        }
+      }
+    };
+  }, []);
+
+  function toggleMic() {
+    // Segundo toque: encerra a gravação (o mic desliga no onend).
+    if (listening) {
+      try {
+        recRef.current?.stop();
+      } catch {
+        /* ignora */
+      }
+      return;
+    }
+
+    // Primeiro toque: começa a ouvir.
+    const rec = newRecognition('en-US');
+    if (!rec) {
+      setError(LISTEN_ERRORS.error);
+      return;
+    }
     setError('');
     setFeedback(null);
-    setListening(true);
-    try {
-      const transcript = await listen({ lang: 'en-US' });
+    recRef.current = rec;
+
+    rec.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
       setFeedback({ transcript, score: similarity(transcript, target) });
-    } catch (err) {
-      setError(LISTEN_ERRORS[err.message] || LISTEN_ERRORS.error);
-    } finally {
+    };
+    rec.onerror = (event) => {
+      // 'aborted' acontece ao parar sem fala — não é erro para o usuário.
+      if (event.error !== 'aborted') {
+        setError(LISTEN_ERRORS[event.error] || LISTEN_ERRORS.error);
+      }
+    };
+    rec.onend = () => {
       setListening(false);
+      recRef.current = null;
+    };
+
+    try {
+      rec.start();
+      setListening(true);
+    } catch {
+      setError(LISTEN_ERRORS.error);
+      recRef.current = null;
     }
   }
 
@@ -62,18 +106,27 @@ export function AudioControls({ target, example }) {
         )}
         {canListen && (
           <button
-            onClick={practice}
-            disabled={listening}
-            className="rounded bg-amber-100 px-3 py-1 text-sm font-medium text-amber-800 hover:bg-amber-200 disabled:opacity-60"
+            onClick={toggleMic}
+            className={`rounded px-3 py-1 text-sm font-medium ${
+              listening
+                ? 'bg-red-500 text-white hover:bg-red-600'
+                : 'bg-amber-100 text-amber-800 hover:bg-amber-200'
+            }`}
           >
-            {listening ? '🎤 Ouvindo...' : '🎤 Falar'}
+            {listening ? '⏹️ Parar' : '🎤 Falar'}
           </button>
         )}
       </div>
 
+      {listening && (
+        <p className="mt-2 text-center text-sm text-slate-500">
+          Ouvindo... fale a palavra e toque em Parar.
+        </p>
+      )}
+
       {error && <p className="mt-2 text-center text-sm text-red-600">{error}</p>}
 
-      {feedback && (
+      {feedback && !listening && (
         <p className="mt-2 text-center text-sm text-slate-600">
           Você disse: <span className="font-medium">"{feedback.transcript}"</span> —{' '}
           <span className={feedback.score >= 70 ? 'text-emerald-600' : 'text-amber-600'}>

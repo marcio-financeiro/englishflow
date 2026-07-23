@@ -54,45 +54,17 @@ export function speak(text, { rate = 0.9 } = {}) {
   }
 }
 
-// Escuta o microfone e resolve com o texto reconhecido.
-// Rejeita com códigos amigáveis: 'unsupported' | 'not-allowed' | 'no-speech' | 'error'.
-export function listen({ lang = 'en-US' } = {}) {
-  return new Promise((resolve, reject) => {
-    const Recognition = getRecognition();
-    if (!Recognition) {
-      reject(new Error('unsupported'));
-      return;
-    }
-
-    const recognition = new Recognition();
-    recognition.lang = lang;
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
-
-    let settled = false;
-
-    recognition.onresult = (event) => {
-      settled = true;
-      resolve(event.results[0][0].transcript);
-    };
-    recognition.onerror = (event) => {
-      settled = true;
-      if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
-        reject(new Error('not-allowed'));
-      } else if (event.error === 'no-speech') {
-        reject(new Error('no-speech'));
-      } else {
-        reject(new Error('error'));
-      }
-    };
-    recognition.onend = () => {
-      if (!settled) reject(new Error('no-speech'));
-    };
-
-    try {
-      recognition.start();
-    } catch {
-      reject(new Error('error'));
-    }
-  });
+// Cria um reconhecedor de fala configurado (ou null se não suportado).
+// Retorna a instância para que a UI controle start()/stop() — no iOS Safari
+// o reconhecimento não encerra sozinho de forma confiável, então quem chama
+// precisa poder parar o microfone explicitamente.
+export function newRecognition(lang = 'en-US') {
+  const Recognition = getRecognition();
+  if (!Recognition) return null;
+  const recognition = new Recognition();
+  recognition.lang = lang;
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+  recognition.continuous = false;
+  return recognition;
 }
