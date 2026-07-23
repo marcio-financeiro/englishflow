@@ -6,7 +6,11 @@ export function MultipleChoice({ content, onAnswer }) {
   function handleSelect(index) {
     if (selected !== null) return;
     setSelected(index);
-    onAnswer(index === content.correct_index);
+    onAnswer(index === content.correct_index, {
+      vocabularyId: content.vocabulary_id,
+      userAnswer: content.options[index],
+      correctAnswer: content.options[content.correct_index],
+    });
   }
 
   return (

@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '../../services/supabaseClient';
+import { countDueReviews } from '../../services/reviewService';
 
 const AuthContext = createContext(null);
 
@@ -26,6 +27,7 @@ async function ensureProfile(user) {
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
+  const [dueReviewCount, setDueReviewCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
   async function loadUserAndProfile(sessionUser) {
@@ -33,8 +35,14 @@ export function AuthProvider({ children }) {
     if (sessionUser) {
       const profileRow = await ensureProfile(sessionUser);
       setProfile(profileRow);
+      try {
+        setDueReviewCount(await countDueReviews(sessionUser.id));
+      } catch {
+        setDueReviewCount(0);
+      }
     } else {
       setProfile(null);
+      setDueReviewCount(0);
     }
   }
 
@@ -73,9 +81,28 @@ export function AuthProvider({ children }) {
     setProfile(profileRow);
   }
 
+  async function refreshDueReviews() {
+    if (!user) return;
+    try {
+      setDueReviewCount(await countDueReviews(user.id));
+    } catch {
+      setDueReviewCount(0);
+    }
+  }
+
   return (
     <AuthContext.Provider
-      value={{ user, profile, loading, signIn, signUp, signOut, refreshProfile }}
+      value={{
+        user,
+        profile,
+        dueReviewCount,
+        loading,
+        signIn,
+        signUp,
+        signOut,
+        refreshProfile,
+        refreshDueReviews,
+      }}
     >
       {children}
     </AuthContext.Provider>

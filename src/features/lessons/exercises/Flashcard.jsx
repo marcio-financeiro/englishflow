@@ -13,7 +13,7 @@ export function Flashcard({ content, vocabulary, onAnswer }) {
   function reveal() {
     if (revealed) return;
     setRevealed(true);
-    onAnswer(true);
+    onAnswer(true, { vocabularyId: vocabulary.id });
   }
 
   return (
