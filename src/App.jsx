@@ -6,6 +6,7 @@ import { SignupPage } from './features/auth/SignupPage';
 import { LessonList } from './features/lessons/LessonList';
 import { LessonPlayer } from './features/lessons/LessonPlayer';
 import { ReviewPage } from './features/review/ReviewPage';
+import { ChatPage } from './features/chat/ChatPage';
 
 function App() {
   return (
@@ -35,6 +36,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ReviewPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/chat"
+            element={
+              <ProtectedRoute>
+                <ChatPage />
               </ProtectedRoute>
             }
           />
