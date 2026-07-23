@@ -8,6 +8,7 @@ import {
   logMistakes,
   mistakeTypeFor,
 } from '../../services/reviewService';
+import { addStudyMinutes } from '../../services/dashboardService';
 import { Flashcard } from './exercises/Flashcard';
 import { MultipleChoice } from './exercises/MultipleChoice';
 import { FillBlank } from './exercises/FillBlank';
@@ -44,6 +45,7 @@ export function LessonPlayer() {
   // Acumuladores para o SRS e o registro de erros (Fase 2), salvos ao concluir.
   const reviewOutcomes = useRef([]);
   const mistakes = useRef([]);
+  const startedAt = useRef(Date.now()); // para o tempo de estudo (Fase 5)
 
   useEffect(() => {
     fetchLessonExercises(lessonId)
@@ -95,6 +97,7 @@ export function LessonPlayer() {
       });
       await recordLessonReviews(user.id, reviewOutcomes.current);
       await logMistakes(user.id, mistakes.current);
+      await addStudyMinutes((Date.now() - startedAt.current) / 60000);
       await refreshProfile();
       await refreshDueReviews();
       setFinished(true);

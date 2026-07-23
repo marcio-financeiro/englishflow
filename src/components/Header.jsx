@@ -11,14 +11,20 @@ export function Header() {
       </Link>
 
       <div className="flex items-center gap-2 text-sm font-medium sm:gap-4">
-        <span title="XP total" className="whitespace-nowrap">
-          ⭐ {profile?.xp_total ?? 0}
-          <span className="hidden sm:inline"> XP</span>
-        </span>
-        <span title="Streak atual" className="whitespace-nowrap">
-          🔥 {profile?.streak_current ?? 0}
-          <span className="hidden sm:inline"> dias</span>
-        </span>
+        <Link
+          to="/dashboard"
+          title="Meu progresso"
+          className="flex items-center gap-2 rounded hover:opacity-80 sm:gap-3"
+        >
+          <span className="whitespace-nowrap">
+            ⭐ {profile?.xp_total ?? 0}
+            <span className="hidden sm:inline"> XP</span>
+          </span>
+          <span className="whitespace-nowrap">
+            🔥 {profile?.streak_current ?? 0}
+            <span className="hidden sm:inline"> dias</span>
+          </span>
+        </Link>
 
         <Link
           to="/review"
