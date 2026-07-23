@@ -3,7 +3,8 @@ import { AuthProvider } from './features/auth/AuthContext';
 import { ProtectedRoute } from './features/auth/ProtectedRoute';
 import { LoginPage } from './features/auth/LoginPage';
 import { SignupPage } from './features/auth/SignupPage';
-import { DashboardPage } from './features/dashboard/DashboardPage';
+import { LessonList } from './features/lessons/LessonList';
+import { LessonPlayer } from './features/lessons/LessonPlayer';
 
 function App() {
   return (
@@ -16,7 +17,15 @@ function App() {
             path="/"
             element={
               <ProtectedRoute>
-                <DashboardPage />
+                <LessonList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/lesson/:lessonId"
+            element={
+              <ProtectedRoute>
+                <LessonPlayer />
               </ProtectedRoute>
             }
           />
