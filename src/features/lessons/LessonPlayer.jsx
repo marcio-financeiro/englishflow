@@ -13,6 +13,7 @@ import { MultipleChoice } from './exercises/MultipleChoice';
 import { FillBlank } from './exercises/FillBlank';
 import { WordOrder } from './exercises/WordOrder';
 import { Matching } from './exercises/Matching';
+import { Typing } from './exercises/Typing';
 
 const EXERCISE_COMPONENTS = {
   flashcard: Flashcard,
@@ -20,6 +21,7 @@ const EXERCISE_COMPONENTS = {
   fill_blank: FillBlank,
   word_order: WordOrder,
   matching: Matching,
+  typing: Typing,
 };
 
 export function LessonPlayer() {

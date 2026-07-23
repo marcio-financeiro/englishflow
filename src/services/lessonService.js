@@ -7,6 +7,7 @@ const IMPLEMENTED_TYPES = [
   'fill_blank',
   'word_order',
   'matching',
+  'typing',
 ];
 
 export async function fetchModulesWithProgress(userId) {

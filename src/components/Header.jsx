@@ -27,6 +27,14 @@ export function Header() {
           )}
         </Link>
 
+        <Link
+          to="/chat"
+          title="Conversar com IA"
+          className="rounded bg-indigo-700 px-3 py-1 hover:bg-indigo-800"
+        >
+          💬 Conversar
+        </Link>
+
         <button
           onClick={signOut}
           className="rounded bg-indigo-700 px-3 py-1 hover:bg-indigo-800"

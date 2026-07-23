@@ -10,6 +10,7 @@ const MISTAKE_TYPE_BY_EXERCISE = {
   fill_blank: 'grammar',
   word_order: 'grammar',
   matching: 'vocab',
+  typing: 'writing',
 };
 
 export function mistakeTypeFor(exerciseType) {
