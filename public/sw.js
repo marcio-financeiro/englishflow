@@ -5,7 +5,7 @@
 //  - requisições a APIs externas (Supabase/Anthropic) e não-GET: nunca cacheadas
 //
 // Ao mudar esta lógica ou o app shell, incremente CACHE_VERSION.
-const CACHE_VERSION = 'ef-v3';
+const CACHE_VERSION = 'ef-v4';
 const APP_SHELL = ['/', '/manifest.json', '/icons/icon-192.png'];
 
 self.addEventListener('install', (event) => {

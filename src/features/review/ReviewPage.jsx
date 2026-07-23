@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Header } from '../../components/Header';
 import { useAuth } from '../auth/AuthContext';
 import { fetchDueReviews, applyReview } from '../../services/reviewService';
+import { addStudyMinutes } from '../../services/dashboardService';
 import { AudioControls } from '../lessons/exercises/AudioControls';
 
 const GRADES = [
@@ -20,6 +21,7 @@ export function ReviewPage() {
   const [revealed, setRevealed] = useState(false);
   const [saving, setSaving] = useState(false);
   const [reviewedCount, setReviewedCount] = useState(0);
+  const startedAt = useRef(Date.now()); // tempo de estudo (Fase 5)
 
   useEffect(() => {
     fetchDueReviews(user.id)
@@ -34,8 +36,10 @@ export function ReviewPage() {
       await applyReview(user.id, items[index], quality);
       setReviewedCount((c) => c + 1);
       setRevealed(false);
+      const isLast = index + 1 >= items.length;
       setIndex((i) => i + 1);
       await refreshDueReviews();
+      if (isLast) await addStudyMinutes((Date.now() - startedAt.current) / 60000);
     } catch (err) {
       setError(err.message);
     } finally {
