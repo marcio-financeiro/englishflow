@@ -8,6 +8,8 @@ const IMPLEMENTED_TYPES = [
   'word_order',
   'matching',
   'typing',
+  'dictation',
+  'listening',
 ];
 
 export async function fetchModulesWithProgress(userId) {

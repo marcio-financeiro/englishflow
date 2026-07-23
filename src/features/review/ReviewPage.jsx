@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Header } from '../../components/Header';
 import { useAuth } from '../auth/AuthContext';
 import { fetchDueReviews, applyReview } from '../../services/reviewService';
+import { AudioControls } from '../lessons/exercises/AudioControls';
 
 const GRADES = [
   { label: 'Errei', quality: 1, style: 'bg-red-500 hover:bg-red-600' },
@@ -132,6 +133,7 @@ export function ReviewPage() {
               {vocab.example_pt && (
                 <p className="text-sm text-slate-400">{vocab.example_pt}</p>
               )}
+              <AudioControls target={vocab.word} example={vocab.example_en} />
             </>
           )}
         </div>

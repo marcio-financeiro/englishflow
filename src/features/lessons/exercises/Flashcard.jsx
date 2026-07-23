@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { AudioControls } from './AudioControls';
 
 export function Flashcard({ content, vocabulary, onAnswer }) {
   const [revealed, setRevealed] = useState(false);
@@ -44,6 +45,10 @@ export function Flashcard({ content, vocabulary, onAnswer }) {
           </>
         )}
       </button>
+
+      {revealed && (
+        <AudioControls target={vocabulary.word} example={vocabulary.example_en} />
+      )}
     </div>
   );
 }

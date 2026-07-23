@@ -11,6 +11,8 @@ const MISTAKE_TYPE_BY_EXERCISE = {
   word_order: 'grammar',
   matching: 'vocab',
   typing: 'writing',
+  dictation: 'listening',
+  listening: 'listening',
 };
 
 export function mistakeTypeFor(exerciseType) {

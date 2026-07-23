@@ -14,6 +14,8 @@ import { FillBlank } from './exercises/FillBlank';
 import { WordOrder } from './exercises/WordOrder';
 import { Matching } from './exercises/Matching';
 import { Typing } from './exercises/Typing';
+import { Dictation } from './exercises/Dictation';
+import { Listening } from './exercises/Listening';
 
 const EXERCISE_COMPONENTS = {
   flashcard: Flashcard,
@@ -22,6 +24,8 @@ const EXERCISE_COMPONENTS = {
   word_order: WordOrder,
   matching: Matching,
   typing: Typing,
+  dictation: Dictation,
+  listening: Listening,
 };
 
 export function LessonPlayer() {
