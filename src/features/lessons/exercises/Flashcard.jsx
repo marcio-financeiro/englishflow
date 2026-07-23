@@ -1,7 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export function Flashcard({ content, vocabulary, onAnswer }) {
   const [revealed, setRevealed] = useState(false);
+
+  // Reseta ao trocar de palavra (defesa extra caso o componente seja reutilizado)
+  useEffect(() => {
+    setRevealed(false);
+  }, [vocabulary?.id]);
 
   if (!vocabulary) return null;
 
@@ -20,8 +25,8 @@ export function Flashcard({ content, vocabulary, onAnswer }) {
         {!revealed ? (
           <>
             <span className="text-3xl font-bold text-slate-900">{vocabulary.word}</span>
-            {vocabulary.ipa && (
-              <span className="mt-2 text-slate-500">/{vocabulary.ipa}/</span>
+            {vocabulary.pronunciation_pt && (
+              <span className="mt-2 text-slate-500">{vocabulary.pronunciation_pt}</span>
             )}
             <span className="mt-4 text-sm text-slate-400">Toque para ver a tradução</span>
           </>
