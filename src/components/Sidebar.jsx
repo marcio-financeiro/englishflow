@@ -15,9 +15,7 @@ export function Sidebar() {
   return (
     <aside className="ef-sidebar sticky top-0 flex h-screen w-[236px] flex-shrink-0 flex-col border-r-2 border-border bg-surface p-4 max-[760px]:w-[76px] max-[760px]:p-2">
       <Link to="/" className="mb-6 flex items-center gap-2 px-2">
-        <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-primary text-lg text-white">
-          📱
-        </span>
+        <img src="/brand/icon.png" alt="" className="h-9 w-9 flex-shrink-0 rounded-xl" />
         <span className="ef-navlabel font-display text-lg font-extrabold text-text max-[760px]:hidden">
           EnglishFlow
         </span>
