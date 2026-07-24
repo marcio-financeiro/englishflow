@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { AudioControls } from './AudioControls';
+import { VocabImage } from './VocabImage';
 
 export function Flashcard({ content, vocabulary, onAnswer }) {
   const [revealed, setRevealed] = useState(false);
@@ -19,6 +20,7 @@ export function Flashcard({ content, vocabulary, onAnswer }) {
 
   return (
     <div className="text-center">
+      <VocabImage vocabulary={vocabulary} />
       <button
         onClick={reveal}
         className="mx-auto flex h-56 w-full max-w-sm flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border bg-surface-2 p-6"

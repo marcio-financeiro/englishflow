@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { TranslateToggle } from './TranslateToggle';
+import { VocabImage } from './VocabImage';
 
-export function MultipleChoice({ content, onAnswer }) {
+export function MultipleChoice({ content, vocabulary, onAnswer }) {
   const [selected, setSelected] = useState(null);
 
   function handleSelect(index) {
@@ -16,6 +17,7 @@ export function MultipleChoice({ content, onAnswer }) {
 
   return (
     <div>
+      {vocabulary && <VocabImage vocabulary={vocabulary} />}
       <p className="mb-2 font-display text-lg font-bold text-text">{content.question}</p>
       <TranslateToggle text={content.translation} />
       <div className="flex flex-col gap-2">
