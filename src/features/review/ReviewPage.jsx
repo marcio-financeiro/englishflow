@@ -13,7 +13,7 @@ const GRADES = [
 ];
 
 export function ReviewPage() {
-  const { user, refreshDueReviews } = useAuth();
+  const { user, profile, refreshDueReviews } = useAuth();
 
   const [items, setItems] = useState(null);
   const [error, setError] = useState('');
@@ -24,10 +24,10 @@ export function ReviewPage() {
   const startedAt = useRef(Date.now()); // tempo de estudo (Fase 5)
 
   useEffect(() => {
-    fetchDueReviews(user.id)
+    fetchDueReviews(user.id, profile?.learning_goals ?? [])
       .then(setItems)
       .catch((err) => setError(err.message));
-  }, [user.id]);
+  }, [user.id, profile?.learning_goals]);
 
   async function grade(quality) {
     if (saving) return;

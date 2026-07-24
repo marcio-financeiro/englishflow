@@ -4,6 +4,7 @@ import { ThemeProvider } from './features/theme/ThemeContext';
 import { ProtectedRoute } from './features/auth/ProtectedRoute';
 import { LoginPage } from './features/auth/LoginPage';
 import { SignupPage } from './features/auth/SignupPage';
+import { OnboardingPage } from './features/onboarding/OnboardingPage';
 import { LessonList } from './features/lessons/LessonList';
 import { LessonPlayer } from './features/lessons/LessonPlayer';
 import { ReviewPage } from './features/review/ReviewPage';
@@ -21,6 +22,14 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
+            <Route
+              path="/onboarding"
+              element={
+                <ProtectedRoute>
+                  <OnboardingPage />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/"
               element={
