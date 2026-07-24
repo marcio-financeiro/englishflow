@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { TranslateToggle } from './TranslateToggle';
 
 export function FillBlank({ content, onAnswer }) {
   const [selected, setSelected] = useState(null);
@@ -22,6 +23,8 @@ export function FillBlank({ content, onAnswer }) {
         </span>
         {parts[1]}
       </p>
+
+      <TranslateToggle text={content.translation} />
 
       <div className="flex flex-wrap gap-2">
         {content.options.map((option) => {
@@ -49,9 +52,6 @@ export function FillBlank({ content, onAnswer }) {
         })}
       </div>
 
-      {selected !== null && content.translation && (
-        <p className="mt-3 text-sm text-slate-500">{content.translation}</p>
-      )}
     </div>
   );
 }

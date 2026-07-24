@@ -43,7 +43,7 @@ PWA de aprendizado de inglês (nível A1), gamificado, com IA. Deploy na Vercel 
 - **Áudio:** ouvir palavra/frase (TTS); prática de fala com % de acerto (STT, toggle Falar/Parar); ditado e listening.
 - **Gamificação:** XP, nível (100 XP/nível), streak, meta diária configurável (5/10/20/30 min), calendário de dias estudados, conquistas, "onde praticar mais".
 - **PWA:** instalável no iPhone (Safari → Adicionar à Tela de Início); cache básico offline.
-- **Prática adaptativa (Fase 6):** tela `/practice` que usa seus erros (`mistakes`) para a IA gerar exercícios de reforço (múltipla escolha / completar lacuna). Acesso pelo botão "Praticar meus erros" no dashboard.
+- **Prática adaptativa (Fase 6):** tela `/practice` que usa seus erros (`mistakes`) para a IA gerar exercícios de reforço (múltipla escolha / completar lacuna). Acesso pelo botão "Praticar meus erros" no dashboard. Cada exercício tem um botão **"🇧🇷 Traduzir"** (`TranslateToggle`) que revela sob demanda a tradução em pt-BR da frase/pergunta — ajuda um aluno A1 a entender frases com vocabulário que ainda não viu.
 
 ---
 
@@ -93,7 +93,7 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 
 - **Deploy do front:** automático na Vercel ao mergear na `main`.
 - **Migrations e Edge Functions:** aplicadas manualmente no Supabase (o MCP desta sessão é somente-leitura).
-- **Cache do PWA:** ao mudar o app, incrementar `CACHE_VERSION` em `public/sw.js` (atual: `ef-v7`).
+- **Cache do PWA:** ao mudar o app, incrementar `CACHE_VERSION` em `public/sw.js` (atual: `ef-v8`).
 - **Ícone do app:** placeholder ("E" em índigo) — trocar por definitivo quando quiser.
 
 ---
@@ -113,6 +113,7 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 | #9 | Microfone reconhece fala (resultados parciais) |
 | #10 | docs: STATUS.md |
 | #11 | Fase 6 — prática adaptativa (IA gera exercícios dos seus erros) |
+| #12 | Tradução sob demanda nos exercícios da prática adaptativa |
 
 ---
 

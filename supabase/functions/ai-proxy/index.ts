@@ -138,8 +138,9 @@ function buildRequest(task: string, payload: Record<string, unknown>) {
         `focados nos erros do aluno. O inglês deve estar correto e no nível do aluno. ` +
         `Responda SOMENTE com um JSON válido, sem texto extra, no formato: ` +
         `{"exercises": [EXERCICIO, ...]}. Cada EXERCICIO é de um destes dois tipos: ` +
-        `{"type": "multiple_choice", "content": {"question": "", "options": ["","","",""], "correct_index": 0}} ` +
-        `ou {"type": "fill_blank", "content": {"sentence": "frase com ___ no lugar da lacuna", "options": ["","",""], "correct": "", "translation": "tradução em pt-BR"}}. ` +
+        `{"type": "multiple_choice", "content": {"question": "", "translation": "tradução da pergunta em pt-BR", "options": ["","","",""], "correct_index": 0}} ` +
+        `ou {"type": "fill_blank", "content": {"sentence": "frase com ___ no lugar da lacuna", "options": ["","",""], "correct": "", "translation": "tradução da frase em pt-BR"}}. ` +
+        `Sempre inclua "translation" (tradução em português) para ajudar na compreensão. ` +
         `Em fill_blank, "correct" precisa ser uma das "options" e a frase precisa conter "___". ` +
         `As opções erradas devem ser plausíveis. Misture os dois tipos.`,
       messages: [
