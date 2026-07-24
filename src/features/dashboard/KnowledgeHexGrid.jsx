@@ -1,10 +1,10 @@
 const SKILLS = [
-  { key: 'listening', label: 'Listening', icon: '🎧', color: 'var(--skill-listening)', x: 50, y: 12 },
-  { key: 'vocabulary', label: 'Vocabulary', icon: '📖', color: 'var(--primary)', x: 16, y: 30 },
-  { key: 'speaking', label: 'Speaking', icon: '🎤', color: 'var(--skill-speaking)', x: 84, y: 30 },
-  { key: 'reading', label: 'Reading', icon: '📗', color: 'var(--success)', x: 16, y: 70 },
-  { key: 'grammar', label: 'Grammar', icon: '✏️', color: 'var(--xp)', x: 84, y: 70 },
-  { key: 'writing', label: 'Writing', icon: '🖊️', color: 'var(--skill-writing)', x: 50, y: 88 },
+  { key: 'listening', label: 'Listening', icon: '🎧', color: 'var(--skill-listening)', x: 50, y: 16 },
+  { key: 'vocabulary', label: 'Vocabulary', icon: '📖', color: 'var(--primary)', x: 15, y: 32 },
+  { key: 'speaking', label: 'Speaking', icon: '🎤', color: 'var(--skill-speaking)', x: 85, y: 32 },
+  { key: 'reading', label: 'Reading', icon: '📗', color: 'var(--success)', x: 15, y: 68 },
+  { key: 'grammar', label: 'Grammar', icon: '✏️', color: 'var(--xp)', x: 85, y: 68 },
+  { key: 'writing', label: 'Writing', icon: '🖊️', color: 'var(--skill-writing)', x: 50, y: 84 },
 ];
 
 function DotBar({ pct }) {
@@ -31,7 +31,7 @@ function SkillHex({ skill, pct }) {
   return (
     <div
       className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1"
-      style={{ left: `${skill.x}%`, top: `${skill.y}%`, width: '25%' }}
+      style={{ left: `${skill.x}%`, top: `${skill.y}%`, width: '21%' }}
     >
       <div
         className="flex aspect-square w-full items-center justify-center rounded-full text-2xl"
@@ -79,8 +79,9 @@ export function KnowledgeHexGrid({ level, skillMastery }) {
       <p className="mb-4 text-sm text-text-muted">Desenvolva todas as habilidades do inglês</p>
 
       <div
-        className="relative mx-auto aspect-square w-full max-w-sm overflow-hidden rounded-2xl"
+        className="relative mx-auto w-full max-w-sm overflow-hidden rounded-2xl"
         style={{
+          aspectRatio: '1 / 1.28',
           background:
             'radial-gradient(circle at 50% 38%, #16323a 0%, #0e1f26 45%, #060d11 100%)',
         }}
