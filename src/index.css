@@ -1,3 +1,50 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --bg: #fbf7f0;
+  --bg-soft: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f3ecdf;
+  --border: #e6ddcb;
+  --text: #241f1b;
+  --text-muted: #7c7266;
+  --primary: #0f8b8d;
+  --primary-dark: #0b6567;
+  --primary-soft: #dcf2f1;
+  --success: #3fa34d;
+  --success-dark: #2b7a37;
+  --xp: #f2a93b;
+  --streak: #ef6c4d;
+  --error: #e24c5d;
+  --error-dark: #b23545;
+  --shadow-card: 0 10px 30px rgba(50, 40, 20, 0.1);
+}
+
+[data-theme='dark'] {
+  --bg: #17140f;
+  --bg-soft: #201b14;
+  --surface: #252017;
+  --surface-2: #2d271c;
+  --border: #3c3323;
+  --text: #f5efe3;
+  --text-muted: #b6a98e;
+  --primary: #3fbfb8;
+  --primary-dark: #0f8b8d;
+  --primary-soft: #1e3a38;
+  --success: #5fcb70;
+  --success-dark: #2b7a37;
+  --xp: #ffc85c;
+  --streak: #ff8560;
+  --error: #ff6b7a;
+  --error-dark: #b23545;
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Manrope', sans-serif;
+  transition: background-color 0.25s, color 0.25s;
+}
