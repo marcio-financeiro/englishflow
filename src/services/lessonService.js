@@ -1,5 +1,6 @@
 import { supabase } from './supabaseClient';
 import { hojeISO, ontemISO } from '../lib/dateUtils';
+import { LEVEL_ORDER, fetchLevelTests, hasPassedLevel } from './levelTestService';
 
 const IMPLEMENTED_TYPES = [
   'flashcard',
@@ -29,18 +30,24 @@ export async function fetchModulesWithProgress(userId) {
 
   if (progressError) throw progressError;
 
+  const levelTests = await fetchLevelTests(userId);
+
   const progressByLesson = Object.fromEntries(
     (progress ?? []).map((p) => [p.lesson_id, p])
   );
 
   return modules.map((module) => {
+    const levelIndex = LEVEL_ORDER.indexOf(module.cefr_level);
+    // Primeiro nível (A1) sempre desbloqueado; os demais exigem o teste do nível anterior aprovado.
+    const levelUnlocked = levelIndex <= 0 || hasPassedLevel(levelTests, LEVEL_ORDER[levelIndex - 1]);
+
     const lessons = [...module.lessons].sort((a, b) => a.sort_order - b.sort_order);
     let previousCompleted = true;
 
     const lessonsWithStatus = lessons.map((lesson) => {
       const lessonProgress = progressByLesson[lesson.id];
       const completed = lessonProgress?.status === 'completed';
-      const locked = !previousCompleted && !completed;
+      const locked = completed ? false : !levelUnlocked || !previousCompleted;
       previousCompleted = completed;
 
       return {
@@ -50,7 +57,7 @@ export async function fetchModulesWithProgress(userId) {
       };
     });
 
-    return { ...module, lessons: lessonsWithStatus };
+    return { ...module, lessons: lessonsWithStatus, levelUnlocked };
   });
 }
 

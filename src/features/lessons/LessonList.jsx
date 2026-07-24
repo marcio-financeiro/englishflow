@@ -4,6 +4,7 @@ import { Sidebar } from '../../components/Sidebar';
 import { useAuth } from '../auth/AuthContext';
 import { fetchModulesWithProgress } from '../../services/lessonService';
 import { findCumulativeReviewTarget } from '../../services/cumulativeReviewService';
+import { findLevelTestTarget } from '../../services/levelTestService';
 
 const NODE_ICON = {
   completed: '✓',
@@ -23,6 +24,7 @@ export function LessonList() {
   }, [user.id]);
 
   const cumulativeReviewTarget = modules ? findCumulativeReviewTarget(modules) : null;
+  const levelTestTarget = modules ? findLevelTestTarget(modules) : null;
 
   const totalLessons = modules?.reduce((sum, m) => sum + m.lessons.length, 0) ?? 0;
   const completedLessons =
@@ -53,6 +55,18 @@ export function LessonList() {
                 revisar hoje
               </span>
               <span className="font-semibold">Revisar →</span>
+            </Link>
+          )}
+
+          {levelTestTarget && (
+            <Link
+              to={`/level-test?level=${levelTestTarget}`}
+              className="mb-6 flex items-center justify-between rounded-2xl border-2 border-xp bg-primary-soft px-4 py-3 text-primary-dark hover:brightness-105"
+            >
+              <span className="font-semibold">
+                🎓 Faça o Teste de Nivelamento {levelTestTarget} pra liberar o próximo nível
+              </span>
+              <span className="font-semibold">Começar →</span>
             </Link>
           )}
 

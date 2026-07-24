@@ -1,6 +1,7 @@
 // Edge Function: ai-proxy
 // Camada única que fala com a API da Anthropic. A chave NUNCA sai daqui.
-// Tasks: correct_writing | chat | chat_feedback | generate_practice | generate_cumulative_review
+// Tasks: correct_writing | chat | chat_feedback | generate_practice |
+//        generate_cumulative_review | generate_level_test
 //
 // Secrets necessários (supabase secrets set ...):
 //   ANTHROPIC_API_KEY
@@ -182,6 +183,39 @@ function buildRequest(task: string, payload: Record<string, unknown>) {
           content: list
             ? `Palavras já estudadas pelo aluno:\n${list}`
             : `O aluno não tem palavras suficientes registradas. Gere exercícios gerais de nível ${level}.`,
+        },
+      ],
+    };
+  }
+
+  if (task === 'generate_level_test') {
+    const words = Array.isArray(payload.words) ? payload.words.slice(0, 60) : [];
+    const list = words
+      .map(
+        (w: { word: unknown; translation_pt: unknown }) =>
+          `- ${clamp(w.word, 60)} (${clamp(w.translation_pt, 80)})`
+      )
+      .join('\n');
+
+    return {
+      maxTokens: 2600,
+      system:
+        `Você é um professor de inglês. Crie 18 exercícios curtos pra um Teste de Nivelamento ` +
+        `de fim de nível ${level}, cobrindo o máximo possível das palavras abaixo (todo o nível, não só o final). ` +
+        `Use pelo menos 12 palavras distintas da lista, distribuídas entre os exercícios. ` +
+        `Responda SOMENTE com um JSON válido, sem texto extra, no formato: ` +
+        `{"exercises": [EXERCICIO, ...]}. Cada EXERCICIO é de um destes dois tipos: ` +
+        `{"type": "multiple_choice", "content": {"question": "", "translation": "tradução da pergunta em pt-BR", "options": ["","","",""], "correct_index": 0}} ` +
+        `ou {"type": "fill_blank", "content": {"sentence": "frase com ___ no lugar da lacuna", "options": ["","",""], "correct": "", "translation": "tradução da frase em pt-BR"}}. ` +
+        `Sempre inclua "translation" (tradução em português) para ajudar na compreensão. ` +
+        `Em fill_blank, "correct" precisa ser uma das "options" e a frase precisa conter "___". ` +
+        `As opções erradas devem ser plausíveis. Misture os dois tipos.`,
+      messages: [
+        {
+          role: 'user' as const,
+          content: list
+            ? `Palavras do nível ${level} já estudadas pelo aluno:\n${list}`
+            : `O aluno não tem palavras suficientes registradas. Gere um teste geral de nível ${level}.`,
         },
       ],
     };
