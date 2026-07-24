@@ -4,7 +4,10 @@ import { Sidebar } from '../../components/Sidebar';
 import { useAuth } from '../auth/AuthContext';
 import { fetchDashboard, setDailyGoal } from '../../services/dashboardService';
 import { fetchModulesWithProgress } from '../../services/lessonService';
+import { fetchLevelTests, currentLevelProgress } from '../../services/levelTestService';
 import { ACHIEVEMENTS, levelFromXp } from './achievements';
+import { KnowledgeHexGrid } from './KnowledgeHexGrid';
+import { LevelTrack } from './LevelTrack';
 import {
   isPushSupported,
   isSubscribed,
@@ -13,14 +16,6 @@ import {
 } from '../../services/pushService';
 
 const GOAL_OPTIONS = [5, 10, 20, 30];
-
-const SKILL_LABEL = {
-  grammar: 'Gramática',
-  vocab: 'Vocabulário',
-  listening: 'Escuta',
-  writing: 'Escrita',
-  other: 'Outros',
-};
 
 const WEEKDAY_LETTERS = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
 
@@ -47,11 +42,13 @@ export function DashboardPage() {
   const { user, profile, dueReviewCount, refreshProfile } = useAuth();
   const [data, setData] = useState(null);
   const [modules, setModules] = useState(null);
+  const [levelTests, setLevelTests] = useState(null);
   const [error, setError] = useState('');
 
   useEffect(() => {
     fetchDashboard(user.id).then(setData).catch((err) => setError(err.message));
     fetchModulesWithProgress(user.id).then(setModules).catch(() => setModules([]));
+    fetchLevelTests(user.id).then(setLevelTests).catch(() => setLevelTests([]));
   }, [user.id]);
 
   async function changeGoal(minutes) {
@@ -68,37 +65,73 @@ export function DashboardPage() {
   const goal = profile?.daily_goal_minutes ?? 10;
   const nextLesson = findNextLesson(modules);
   const week = lastSevenDays();
+  const cefr = currentLevelProgress(modules ?? []);
+  const cefrPct = cefr.total > 0 ? Math.round((cefr.completed / cefr.total) * 100) : 0;
 
   return (
     <div className="flex min-h-screen flex-col bg-bg text-text min-[760px]:flex-row">
       <Sidebar />
-      <main className="mx-auto w-full max-w-2xl space-y-4 p-6 pb-24 min-[760px]:pb-6">
+      <main className="mx-auto w-full max-w-4xl space-y-4 p-6 pb-24 min-[760px]:pb-6">
         <h1 className="font-display text-2xl font-extrabold text-text">Olá! 👋</h1>
         <p className="-mt-3 text-text-muted">Continue de onde parou hoje.</p>
         {error && <p className="text-error">{error}</p>}
 
-        {/* Streak / XP / lições — resumo rápido */}
-        <section className="grid grid-cols-3 gap-3">
+        {/* Streak / XP / lições — chips rápidos */}
+        <section className="flex flex-wrap gap-2">
           <div
-            className="rounded-2xl p-4 text-center text-white shadow-card"
+            className="flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-bold text-white shadow-card"
             style={{ background: 'linear-gradient(135deg, var(--xp), var(--streak))' }}
           >
-            <div className="font-display text-xl font-extrabold">
-              🔥 {profile?.streak_current ?? 0} dias
-            </div>
-            <div className="text-xs text-white/85">sequência ativa</div>
+            🔥 {profile?.streak_current ?? 0} <span className="font-normal opacity-85">sequência</span>
           </div>
-          <div className="rounded-2xl border-2 border-border bg-surface p-4 text-center">
-            <div className="font-display text-xl font-extrabold text-text">⭐ {xp} XP</div>
-            <div className="text-xs text-text-muted">experiência total</div>
+          <div className="flex items-center gap-1.5 rounded-full border-2 border-border bg-surface px-4 py-2 text-sm font-bold text-text">
+            ⭐ {xp} <span className="font-normal text-text-muted">XP</span>
           </div>
-          <div className="rounded-2xl border-2 border-border bg-surface p-4 text-center">
-            <div className="font-display text-xl font-extrabold text-text">
-              ✓ {data ? `${data.lessonsCompleted}/${data.totalLessons}` : '...'}
-            </div>
-            <div className="text-xs text-text-muted">lições concluídas</div>
+          <div className="flex items-center gap-1.5 rounded-full border-2 border-border bg-surface px-4 py-2 text-sm font-bold text-text">
+            ✓ {data ? `${data.lessonsCompleted}/${data.totalLessons}` : '...'}{' '}
+            <span className="font-normal text-text-muted">lições</span>
           </div>
         </section>
+
+        {/* Progresso no nível CEFR */}
+        <section
+          className="rounded-3xl p-5 text-white shadow-card"
+          style={{ background: 'linear-gradient(155deg, var(--primary), var(--primary-dark))' }}
+        >
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <div className="font-display text-lg font-extrabold">Seu inglês está evoluindo!</div>
+              <p className="text-sm text-white/85">
+                {cefrPct >= 100
+                  ? `Nível ${cefr.level} completo — faça o Teste de Nivelamento!`
+                  : `Faltam ${100 - cefrPct}% para o próximo nível`}
+              </p>
+            </div>
+            <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-white/15 font-display text-lg font-extrabold">
+              {cefr.level}
+            </div>
+          </div>
+          <div className="mt-3 flex items-center gap-2">
+            <div className="h-2 flex-1 rounded-full bg-white/25">
+              <div className="h-2 rounded-full bg-white transition-all" style={{ width: `${cefrPct}%` }} />
+            </div>
+            <span className="text-sm font-bold">{cefrPct}%</span>
+          </div>
+          {cefrPct >= 100 && (
+            <Link
+              to="/level-test"
+              className="mt-3 inline-block rounded-2xl bg-white px-4 py-2 text-sm font-bold text-primary-dark"
+            >
+              🏆 Fazer Teste de Nivelamento
+            </Link>
+          )}
+        </section>
+
+        {/* Centro de Conhecimento + Níveis */}
+        <div className="min-[1024px]:grid min-[1024px]:grid-cols-[1fr_260px] min-[1024px]:items-start min-[1024px]:gap-4 min-[1024px]:space-y-0 space-y-4">
+          <KnowledgeHexGrid level={cefr.level} skillMastery={data?.skillMastery} />
+          <LevelTrack levelTests={levelTests ?? []} />
+        </div>
 
         {/* Continue aprendendo */}
         {nextLesson && (
@@ -157,7 +190,7 @@ export function DashboardPage() {
           </Link>
         </section>
 
-        {/* Nível */}
+        {/* Nível de XP */}
         <section className="rounded-2xl border-2 border-border bg-surface p-4">
           <div className="mb-1 flex justify-between text-sm text-text-muted">
             <span>Nível {level}</span>
@@ -202,16 +235,9 @@ export function DashboardPage() {
           <MonthCalendar studyDays={data?.studyDays ?? new Set()} />
         </section>
 
-        {/* Pontos a praticar */}
-        {data && (
-          <section className="rounded-2xl border-2 border-border bg-surface p-4">
-            <h3 className="mb-3 font-display font-bold text-text">Onde praticar mais</h3>
-            <SkillBreakdown mistakesByType={data.mistakesByType} />
-            <Link to="/practice" className="ef-juicy-btn mt-4 block text-center">
-              🧠 Praticar meus erros
-            </Link>
-          </section>
-        )}
+        <Link to="/practice" className="ef-juicy-btn block text-center">
+          🧠 Praticar meus erros
+        </Link>
 
         {/* Conquistas */}
         {data && (
@@ -232,6 +258,7 @@ export function DashboardPage() {
                     className={`rounded-2xl border-2 p-3 text-center ${
                       earned ? 'border-xp bg-surface-2' : 'border-border bg-surface-2 opacity-60'
                     }`}
+                    style={earned ? { filter: 'drop-shadow(0 0 8px color-mix(in srgb, var(--xp) 50%, transparent))' } : undefined}
                   >
                     <div className="text-2xl">{earned ? a.icon : '🔒'}</div>
                     <div className="mt-1 text-sm font-semibold text-text">{a.title}</div>
@@ -316,27 +343,6 @@ function Bar({ pct, color }) {
   return (
     <div className="h-2 w-full rounded-full bg-surface-2">
       <div className={`h-2 rounded-full transition-all ${color}`} style={{ width: `${pct}%` }} />
-    </div>
-  );
-}
-
-function SkillBreakdown({ mistakesByType }) {
-  const entries = Object.entries(mistakesByType).sort((a, b) => b[1] - a[1]);
-  if (entries.length === 0) {
-    return <p className="text-sm text-text-muted">Sem erros registrados ainda 🎉</p>;
-  }
-  const max = entries[0][1] || 1;
-  return (
-    <div className="space-y-2">
-      {entries.map(([type, count]) => (
-        <div key={type}>
-          <div className="mb-1 flex justify-between text-sm text-text-muted">
-            <span>{SKILL_LABEL[type] || type}</span>
-            <span>{count} erro(s)</span>
-          </div>
-          <Bar pct={Math.round((count / max) * 100)} color="bg-error" />
-        </div>
-      ))}
     </div>
   );
 }

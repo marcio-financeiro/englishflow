@@ -65,6 +65,31 @@ export function hasPassedLevel(levelTests, level) {
   return (levelTests ?? []).some((t) => t.cefr_level === level && t.passed);
 }
 
+// Nível "atual" do usuário + progresso (lições concluídas/total) dentro dele,
+// a partir do array de módulos com progresso (mesmo shape de
+// fetchModulesWithProgress). Usado no card "Seu inglês está evoluindo" e no
+// hexágono central do Centro de Conhecimento.
+export function currentLevelProgress(modules) {
+  const byLevel = new Map();
+  for (const m of modules ?? []) {
+    const entry = byLevel.get(m.cefr_level) ?? { completed: 0, total: 0 };
+    for (const lesson of m.lessons ?? []) {
+      entry.total += 1;
+      if (lesson.status === 'completed') entry.completed += 1;
+    }
+    byLevel.set(m.cefr_level, entry);
+  }
+
+  let last = null;
+  for (const level of LEVEL_ORDER) {
+    const entry = byLevel.get(level);
+    if (!entry || entry.total === 0) continue;
+    last = { level, completed: entry.completed, total: entry.total };
+    if (entry.completed < entry.total) return last;
+  }
+  return last ?? { level: LEVEL_ORDER[0], completed: 0, total: 0 };
+}
+
 // Dado o array de módulos com progresso (mesmo shape de fetchModulesWithProgress,
 // já incluindo `levelUnlocked` por módulo), decide se deve mostrar o CTA do Teste
 // de Nivelamento: nível totalmente completo, mas o próximo nível ainda bloqueado.

@@ -20,6 +20,9 @@
   --error: #e24c5d;
   --error-dark: #b23545;
   --shadow-card: 0 10px 30px rgba(50, 40, 20, 0.1);
+  --skill-listening: #2f7dd6;
+  --skill-speaking: #d94f8c;
+  --skill-writing: #7c5cd6;
 }
 
 [data-theme='dark'] {
@@ -40,6 +43,9 @@
   --error: #ff6b7a;
   --error-dark: #b23545;
   --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --skill-listening: #5b9bf0;
+  --skill-speaking: #f07bb0;
+  --skill-writing: #a58af0;
 }
 
 body {

@@ -21,6 +21,9 @@ export default {
         streak: 'var(--streak)',
         error: 'var(--error)',
         'error-dark': 'var(--error-dark)',
+        'skill-listening': 'var(--skill-listening)',
+        'skill-speaking': 'var(--skill-speaking)',
+        'skill-writing': 'var(--skill-writing)',
       },
       fontFamily: {
         display: ['"Baloo 2"', 'sans-serif'],
