@@ -1,4 +1,4 @@
-import { supabase } from './supabaseClient';
+import { supabase, functionErrorMessage } from './supabaseClient';
 
 function blobToBase64(blob) {
   return new Promise((resolve, reject) => {
@@ -18,8 +18,7 @@ export async function assessPronunciation({ referenceText, audioBlob, sampleRate
     body: { referenceText, audioBase64, sampleRate },
   });
   if (error) {
-    const msg = (await error.context?.json?.().catch(() => null))?.error;
-    throw new Error(msg || error.message);
+    throw new Error(await functionErrorMessage(error));
   }
   if (data?.error) throw new Error(data.error);
   return data;

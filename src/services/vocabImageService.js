@@ -1,4 +1,4 @@
-import { supabase } from './supabaseClient';
+import { supabase, functionErrorMessage } from './supabaseClient';
 
 // Busca (e cacheia no banco) a imagem de uma palavra do vocabulário via Unsplash.
 export async function fetchVocabularyImage(vocabularyId) {
@@ -6,8 +6,7 @@ export async function fetchVocabularyImage(vocabularyId) {
     body: { vocabularyId },
   });
   if (error) {
-    const msg = (await error.context?.json?.().catch(() => null))?.error;
-    throw new Error(msg || error.message);
+    throw new Error(await functionErrorMessage(error));
   }
   if (data?.error) throw new Error(data.error);
   return data;

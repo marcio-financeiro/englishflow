@@ -1,4 +1,4 @@
-import { supabase } from './supabaseClient';
+import { supabase, functionErrorMessage } from './supabaseClient';
 
 function base64ToBlob(base64, contentType) {
   const binary = atob(base64);
@@ -13,8 +13,7 @@ export async function synthesizeSpeech(text) {
     body: { text },
   });
   if (error) {
-    const msg = (await error.context?.json?.().catch(() => null))?.error;
-    throw new Error(msg || error.message);
+    throw new Error(await functionErrorMessage(error));
   }
   if (data?.error) throw new Error(data.error);
   return base64ToBlob(data.audioBase64, 'audio/mpeg');

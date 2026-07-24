@@ -1,4 +1,4 @@
-import { supabase } from './supabaseClient';
+import { supabase, functionErrorMessage } from './supabaseClient';
 
 // Camada única de IA no front. Nunca conhece a chave — chama a Edge Function.
 async function aiRequest(task, payload) {
@@ -7,8 +7,7 @@ async function aiRequest(task, payload) {
   });
   if (error) {
     // Erros da function (429, 500...) chegam aqui; tenta extrair a mensagem.
-    const msg = (await error.context?.json?.().catch(() => null))?.error;
-    throw new Error(msg || error.message);
+    throw new Error(await functionErrorMessage(error));
   }
   if (data?.error) throw new Error(data.error);
   return data;
