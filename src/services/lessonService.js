@@ -15,9 +15,9 @@ const IMPLEMENTED_TYPES = [
 export async function fetchModulesWithProgress(userId) {
   const { data: modules, error: modulesError } = await supabase
     .from('modules')
-    .select('id, title, description, sort_order, lessons(id, title, sort_order, xp_reward)')
-    .eq('cefr_level', 'A1')
+    .select('id, cefr_level, title, description, sort_order, lessons(id, title, sort_order, xp_reward)')
     .eq('is_published', true)
+    .order('cefr_level')
     .order('sort_order');
 
   if (modulesError) throw modulesError;
