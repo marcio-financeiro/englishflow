@@ -65,8 +65,8 @@ Estrutura de longo prazo do curso, baseada no framework CEFR (o mesmo usado em c
 
 | Nível | Classificação | Módulos-alvo | Feitos |
 |---|---|---|---|
-| A1 | Iniciante | 15 | 2 |
-| A2 | Básico | 15 | 2 |
+| A1 | Iniciante | 15 | 3 |
+| A2 | Básico | 15 | 3 |
 | B1 | Intermediário | 20 | 0 |
 | B2 | Intermediário Avançado | 20 | 0 |
 | C1 | Avançado | 20 | 0 |
@@ -74,8 +74,8 @@ Estrutura de longo prazo do curso, baseada no framework CEFR (o mesmo usado em c
 
 **Temas de referência por nível** (ordem não é rígida, ajusta conforme o que fizer mais sentido no momento):
 
-- **A1:** Alfabeto e pronúncia, Greetings ✅, Numbers/Colors/Family ✅, Verb to be, Present Simple, Days/months, Food, Directions
-- **A2:** Daily Routines ✅, Past Simple ✅ (feito como "Past Experiences"), Future (going to/will), Comparatives, Countable x Uncountable, Prepositions, Daily conversations, Shopping, Travel
+- **A1:** Alfabeto e pronúncia, Greetings ✅, Numbers/Colors/Family ✅, Verb to be ✅, Present Simple, Days/months, Food, Directions
+- **A2:** Daily Routines ✅, Past Simple ✅ (feito como "Past Experiences"), Future (going to/will) ✅, Comparatives, Countable x Uncountable, Prepositions, Daily conversations, Shopping, Travel
 - **B1:** Present Perfect, Modal verbs, Passive Voice, Reported Speech (introdução), Phrasal verbs básicos, Writing de e-mails, Listening intermediário
 - **B2:** Conditionals, Reported Speech completo, Passive avançada, Relative clauses, Idioms, Debate e argumentação, Business English básico
 - **C1:** Vocabulário acadêmico, Escrita formal, Expressões idiomáticas avançadas, Pronúncia refinada, Apresentações profissionais, Negociação
@@ -117,7 +117,7 @@ src/
                   vocabImageService
   lib/            dateUtils, textMatch, wavRecorder
 supabase/
-  migrations/     001..010
+  migrations/     001..012
   functions/      ai-proxy/, pronunciation-proxy/, tts-proxy/, vocab-image-proxy/
 public/           manifest.json, sw.js, icons/ (PWA), brand/ (logo/ícone UI)
 api/              send-reminders.js (cron da Vercel, 20h Brasília)
@@ -143,6 +143,8 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 - `008_onboarding.sql` — `profiles` ganha `learning_goals`, `target_cefr_level`, `onboarding_completed`
 - `009_vocabulary_images.sql` — `vocabulary` ganha `image_url`, `image_photographer`, `image_photographer_url`
 - `010_tts_usage.sql` — rate limit da leitura em voz (tabela + RPC `consume_tts_usage`, separado do `ai_usage`)
+- `011_seed_a1_verb_to_be.sql` — conteúdo A1 (módulo 3 "Verb to Be", 5 lições, 30 palavras)
+- `012_seed_a2_future.sql` — conteúdo A2 (módulo 3 "Future (Going to / Will)", 5 lições, 30 palavras)
 
 **Edge Function `ai-proxy`:** tasks `correct_writing`, `chat`, `chat_feedback`, `generate_practice`. Valida JWT, aplica rate limit, chave em secret `ANTHROPIC_API_KEY`. Modelo `claude-sonnet-5`.
 
@@ -197,13 +199,16 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 | #23 | Imagens automáticas nos flashcards/múltipla escolha (Unsplash) |
 | #24 | fix: vocab-image-proxy retornava 401 mesmo com token válido |
 | #25 | Leitura com voz neural (Azure TTS) |
+| #26 | docs: roadmap de conteúdo CEFR (A1-C2) |
+| #27 | Conteúdo: módulo A1 "Verb to Be" + módulo A2 "Future (Going to / Will)" |
 
 ---
 
 ## Próximos passos
 
-Ver seção **Roadmap de conteúdo (CEFR A1 → C2)** acima — próximo passo é escolher e construir os próximos 1-2 módulos de A1 e/ou A2 dessa lista.
+Ver seção **Roadmap de conteúdo (CEFR A1 → C2)** acima — próximo passo é escolher e construir os próximos 1-2 módulos de A1 e/ou A2 dessa lista (A1: Present Simple, Days/months, Food, Directions · A2: Comparatives, Countable x Uncountable, Prepositions, Daily conversations, Shopping, Travel).
 
+- Módulo A1 "Verb to Be" + módulo A2 "Future (Going to / Will)" — ✅ feito (PR #27)
 - Onboarding pós-cadastro (tempo/objetivo/nível) — ✅ feito (PR #22)
 - Imagens automáticas nos flashcards/múltipla escolha (Unsplash) — ✅ feito (PR #23, #24)
 - Voz neural (Azure TTS) no lugar da Web Speech API — ✅ feito (PR #25)
