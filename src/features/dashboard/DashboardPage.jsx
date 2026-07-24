@@ -5,6 +5,12 @@ import { useAuth } from '../auth/AuthContext';
 import { fetchDashboard, setDailyGoal } from '../../services/dashboardService';
 import { fetchModulesWithProgress } from '../../services/lessonService';
 import { ACHIEVEMENTS, levelFromXp } from './achievements';
+import {
+  isPushSupported,
+  isSubscribed,
+  enableReminders,
+  disableReminders,
+} from '../../services/pushService';
 
 const GOAL_OPTIONS = [5, 10, 20, 30];
 
@@ -187,6 +193,9 @@ export function DashboardPage() {
           />
         </section>
 
+        {/* Lembretes diários */}
+        <ReminderToggle userId={user.id} />
+
         {/* Calendário do mês */}
         <section className="rounded-2xl border-2 border-border bg-surface p-4">
           <h3 className="mb-3 font-display font-bold text-text">Dias estudados este mês</h3>
@@ -239,6 +248,67 @@ export function DashboardPage() {
         </Link>
       </main>
     </div>
+  );
+}
+
+function ReminderToggle({ userId }) {
+  const [subscribed, setSubscribed] = useState(null); // null = carregando
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (!isPushSupported()) {
+      setSubscribed(false);
+      return;
+    }
+    isSubscribed().then(setSubscribed);
+  }, []);
+
+  async function toggle() {
+    setBusy(true);
+    setError('');
+    try {
+      if (subscribed) {
+        await disableReminders();
+        setSubscribed(false);
+      } else {
+        await enableReminders(userId);
+        setSubscribed(true);
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  if (!isPushSupported()) return null;
+
+  return (
+    <section className="rounded-2xl border-2 border-border bg-surface p-4">
+      <div className="flex items-center justify-between gap-3">
+        <div>
+          <h3 className="font-display font-bold text-text">🔔 Lembrete diário</h3>
+          <p className="text-sm text-text-muted">
+            {subscribed
+              ? 'Ativado — você recebe um aviso às 20h se ainda não estudou.'
+              : 'Receba um aviso às 20h nos dias que você ainda não estudou.'}
+          </p>
+        </div>
+        <button
+          onClick={toggle}
+          disabled={busy || subscribed === null}
+          className={`flex-shrink-0 rounded-2xl px-4 py-2 text-sm font-semibold disabled:opacity-50 ${
+            subscribed
+              ? 'border-2 border-border text-text-muted hover:bg-surface-2'
+              : 'ef-juicy-btn'
+          }`}
+        >
+          {busy ? '...' : subscribed ? 'Desativar' : 'Ativar'}
+        </button>
+      </div>
+      {error && <p className="mt-2 text-sm text-error">{error}</p>}
+    </section>
   );
 }
 
