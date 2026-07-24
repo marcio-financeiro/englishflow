@@ -1,105 +1,74 @@
 import { useEffect, useRef, useState } from 'react';
-import {
-  speak,
-  newRecognition,
-  isSpeakSupported,
-  isListenSupported,
-} from '../../../services/speechService';
-import { similarity } from '../../../lib/textMatch';
+import { speak, isSpeakSupported } from '../../../services/speechService';
+import { isRecordingSupported, startWavRecording } from '../../../lib/wavRecorder';
+import { assessPronunciation } from '../../../services/pronunciationService';
 
-const LISTEN_ERRORS = {
-  'not-allowed': 'Permissão do microfone negada.',
-  'service-not-allowed': 'Permissão do microfone negada.',
-  'no-speech': 'Não entendi. Toque em Falar e tente de novo.',
-  error: 'Erro no microfone. Tente de novo.',
+const MIC_ERRORS = {
+  NotAllowedError: 'Permissão do microfone negada.',
+  NotFoundError: 'Nenhum microfone encontrado.',
+  default: 'Erro no microfone. Tente de novo.',
 };
 
-// Controles de áudio para uma palavra: ouvir (TTS) e praticar a fala (STT).
-// target: texto a pronunciar (a palavra). example: frase opcional para ouvir.
+function scoreClass(score) {
+  if (score >= 80) return 'border-success text-success';
+  if (score >= 60) return 'border-xp text-xp';
+  return 'border-error text-error';
+}
+
+// Controles de áudio para uma palavra: ouvir (TTS) e avaliar a pronúncia por
+// fonema (grava o áudio de verdade e manda para a Azure Pronunciation
+// Assessment via Edge Function — a Web Speech API só dá texto, não fonemas).
+// target: palavra a pronunciar. example: frase opcional para ouvir.
 export function AudioControls({ target, example }) {
-  const [listening, setListening] = useState(false);
-  const [liveText, setLiveText] = useState('');
-  const [feedback, setFeedback] = useState(null); // { transcript, score }
+  const [recording, setRecording] = useState(false);
+  const [assessing, setAssessing] = useState(false);
+  const [result, setResult] = useState(null);
   const [error, setError] = useState('');
 
-  const recRef = useRef(null);
-  const transcriptRef = useRef('');
-  const erroredRef = useRef(false);
+  const recorderRef = useRef(null);
 
   const canSpeak = isSpeakSupported();
-  const canListen = isListenSupported();
+  const canRecord = isRecordingSupported();
 
   // Garante que o microfone seja desligado ao sair da tela.
   useEffect(() => {
     return () => {
-      if (recRef.current) {
-        try {
-          recRef.current.stop();
-        } catch {
-          /* ignora */
-        }
+      try {
+        recorderRef.current?.stop();
+      } catch {
+        /* ignora */
       }
     };
   }, []);
 
-  function toggleMic() {
-    // Segundo toque: encerra a gravação (o resultado é tratado no onend).
-    if (listening) {
+  async function toggleMic() {
+    if (recording) {
+      setRecording(false);
+      setAssessing(true);
       try {
-        recRef.current?.stop();
-      } catch {
-        /* ignora */
+        const { blob, sampleRate } = recorderRef.current.stop();
+        recorderRef.current = null;
+        const data = await assessPronunciation({ referenceText: target, audioBlob: blob, sampleRate });
+        setResult(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setAssessing(false);
       }
       return;
     }
 
-    // Primeiro toque: começa a ouvir.
-    const rec = newRecognition('en-US');
-    if (!rec) {
-      setError(LISTEN_ERRORS.error);
-      return;
-    }
     setError('');
-    setFeedback(null);
-    setLiveText('');
-    transcriptRef.current = '';
-    erroredRef.current = false;
-    recRef.current = rec;
-
-    rec.onresult = (event) => {
-      // Pega o texto mais recente (parcial ou final).
-      const text = event.results[event.results.length - 1][0].transcript.trim();
-      transcriptRef.current = text;
-      setLiveText(text);
-    };
-    rec.onerror = (event) => {
-      // 'aborted' acontece ao parar sem fala — não é erro para o usuário.
-      if (event.error !== 'aborted') {
-        erroredRef.current = true;
-        setError(LISTEN_ERRORS[event.error] || LISTEN_ERRORS.error);
-      }
-    };
-    rec.onend = () => {
-      setListening(false);
-      recRef.current = null;
-      const t = transcriptRef.current;
-      if (t) {
-        setFeedback({ transcript: t, score: similarity(t, target) });
-      } else if (!erroredRef.current) {
-        setError(LISTEN_ERRORS['no-speech']);
-      }
-    };
-
+    setResult(null);
     try {
-      rec.start();
-      setListening(true);
-    } catch {
-      setError(LISTEN_ERRORS.error);
-      recRef.current = null;
+      recorderRef.current = await startWavRecording();
+      setRecording(true);
+    } catch (err) {
+      setError(MIC_ERRORS[err.name] || MIC_ERRORS.default);
     }
   }
 
-  if (!canSpeak && !canListen) return null;
+  if (!canSpeak && !canRecord) return null;
 
   return (
     <div className="mt-4">
@@ -120,34 +89,54 @@ export function AudioControls({ target, example }) {
             🔊 Frase
           </button>
         )}
-        {canListen && (
+        {canRecord && (
           <button
             onClick={toggleMic}
-            className={`rounded-full px-3 py-1 text-sm font-semibold ${
-              listening
+            disabled={assessing}
+            className={`rounded-full px-3 py-1 text-sm font-semibold disabled:opacity-50 ${
+              recording
                 ? 'bg-error text-white hover:brightness-95'
                 : 'bg-surface-2 text-streak hover:brightness-95'
             }`}
           >
-            {listening ? '⏹️ Parar' : '🎤 Falar'}
+            {recording ? '⏹️ Parar' : assessing ? 'Avaliando...' : '🎤 Falar'}
           </button>
         )}
       </div>
 
-      {listening && (
+      {recording && (
         <p className="mt-2 text-center text-sm text-text-muted">
-          {liveText ? `🎧 "${liveText}"` : 'Ouvindo... fale e toque em Parar.'}
+          Ouvindo... fale "{target}" e toque em Parar.
         </p>
       )}
 
       {error && <p className="mt-2 text-center text-sm text-error">{error}</p>}
 
-      {feedback && !listening && (
-        <p className="mt-2 text-center text-sm text-text-muted">
-          Você disse: <span className="font-semibold text-text">"{feedback.transcript}"</span> —{' '}
-          <span className={feedback.score >= 70 ? 'text-success' : 'text-xp'}>
-            {feedback.score}%
-          </span>
+      {result?.recognized && (
+        <div className="mt-3 rounded-2xl border-2 border-border bg-surface-2 p-3 text-center">
+          <div className="mb-2 flex flex-wrap justify-center gap-1">
+            {result.words.flatMap((w) => w.phonemes).map((p, i) => (
+              <span
+                key={i}
+                className={`rounded-md border-2 px-1.5 py-0.5 font-mono text-xs font-bold ${scoreClass(p.accuracyScore)}`}
+                title={`${Math.round(p.accuracyScore)}%`}
+              >
+                {p.phoneme}
+              </span>
+            ))}
+          </div>
+          <p className="text-sm text-text-muted">
+            Pronúncia:{' '}
+            <span className={`font-bold ${scoreClass(result.pronScore).split(' ')[1]}`}>
+              {Math.round(result.pronScore)}%
+            </span>
+          </p>
+        </div>
+      )}
+
+      {result && !result.recognized && (
+        <p className="mt-2 text-center text-sm text-xp">
+          Não entendi. Tente falar mais perto do microfone.
         </p>
       )}
     </div>

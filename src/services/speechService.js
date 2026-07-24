@@ -1,18 +1,10 @@
-// Wrapper da Web Speech API (áudio no browser, sem custo de servidor).
-// TTS (falar) tem suporte amplo, inclusive iOS Safari.
-// STT (reconhecimento) é bom em Chrome/Edge/Safari e parcial no Firefox.
+// Wrapper da Web Speech API para texto-em-voz (TTS), suporte amplo mesmo no
+// iOS Safari. Gravação/avaliação de pronúncia ficam em wavRecorder.js +
+// pronunciationService.js (a Web Speech API de reconhecimento só dá texto,
+// não fonemas — por isso não é usada mais para isso).
 
 export function isSpeakSupported() {
   return typeof window !== 'undefined' && 'speechSynthesis' in window;
-}
-
-function getRecognition() {
-  if (typeof window === 'undefined') return null;
-  return window.SpeechRecognition || window.webkitSpeechRecognition || null;
-}
-
-export function isListenSupported() {
-  return !!getRecognition();
 }
 
 // Escolhe uma voz en-US (as vozes carregam de forma assíncrona no browser).
@@ -52,21 +44,4 @@ export function speak(text, { rate = 0.9 } = {}) {
       if (!synth.speaking) synth.speak(utter);
     }, 250);
   }
-}
-
-// Cria um reconhecedor de fala configurado (ou null se não suportado).
-// Retorna a instância para que a UI controle start()/stop() — no iOS Safari
-// o reconhecimento não encerra sozinho de forma confiável, então quem chama
-// precisa poder parar o microfone explicitamente.
-export function newRecognition(lang = 'en-US') {
-  const Recognition = getRecognition();
-  if (!Recognition) return null;
-  const recognition = new Recognition();
-  recognition.lang = lang;
-  // interimResults = true: captura o texto durante a fala. No iOS o stop()
-  // manual não devolve o resultado final, então usamos o parcial mais recente.
-  recognition.interimResults = true;
-  recognition.maxAlternatives = 1;
-  recognition.continuous = false;
-  return recognition;
 }
