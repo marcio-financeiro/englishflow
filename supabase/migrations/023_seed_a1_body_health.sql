@@ -94,7 +94,7 @@ insert into exercises (lesson_id, type, sort_order, content) values
 ('20000000-0000-0000-0000-000000000083', 'fill_blank', 4, '{"sentence": "I have a doctor''s ___ tomorrow.", "options": ["appointment", "medicine", "hospital"], "correct": "appointment", "translation": "Eu tenho uma consulta médica amanhã."}'),
 ('20000000-0000-0000-0000-000000000083', 'matching', 5, '{"pairs": [{"left": "doctor", "right": "médico"}, {"left": "nurse", "right": "enfermeiro/a"}, {"left": "hospital", "right": "hospital"}, {"left": "pharmacy", "right": "farmácia"}]}'),
 ('20000000-0000-0000-0000-000000000083', 'word_order', 6, '{"words": ["day", "twice", "medicine", "this", "a", "Take"], "correct_sentence": "Take this medicine twice a day", "translation": "Tome esse remédio duas vezes ao dia"}'),
-('20000000-0000-0000-0000-000000000083', 'listening', 7, '{"audio_text": "I need to go to the pharmacy to get my medicine.", "question": "Where does the speaker need to go?", "options": ["the pharmacy", "the hospital", "the doctor's office"], "correct_index": 0}');
+('20000000-0000-0000-0000-000000000083', 'listening', 7, '{"audio_text": "I need to go to the pharmacy to get my medicine.", "question": "Where does the speaker need to go?", "options": ["the pharmacy", "the hospital", "the doctor''s office"], "correct_index": 0}');
 
 -- ---------- Lição 9.4: Staying Healthy ----------
 insert into exercises (lesson_id, type, sort_order, content) values
