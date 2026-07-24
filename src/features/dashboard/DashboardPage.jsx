@@ -64,7 +64,7 @@ export function DashboardPage() {
   const week = lastSevenDays();
 
   return (
-    <div className="flex min-h-screen bg-bg text-text">
+    <div className="flex min-h-screen flex-col bg-bg text-text min-[760px]:flex-row">
       <Sidebar />
       <main className="mx-auto w-full max-w-2xl space-y-4 p-6">
         <h1 className="font-display text-2xl font-extrabold text-text">Olá! 👋</h1>

@@ -27,7 +27,7 @@ export function LessonList() {
     0;
 
   return (
-    <div className="flex min-h-screen bg-bg text-text">
+    <div className="flex min-h-screen flex-col bg-bg text-text min-[760px]:flex-row">
       <Sidebar />
 
       <main className="flex flex-1 justify-center gap-8 p-6 md:p-10">
