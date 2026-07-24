@@ -15,7 +15,7 @@ PWA de aprendizado de inglês (A1 e A2), gamificado, com IA. Deploy na Vercel (a
 | Front-end | React 18 + Vite + Tailwind CSS |
 | Backend/DB | Supabase (PostgreSQL + Auth + RLS + Edge Functions) |
 | IA | Claude Sonnet via Edge Function `ai-proxy` (chave só em secret) |
-| Áudio | Web Speech API (TTS + STT no browser) |
+| Áudio | Web Speech API (TTS) + Azure Speech Pronunciation Assessment (score por fonema, via Edge Function `pronunciation-proxy`) |
 | Hosting | Vercel |
 
 ---
@@ -30,9 +30,10 @@ PWA de aprendizado de inglês (A1 e A2), gamificado, com IA. Deploy na Vercel (a
 | 3 — IA | Edge Function, correção de escrita (typing), chat + feedback | ✅ |
 | 4 — Áudio | TTS/STT, ditado, listening, ouvir/falar nos flashcards | ✅ |
 | 5 — Gamificação + PWA | Dashboard, conquistas, meta diária, app instalável | ✅ |
-| 6 — Avançado (pós-MVP) | IA adaptativa ✅ · Score fonético, notificações ⬜ | 🔄 |
+| 6 — Avançado (pós-MVP) | IA adaptativa ✅ · Score fonético ✅ · Notificações ⬜ | 🔄 |
 | 7 — Redesign visual | Tokens/dark mode, login/cadastro, sidebar, lições, player, revisão, painel, logo/ícone definitivo, navegação mobile | ✅ |
 | 8 — Conteúdo A2 | Daily Routines + Past Experiences (2 módulos, 10 lições, 60 palavras) | ✅ |
+| 9 — Pronúncia por fonema | Grava áudio real (WAV) + Azure Pronunciation Assessment, feedback colorido por fonema no botão "🎤 Falar" | ✅ |
 
 ---
 
@@ -42,7 +43,7 @@ PWA de aprendizado de inglês (A1 e A2), gamificado, com IA. Deploy na Vercel (a
 - **Lições:** módulos/lições com progresso (cadeado/em andamento/concluída); 8 tipos de exercício (flashcard, múltipla escolha, completar lacuna, ordenar palavras, associação, escrita/typing, ditado, listening).
 - **Revisão espaçada (SM-2):** palavras vistas entram na fila; autoavaliação Errei/Difícil/Fácil; badge de pendências.
 - **IA:** correção de escrita em pt-BR (erros, versão natural, nota); chat por cenário (Garçom / Entrevista / Conversa livre) com feedback final. Rate limit de 50 chamadas/dia.
-- **Áudio:** ouvir palavra/frase (TTS); prática de fala com % de acerto (STT, toggle Falar/Parar); ditado e listening.
+- **Áudio:** ouvir palavra/frase (TTS); prática de fala com score de pronúncia **por fonema** (Azure Pronunciation Assessment — grava áudio real via `wavRecorder.js`, mostra cada fonema colorido por precisão + nota geral), toggle Falar/Parar; ditado e listening (esses dois continuam usando a Web Speech API só para texto).
 - **Gamificação:** XP, nível (100 XP/nível), streak, meta diária configurável (5/10/20/30 min), calendário de dias estudados, conquistas, "onde praticar mais".
 - **PWA:** instalável no iPhone (Safari → Adicionar à Tela de Início); cache básico offline.
 - **Prática adaptativa (Fase 6):** tela `/practice` que usa seus erros (`mistakes`) para a IA gerar exercícios de reforço (múltipla escolha / completar lacuna). Acesso pelo botão "Praticar meus erros" no dashboard. Cada exercício tem um botão **"🇧🇷 Traduzir"** (`TranslateToggle`) que revela sob demanda a tradução em pt-BR da frase/pergunta — ajuda um aluno A1 a entender frases com vocabulário que ainda não viu.
@@ -65,11 +66,11 @@ src/
     dashboard/    DashboardPage, achievements.js
     practice/     PracticePage (prática adaptativa via IA)
   services/       supabaseClient, lessonService, srsService, reviewService,
-                  aiService, speechService, dashboardService
-  lib/            dateUtils, textMatch
+                  aiService, speechService, dashboardService, pronunciationService
+  lib/            dateUtils, textMatch, wavRecorder
 supabase/
-  migrations/     001..005
-  functions/ai-proxy/index.ts
+  migrations/     001..006
+  functions/      ai-proxy/index.ts, pronunciation-proxy/index.ts
 public/           manifest.json, sw.js, icons/ (PWA), brand/ (logo/ícone UI)
 ```
 
@@ -90,6 +91,8 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 - `006_seed_a2.sql` — conteúdo A2 (Daily Routines + Past Experiences, 2 módulos, 10 lições, 60 palavras) — **precisa ser aplicada manualmente no Supabase**
 
 **Edge Function `ai-proxy`:** tasks `correct_writing`, `chat`, `chat_feedback`, `generate_practice`. Valida JWT, aplica rate limit, chave em secret `ANTHROPIC_API_KEY`. Modelo `claude-sonnet-5`.
+
+**Edge Function `pronunciation-proxy`:** recebe áudio WAV (base64) + texto de referência, chama a Azure Pronunciation Assessment (REST, formato "detailed"), devolve score geral + por palavra/fonema. Valida JWT, compartilha o rate limit diário com `ai-proxy` (mesma tabela `ai_usage`). Secrets: `AZURE_SPEECH_KEY`, `AZURE_SPEECH_REGION`.
 
 ---
 
@@ -126,14 +129,15 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 | #17 | Menu mobile: barra fixa embaixo (substitui #16) |
 | #18 | Logo fixa no topo do mobile de volta |
 | #19 | Conteúdo A2 (Daily Routines + Past Experiences) |
+| #20 | Score de pronúncia por fonema (Azure Pronunciation Assessment) |
 
 ---
 
 ## Próximos passos (pós-MVP)
 
-- Score de pronúncia por fonema (Azure Speech Pronunciation Assessment).
 - Notificações de lembrete.
 - Mais conteúdo A2 ou avançar pra B1.
 - ~~IA adaptativa: gerar exercícios a partir dos erros registrados em `mistakes`.~~ ✅ feito
 - ~~Ícone do app personalizado.~~ ✅ feito
-- ~~Conteúdo A2.~~ ✅ feito (falta aplicar a migration `006_seed_a2.sql` no Supabase)
+- ~~Conteúdo A2.~~ ✅ feito
+- ~~Score de pronúncia por fonema.~~ ✅ feito (falta aplicar a Edge Function `pronunciation-proxy` manualmente no Supabase)
