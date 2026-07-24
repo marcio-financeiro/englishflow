@@ -2,7 +2,7 @@
 
 > Documento vivo. Atualizado a cada avanço para servir de referência rápida do que existe.
 >
-> **Última atualização:** 2026-07-23 · **Estado:** MVP (Fases 0–5) em produção · Fase 6 em andamento (IA adaptativa).
+> **Última atualização:** 2026-07-24 · **Estado:** MVP (Fases 0–6) em produção · Redesign visual completo.
 
 PWA de aprendizado de inglês (nível A1), gamificado, com IA. Deploy na Vercel (auto-deploy da `main`), banco no Supabase.
 
@@ -31,6 +31,7 @@ PWA de aprendizado de inglês (nível A1), gamificado, com IA. Deploy na Vercel 
 | 4 — Áudio | TTS/STT, ditado, listening, ouvir/falar nos flashcards | ✅ |
 | 5 — Gamificação + PWA | Dashboard, conquistas, meta diária, app instalável | ✅ |
 | 6 — Avançado (pós-MVP) | IA adaptativa ✅ · Score fonético, A2+, notificações ⬜ | 🔄 |
+| 7 — Redesign visual | Tokens/dark mode, login/cadastro, sidebar, lições, player, revisão, painel, logo/ícone definitivo | ✅ |
 
 ---
 
@@ -51,9 +52,10 @@ PWA de aprendizado de inglês (nível A1), gamificado, com IA. Deploy na Vercel 
 
 ```
 src/
-  components/Header.jsx
+  components/     Sidebar.jsx, ThemeToggle.jsx
   features/
-    auth/         LoginPage, SignupPage, AuthContext, ProtectedRoute
+    auth/         LoginPage, SignupPage, AuthBrandPanel, AuthContext, ProtectedRoute
+    theme/        ThemeContext (dark mode, localStorage)
     lessons/      LessonList, LessonPlayer
       exercises/  Flashcard, MultipleChoice, FillBlank, WordOrder,
                   Matching, Typing, Dictation, Listening, AudioControls
@@ -67,7 +69,7 @@ src/
 supabase/
   migrations/     001..005
   functions/ai-proxy/index.ts
-public/           manifest.json, sw.js, icons/
+public/           manifest.json, sw.js, icons/ (PWA), brand/ (logo/ícone UI)
 ```
 
 **Rotas:** `/` · `/lesson/:id` · `/review` · `/chat` · `/dashboard` · `/practice` · `/login` · `/signup`
@@ -93,8 +95,9 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 
 - **Deploy do front:** automático na Vercel ao mergear na `main`.
 - **Migrations e Edge Functions:** aplicadas manualmente no Supabase (o MCP desta sessão é somente-leitura).
-- **Cache do PWA:** ao mudar o app, incrementar `CACHE_VERSION` em `public/sw.js` (atual: `ef-v8`).
-- **Ícone do app:** placeholder ("E" em índigo) — trocar por definitivo quando quiser.
+- **Cache do PWA:** ao mudar o app, incrementar `CACHE_VERSION` em `public/sw.js` (atual: `ef-v9`).
+- **Design system:** redesign moderno completo (tokens de cor claro/escuro, fontes Baloo 2 + Manrope, dark mode) — ver `design_handoff_englishflow_redesign/` na raiz do repo para referência original.
+- **Ícone do app:** definitivo (livro em quadrado gradiente teal) — `public/icons/` (PWA/favicon) e `public/brand/` (uso na UI).
 
 ---
 
@@ -114,6 +117,8 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 | #10 | docs: STATUS.md |
 | #11 | Fase 6 — prática adaptativa (IA gera exercícios dos seus erros) |
 | #12 | Tradução sob demanda nos exercícios da prática adaptativa |
+| #13 | Redesign visual moderno (login, sidebar, lições, player, revisão) |
+| #14 | Ajustes de fidelidade ao mockup (sidebar, lista de lições, painel) |
 
 ---
 
@@ -123,4 +128,4 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 - Conteúdo A2+.
 - ~~IA adaptativa: gerar exercícios a partir dos erros registrados em `mistakes`.~~ ✅ feito
 - Notificações de lembrete.
-- Ícone do app personalizado.
+- ~~Ícone do app personalizado.~~ ✅ feito

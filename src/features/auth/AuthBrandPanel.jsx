@@ -8,9 +8,7 @@ export function AuthBrandPanel() {
       <div className="pointer-events-none absolute -bottom-24 -right-10 h-80 w-80 rounded-full bg-white/10 [animation:ef-float-blob_11s_ease-in-out_infinite]" />
 
       <div className="relative z-10 mb-6 flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20 text-xl">
-          📱
-        </div>
+        <img src="/brand/icon.png" alt="" className="h-10 w-10 rounded-xl" />
         <span className="font-display text-lg font-bold">EnglishFlow</span>
       </div>
 
