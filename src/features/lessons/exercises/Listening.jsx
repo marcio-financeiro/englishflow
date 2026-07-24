@@ -24,27 +24,29 @@ export function Listening({ content, onAnswer }) {
       {supported ? (
         <button
           onClick={() => speak(content.audio_text)}
-          className="mb-4 rounded bg-indigo-100 px-4 py-2 font-medium text-indigo-700 hover:bg-indigo-200"
+          className="mb-4 rounded-full bg-primary-soft px-4 py-2 font-semibold text-primary-dark hover:brightness-95"
         >
           🔊 Ouvir de novo
         </button>
       ) : (
-        <p className="mb-4 text-sm text-amber-700">
+        <p className="mb-4 text-sm text-xp">
           🔇 Áudio não suportado neste navegador (use Chrome, Edge ou Safari).
         </p>
       )}
 
-      <p className="mb-4 text-lg font-medium text-slate-900">{content.question}</p>
+      <p className="mb-4 font-display text-lg font-bold text-text">{content.question}</p>
 
       <div className="flex flex-col gap-2">
         {content.options.map((option, index) => {
           const isSelected = selected === index;
           const isCorrect = index === content.correct_index;
-          let style = 'border-slate-300 bg-white hover:bg-slate-50';
+          let style = 'border-border bg-surface hover:bg-surface-2';
           if (selected !== null && isSelected) {
-            style = isCorrect ? 'border-emerald-500 bg-emerald-50' : 'border-red-500 bg-red-50';
+            style = isCorrect
+              ? 'border-success bg-surface-2 text-success-dark'
+              : 'border-error bg-surface-2 text-error-dark';
           } else if (selected !== null && isCorrect) {
-            style = 'border-emerald-500 bg-emerald-50';
+            style = 'border-success bg-surface-2 text-success-dark';
           }
 
           return (
@@ -52,7 +54,7 @@ export function Listening({ content, onAnswer }) {
               key={index}
               onClick={() => handleSelect(index)}
               disabled={selected !== null}
-              className={`rounded border px-4 py-3 text-left transition ${style}`}
+              className={`rounded-2xl border-2 px-4 py-3 text-left font-semibold transition ${style}`}
             >
               {option}
             </button>

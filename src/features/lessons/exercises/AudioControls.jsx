@@ -107,7 +107,7 @@ export function AudioControls({ target, example }) {
         {canSpeak && (
           <button
             onClick={() => speak(target)}
-            className="rounded bg-indigo-100 px-3 py-1 text-sm font-medium text-indigo-700 hover:bg-indigo-200"
+            className="rounded-full bg-primary-soft px-3 py-1 text-sm font-semibold text-primary-dark hover:brightness-95"
           >
             🔊 Ouvir
           </button>
@@ -115,7 +115,7 @@ export function AudioControls({ target, example }) {
         {canSpeak && example && (
           <button
             onClick={() => speak(example)}
-            className="rounded bg-indigo-100 px-3 py-1 text-sm font-medium text-indigo-700 hover:bg-indigo-200"
+            className="rounded-full bg-primary-soft px-3 py-1 text-sm font-semibold text-primary-dark hover:brightness-95"
           >
             🔊 Frase
           </button>
@@ -123,10 +123,10 @@ export function AudioControls({ target, example }) {
         {canListen && (
           <button
             onClick={toggleMic}
-            className={`rounded px-3 py-1 text-sm font-medium ${
+            className={`rounded-full px-3 py-1 text-sm font-semibold ${
               listening
-                ? 'bg-red-500 text-white hover:bg-red-600'
-                : 'bg-amber-100 text-amber-800 hover:bg-amber-200'
+                ? 'bg-error text-white hover:brightness-95'
+                : 'bg-surface-2 text-streak hover:brightness-95'
             }`}
           >
             {listening ? '⏹️ Parar' : '🎤 Falar'}
@@ -135,17 +135,17 @@ export function AudioControls({ target, example }) {
       </div>
 
       {listening && (
-        <p className="mt-2 text-center text-sm text-slate-500">
+        <p className="mt-2 text-center text-sm text-text-muted">
           {liveText ? `🎧 "${liveText}"` : 'Ouvindo... fale e toque em Parar.'}
         </p>
       )}
 
-      {error && <p className="mt-2 text-center text-sm text-red-600">{error}</p>}
+      {error && <p className="mt-2 text-center text-sm text-error">{error}</p>}
 
       {feedback && !listening && (
-        <p className="mt-2 text-center text-sm text-slate-600">
-          Você disse: <span className="font-medium">"{feedback.transcript}"</span> —{' '}
-          <span className={feedback.score >= 70 ? 'text-emerald-600' : 'text-amber-600'}>
+        <p className="mt-2 text-center text-sm text-text-muted">
+          Você disse: <span className="font-semibold text-text">"{feedback.transcript}"</span> —{' '}
+          <span className={feedback.score >= 70 ? 'text-success' : 'text-xp'}>
             {feedback.score}%
           </span>
         </p>

@@ -16,19 +16,19 @@ export function MultipleChoice({ content, onAnswer }) {
 
   return (
     <div>
-      <p className="mb-2 text-lg font-medium text-slate-900">{content.question}</p>
+      <p className="mb-2 font-display text-lg font-bold text-text">{content.question}</p>
       <TranslateToggle text={content.translation} />
       <div className="flex flex-col gap-2">
         {content.options.map((option, index) => {
           const isSelected = selected === index;
           const isCorrect = index === content.correct_index;
-          let style = 'border-slate-300 bg-white hover:bg-slate-50';
+          let style = 'border-border bg-surface hover:bg-surface-2';
           if (selected !== null && isSelected) {
             style = isCorrect
-              ? 'border-emerald-500 bg-emerald-50'
-              : 'border-red-500 bg-red-50';
+              ? 'border-success bg-surface-2 text-success-dark'
+              : 'border-error bg-surface-2 text-error-dark';
           } else if (selected !== null && isCorrect) {
-            style = 'border-emerald-500 bg-emerald-50';
+            style = 'border-success bg-surface-2 text-success-dark';
           }
 
           return (
@@ -36,7 +36,7 @@ export function MultipleChoice({ content, onAnswer }) {
               key={index}
               onClick={() => handleSelect(index)}
               disabled={selected !== null}
-              className={`rounded border px-4 py-3 text-left transition ${style}`}
+              className={`rounded-2xl border-2 px-4 py-3 text-left font-semibold transition ${style}`}
             >
               {option}
             </button>

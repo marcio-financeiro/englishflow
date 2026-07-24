@@ -46,12 +46,12 @@ export function Matching({ content, onAnswer }) {
             key={p.left}
             onClick={() => handleLeftClick(p.left)}
             disabled={!!matched[p.left]}
-            className={`rounded border px-3 py-2 text-left transition ${
+            className={`rounded-2xl border-2 px-3 py-2 text-left font-semibold transition ${
               matched[p.left]
-                ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
+                ? 'border-success bg-surface-2 text-success-dark'
                 : selectedLeft === p.left
-                  ? 'border-indigo-500 bg-indigo-50'
-                  : 'border-slate-300 bg-white hover:bg-slate-50'
+                  ? 'border-primary bg-primary-soft text-primary-dark'
+                  : 'border-border bg-surface hover:bg-surface-2'
             }`}
           >
             {p.left}
@@ -68,12 +68,12 @@ export function Matching({ content, onAnswer }) {
               key={right}
               onClick={() => handleRightClick(right)}
               disabled={isMatched}
-              className={`rounded border px-3 py-2 text-left transition ${
+              className={`rounded-2xl border-2 px-3 py-2 text-left font-semibold transition ${
                 isMatched
-                  ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
+                  ? 'border-success bg-surface-2 text-success-dark'
                   : isWrong
-                    ? 'border-red-500 bg-red-50'
-                    : 'border-slate-300 bg-white hover:bg-slate-50'
+                    ? 'border-error bg-surface-2 text-error-dark'
+                    : 'border-border bg-surface hover:bg-surface-2'
               }`}
             >
               {right}

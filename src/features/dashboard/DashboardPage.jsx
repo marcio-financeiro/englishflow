@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Header } from '../../components/Header';
+import { Sidebar } from '../../components/Sidebar';
 import { useAuth } from '../auth/AuthContext';
 import { fetchDashboard, setDailyGoal } from '../../services/dashboardService';
 import { ACHIEVEMENTS, levelFromXp } from './achievements';
@@ -40,9 +40,9 @@ export function DashboardPage() {
   const goal = profile?.daily_goal_minutes ?? 10;
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <Header />
-      <main className="mx-auto max-w-2xl space-y-6 p-6">
+    <div className="flex min-h-screen bg-bg text-text">
+      <Sidebar />
+      <main className="mx-auto w-full max-w-2xl space-y-6 p-6">
         <h2 className="text-2xl font-bold text-slate-900">Meu progresso</h2>
         {error && <p className="text-red-600">{error}</p>}
 

@@ -1,3 +1,90 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --bg: #fbf7f0;
+  --bg-soft: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f3ecdf;
+  --border: #e6ddcb;
+  --text: #241f1b;
+  --text-muted: #7c7266;
+  --primary: #0f8b8d;
+  --primary-dark: #0b6567;
+  --primary-soft: #dcf2f1;
+  --success: #3fa34d;
+  --success-dark: #2b7a37;
+  --xp: #f2a93b;
+  --streak: #ef6c4d;
+  --error: #e24c5d;
+  --error-dark: #b23545;
+  --shadow-card: 0 10px 30px rgba(50, 40, 20, 0.1);
+}
+
+[data-theme='dark'] {
+  --bg: #17140f;
+  --bg-soft: #201b14;
+  --surface: #252017;
+  --surface-2: #2d271c;
+  --border: #3c3323;
+  --text: #f5efe3;
+  --text-muted: #b6a98e;
+  --primary: #3fbfb8;
+  --primary-dark: #0f8b8d;
+  --primary-soft: #1e3a38;
+  --success: #5fcb70;
+  --success-dark: #2b7a37;
+  --xp: #ffc85c;
+  --streak: #ff8560;
+  --error: #ff6b7a;
+  --error-dark: #b23545;
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Manrope', sans-serif;
+  transition: background-color 0.25s, color 0.25s;
+}
+
+@keyframes ef-pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(15, 139, 141, 0.45);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(15, 139, 141, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(15, 139, 141, 0);
+  }
+}
+
+@keyframes ef-float-blob {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-16px, 14px) scale(1.05);
+  }
+}
+
+@layer components {
+  .ef-juicy-btn {
+    @apply rounded-2xl bg-primary px-4 py-3 font-display text-base font-bold text-white transition-transform;
+    box-shadow: 0 4px 0 var(--primary-dark);
+  }
+  .ef-juicy-btn:active:not(:disabled) {
+    transform: translateY(4px);
+    box-shadow: none;
+  }
+  .ef-juicy-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  .ef-node-available {
+    animation: ef-pulse-ring 2.2s ease-in-out infinite;
+  }
+}

@@ -30,11 +30,11 @@ export function Dictation({ content, onAnswer }) {
 
   return (
     <div>
-      <p className="mb-4 text-slate-600">Ouça e escreva o que você entendeu:</p>
+      <p className="mb-4 text-text-muted">Ouça e escreva o que você entendeu:</p>
 
       <button
         onClick={() => speak(content.audio_text)}
-        className="mb-4 rounded bg-indigo-100 px-4 py-2 font-medium text-indigo-700 hover:bg-indigo-200"
+        className="mb-4 rounded-full bg-primary-soft px-4 py-2 font-semibold text-primary-dark hover:brightness-95"
       >
         🔊 Ouvir
       </button>
@@ -45,14 +45,14 @@ export function Dictation({ content, onAnswer }) {
         onKeyDown={(e) => e.key === 'Enter' && check()}
         disabled={!!result}
         placeholder="Escreva o que ouviu..."
-        className="w-full rounded border border-slate-300 p-3 focus:border-indigo-500 focus:outline-none disabled:bg-slate-50"
+        className="w-full rounded-[14px] border-2 border-border bg-surface p-3 text-text outline-none transition-colors focus:border-primary disabled:opacity-60"
       />
 
       {!result && (
         <button
           onClick={check}
           disabled={!typed.trim()}
-          className="mt-3 rounded bg-indigo-600 px-6 py-2 font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+          className="ef-juicy-btn mt-3 px-6"
         >
           Verificar
         </button>
@@ -60,16 +60,16 @@ export function Dictation({ content, onAnswer }) {
 
       {result && (
         <div
-          className={`mt-4 rounded-lg border p-4 ${
-            result.correct ? 'border-emerald-300 bg-emerald-50' : 'border-amber-300 bg-amber-50'
+          className={`mt-4 rounded-2xl border-2 p-4 ${
+            result.correct ? 'border-success bg-surface-2' : 'border-xp bg-surface-2'
           }`}
         >
-          <p className="font-semibold text-slate-900">
+          <p className="font-display font-bold text-text">
             {result.correct ? 'Correto! 🎉' : 'Quase lá'}{' '}
-            <span className="text-sm font-normal text-slate-500">({result.score}%)</span>
+            <span className="text-sm font-normal text-text-muted">({result.score}%)</span>
           </p>
-          <p className="mt-1 text-sm text-slate-700">
-            <span className="text-slate-400">Resposta: </span>
+          <p className="mt-1 text-sm text-text">
+            <span className="text-text-muted">Resposta: </span>
             {content.expected}
           </p>
         </div>
@@ -81,14 +81,11 @@ export function Dictation({ content, onAnswer }) {
 function UnsupportedAudio({ onContinue }) {
   return (
     <div className="text-center">
-      <p className="text-slate-600">
+      <p className="text-text-muted">
         🔇 Seu navegador não tem suporte a áudio. Use o Chrome, Edge ou Safari para os
         exercícios de áudio.
       </p>
-      <button
-        onClick={onContinue}
-        className="mt-4 rounded bg-indigo-600 px-6 py-2 font-medium text-white hover:bg-indigo-700"
-      >
+      <button onClick={onContinue} className="ef-juicy-btn mt-4 px-6">
         Continuar
       </button>
     </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Header } from '../../components/Header';
+import { Sidebar } from '../../components/Sidebar';
 import { useAuth } from '../auth/AuthContext';
 import { supabase } from '../../services/supabaseClient';
 import { chatTurn, chatFeedback } from '../../services/aiService';
@@ -216,9 +216,9 @@ function FeedbackList({ title, items, render }) {
 
 function Shell({ children }) {
   return (
-    <div className="min-h-screen bg-slate-50">
-      <Header />
-      <main className="mx-auto max-w-2xl p-6">{children}</main>
+    <div className="flex min-h-screen bg-bg text-text">
+      <Sidebar />
+      <main className="mx-auto w-full max-w-2xl p-6">{children}</main>
     </div>
   );
 }
