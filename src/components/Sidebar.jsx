@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../features/auth/AuthContext';
 
@@ -18,7 +17,7 @@ function Brand() {
   );
 }
 
-function NavLinks({ dueReviewCount, onNavigate }) {
+function NavLinks({ dueReviewCount }) {
   const location = useLocation();
   return (
     <nav className="flex flex-1 flex-col gap-1">
@@ -28,7 +27,6 @@ function NavLinks({ dueReviewCount, onNavigate }) {
           <Link
             key={item.to}
             to={item.to}
-            onClick={onNavigate}
             className={`relative flex items-center gap-3 rounded-2xl px-3 py-3 font-semibold transition-colors ${
               active ? 'bg-primary-soft text-primary-dark' : 'text-text-muted hover:bg-surface-2'
             }`}
@@ -75,19 +73,48 @@ function StatsAndSignOut({ profile, signOut }) {
   );
 }
 
+function BottomTabBar({ dueReviewCount, signOut }) {
+  const location = useLocation();
+  const tabs = [...NAV_ITEMS, { label: 'Sair', icon: '🚪', action: signOut }];
+
+  return (
+    <nav
+      className="fixed inset-x-0 bottom-0 z-40 flex border-t-2 border-border bg-surface pb-[env(safe-area-inset-bottom)] min-[760px]:hidden"
+      aria-label="Navegação principal"
+    >
+      {tabs.map((item) => {
+        const active = item.to && location.pathname === item.to;
+        const content = (
+          <>
+            <span className="relative text-xl">
+              {item.icon}
+              {item.badge && dueReviewCount > 0 && (
+                <span className="absolute -right-1.5 -top-1 h-2.5 w-2.5 rounded-full bg-streak" />
+              )}
+            </span>
+            <span className="text-[11px] font-semibold leading-none">{item.label}</span>
+          </>
+        );
+        const className = `flex flex-1 flex-col items-center justify-center gap-1 py-2.5 ${
+          active ? 'text-primary' : 'text-text-muted'
+        }`;
+
+        return item.to ? (
+          <Link key={item.label} to={item.to} className={className}>
+            {content}
+          </Link>
+        ) : (
+          <button key={item.label} onClick={item.action} className={className}>
+            {content}
+          </button>
+        );
+      })}
+    </nav>
+  );
+}
+
 export function Sidebar() {
   const { profile, dueReviewCount, signOut } = useAuth();
-  const location = useLocation();
-  const [drawerOpen, setDrawerOpen] = useState(false);
-
-  // Fecha o menu ao navegar ou ao apertar Escape.
-  useEffect(() => setDrawerOpen(false), [location.pathname]);
-  useEffect(() => {
-    if (!drawerOpen) return;
-    const onKey = (e) => e.key === 'Escape' && setDrawerOpen(false);
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, [drawerOpen]);
 
   return (
     <>
@@ -100,40 +127,8 @@ export function Sidebar() {
         <StatsAndSignOut profile={profile} signOut={signOut} />
       </aside>
 
-      {/* Mobile: barra superior + menu deslizante */}
-      <header className="sticky top-0 z-40 flex items-center justify-between border-b-2 border-border bg-surface px-4 py-3 min-[760px]:hidden">
-        <Brand />
-        <button
-          onClick={() => setDrawerOpen(true)}
-          aria-label="Abrir menu"
-          className="relative flex h-10 w-10 items-center justify-center rounded-xl border-2 border-border text-lg text-text"
-        >
-          ☰
-          {dueReviewCount > 0 && (
-            <span className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-streak" />
-          )}
-        </button>
-      </header>
-
-      {drawerOpen && (
-        <div className="fixed inset-0 z-50 min-[760px]:hidden" role="dialog" aria-modal="true">
-          <div className="absolute inset-0 bg-black/40" onClick={() => setDrawerOpen(false)} />
-          <div className="absolute left-0 top-0 flex h-full w-[280px] flex-col bg-surface p-4 shadow-card">
-            <div className="mb-6 flex items-center justify-between px-2">
-              <Brand />
-              <button
-                onClick={() => setDrawerOpen(false)}
-                aria-label="Fechar menu"
-                className="flex h-9 w-9 items-center justify-center rounded-xl border-2 border-border text-text"
-              >
-                ✕
-              </button>
-            </div>
-            <NavLinks dueReviewCount={dueReviewCount} onNavigate={() => setDrawerOpen(false)} />
-            <StatsAndSignOut profile={profile} signOut={signOut} />
-          </div>
-        </div>
-      )}
+      {/* Mobile: barra de navegação fixa embaixo */}
+      <BottomTabBar dueReviewCount={dueReviewCount} signOut={signOut} />
     </>
   );
 }

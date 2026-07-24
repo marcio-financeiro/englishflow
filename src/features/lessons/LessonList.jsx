@@ -30,7 +30,7 @@ export function LessonList() {
     <div className="flex min-h-screen flex-col bg-bg text-text min-[760px]:flex-row">
       <Sidebar />
 
-      <main className="flex flex-1 justify-center gap-8 p-6 md:p-10">
+      <main className="flex flex-1 justify-center gap-8 p-6 pb-24 md:p-10 min-[760px]:pb-10">
         <div className="w-full max-w-3xl">
           <h1 className="font-display text-2xl font-extrabold text-text">Suas lições</h1>
           <p className="mb-6 text-text-muted">
