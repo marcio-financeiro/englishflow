@@ -4,7 +4,7 @@
 >
 > **Última atualização:** 2026-07-24 · **Estado:** MVP (Fases 0–6) em produção · Redesign visual completo.
 
-PWA de aprendizado de inglês (nível A1), gamificado, com IA. Deploy na Vercel (auto-deploy da `main`), banco no Supabase.
+PWA de aprendizado de inglês (A1 e A2), gamificado, com IA. Deploy na Vercel (auto-deploy da `main`), banco no Supabase.
 
 ---
 
@@ -30,8 +30,9 @@ PWA de aprendizado de inglês (nível A1), gamificado, com IA. Deploy na Vercel 
 | 3 — IA | Edge Function, correção de escrita (typing), chat + feedback | ✅ |
 | 4 — Áudio | TTS/STT, ditado, listening, ouvir/falar nos flashcards | ✅ |
 | 5 — Gamificação + PWA | Dashboard, conquistas, meta diária, app instalável | ✅ |
-| 6 — Avançado (pós-MVP) | IA adaptativa ✅ · Score fonético, A2+, notificações ⬜ | 🔄 |
-| 7 — Redesign visual | Tokens/dark mode, login/cadastro, sidebar, lições, player, revisão, painel, logo/ícone definitivo | ✅ |
+| 6 — Avançado (pós-MVP) | IA adaptativa ✅ · Score fonético, notificações ⬜ | 🔄 |
+| 7 — Redesign visual | Tokens/dark mode, login/cadastro, sidebar, lições, player, revisão, painel, logo/ícone definitivo, navegação mobile | ✅ |
+| 8 — Conteúdo A2 | Daily Routines + Past Experiences (2 módulos, 10 lições, 60 palavras) | ✅ |
 
 ---
 
@@ -86,6 +87,7 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 - `003_add_pronunciation_pt.sql` — pronúncia aproximada em pt-BR
 - `004_ai_usage.sql` — rate limit de IA (tabela + RPC `consume_ai_usage`)
 - `005_daily_activity.sql` — tempo de estudo (tabela + RPC `add_study_minutes`)
+- `006_seed_a2.sql` — conteúdo A2 (Daily Routines + Past Experiences, 2 módulos, 10 lições, 60 palavras) — **precisa ser aplicada manualmente no Supabase**
 
 **Edge Function `ai-proxy`:** tasks `correct_writing`, `chat`, `chat_feedback`, `generate_practice`. Valida JWT, aplica rate limit, chave em secret `ANTHROPIC_API_KEY`. Modelo `claude-sonnet-5`.
 
@@ -119,13 +121,19 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 | #12 | Tradução sob demanda nos exercícios da prática adaptativa |
 | #13 | Redesign visual moderno (login, sidebar, lições, player, revisão) |
 | #14 | Ajustes de fidelidade ao mockup (sidebar, lista de lições, painel) |
+| #15 | Logo e ícone definitivos |
+| #16 | Menu mobile: topbar + drawer |
+| #17 | Menu mobile: barra fixa embaixo (substitui #16) |
+| #18 | Logo fixa no topo do mobile de volta |
+| #19 | Conteúdo A2 (Daily Routines + Past Experiences) |
 
 ---
 
 ## Próximos passos (pós-MVP)
 
 - Score de pronúncia por fonema (Azure Speech Pronunciation Assessment).
-- Conteúdo A2+.
-- ~~IA adaptativa: gerar exercícios a partir dos erros registrados em `mistakes`.~~ ✅ feito
 - Notificações de lembrete.
+- Mais conteúdo A2 ou avançar pra B1.
+- ~~IA adaptativa: gerar exercícios a partir dos erros registrados em `mistakes`.~~ ✅ feito
 - ~~Ícone do app personalizado.~~ ✅ feito
+- ~~Conteúdo A2.~~ ✅ feito (falta aplicar a migration `006_seed_a2.sql` no Supabase)
