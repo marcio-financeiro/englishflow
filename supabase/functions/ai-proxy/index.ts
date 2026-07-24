@@ -1,6 +1,6 @@
 // Edge Function: ai-proxy
 // Camada única que fala com a API da Anthropic. A chave NUNCA sai daqui.
-// Tasks: correct_writing | chat | chat_feedback
+// Tasks: correct_writing | chat | chat_feedback | generate_practice | generate_cumulative_review
 //
 // Secrets necessários (supabase secrets set ...):
 //   ANTHROPIC_API_KEY
@@ -149,6 +149,39 @@ function buildRequest(task: string, payload: Record<string, unknown>) {
           content: list
             ? `Erros recentes do aluno:\n${list}`
             : `O aluno tem poucos erros registrados. Gere exercícios gerais de nível ${level}.`,
+        },
+      ],
+    };
+  }
+
+  if (task === 'generate_cumulative_review') {
+    const words = Array.isArray(payload.words) ? payload.words.slice(0, 40) : [];
+    const list = words
+      .map(
+        (w: { word: unknown; translation_pt: unknown }) =>
+          `- ${clamp(w.word, 60)} (${clamp(w.translation_pt, 80)})`
+      )
+      .join('\n');
+
+    return {
+      maxTokens: 1600,
+      system:
+        `Você é um professor de inglês. Crie 8 exercícios curtos de revisão cumulativa de nível ${level}, ` +
+        `misturando palavras de módulos diferentes que o aluno já estudou (repetição espaçada). ` +
+        `Use pelo menos 6 palavras distintas da lista abaixo, distribuídas entre os exercícios. ` +
+        `Responda SOMENTE com um JSON válido, sem texto extra, no formato: ` +
+        `{"exercises": [EXERCICIO, ...]}. Cada EXERCICIO é de um destes dois tipos: ` +
+        `{"type": "multiple_choice", "content": {"question": "", "translation": "tradução da pergunta em pt-BR", "options": ["","","",""], "correct_index": 0}} ` +
+        `ou {"type": "fill_blank", "content": {"sentence": "frase com ___ no lugar da lacuna", "options": ["","",""], "correct": "", "translation": "tradução da frase em pt-BR"}}. ` +
+        `Sempre inclua "translation" (tradução em português) para ajudar na compreensão. ` +
+        `Em fill_blank, "correct" precisa ser uma das "options" e a frase precisa conter "___". ` +
+        `As opções erradas devem ser plausíveis. Misture os dois tipos.`,
+      messages: [
+        {
+          role: 'user' as const,
+          content: list
+            ? `Palavras já estudadas pelo aluno:\n${list}`
+            : `O aluno não tem palavras suficientes registradas. Gere exercícios gerais de nível ${level}.`,
         },
       ],
     };

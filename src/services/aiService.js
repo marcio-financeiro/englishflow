@@ -29,3 +29,7 @@ export function chatFeedback({ level, messages }) {
 export function generatePractice({ level, mistakes }) {
   return aiRequest('generate_practice', { level, mistakes });
 }
+
+export function generateCumulativeReview({ level, words }) {
+  return aiRequest('generate_cumulative_review', { level, words });
+}
