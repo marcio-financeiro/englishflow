@@ -7,9 +7,9 @@ import { addStudyMinutes } from '../../services/dashboardService';
 import { AudioControls } from '../lessons/exercises/AudioControls';
 
 const GRADES = [
-  { label: 'Errei', quality: 1, style: 'bg-red-500 hover:bg-red-600' },
-  { label: 'Difícil', quality: 3, style: 'bg-amber-500 hover:bg-amber-600' },
-  { label: 'Fácil', quality: 5, style: 'bg-emerald-500 hover:bg-emerald-600' },
+  { label: 'Errei', quality: 1, style: 'bg-error hover:brightness-95' },
+  { label: 'Difícil', quality: 3, style: 'bg-xp hover:brightness-95' },
+  { label: 'Fácil', quality: 5, style: 'bg-success hover:brightness-95' },
 ];
 
 export function ReviewPage() {
@@ -50,8 +50,8 @@ export function ReviewPage() {
   if (error) {
     return (
       <Shell>
-        <p className="text-red-600">{error}</p>
-        <Link to="/" className="text-indigo-600 hover:underline">
+        <p className="text-error">{error}</p>
+        <Link to="/" className="font-semibold text-primary hover:underline">
           Voltar
         </Link>
       </Shell>
@@ -61,7 +61,7 @@ export function ReviewPage() {
   if (!items) {
     return (
       <Shell>
-        <p className="text-slate-500">Carregando revisões...</p>
+        <p className="text-text-muted">Carregando revisões...</p>
       </Shell>
     );
   }
@@ -72,18 +72,15 @@ export function ReviewPage() {
     return (
       <Shell>
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-slate-900">
+          <h2 className="font-display text-2xl font-extrabold text-text">
             {done ? 'Revisão concluída! 🎉' : 'Nada para revisar hoje ✨'}
           </h2>
-          <p className="mt-2 text-slate-500">
+          <p className="mt-2 text-text-muted">
             {done
               ? `Você revisou ${reviewedCount} ${reviewedCount === 1 ? 'palavra' : 'palavras'}.`
               : 'Complete lições para adicionar palavras à sua fila de revisão.'}
           </p>
-          <Link
-            to="/"
-            className="mt-6 inline-block rounded bg-indigo-600 px-6 py-2 font-medium text-white hover:bg-indigo-700"
-          >
+          <Link to="/" className="ef-juicy-btn mt-6 inline-block px-6">
             Voltar para as lições
           </Link>
         </div>
@@ -97,45 +94,44 @@ export function ReviewPage() {
 
   return (
     <Shell>
-      <div className="mb-2 flex items-center justify-between text-sm text-slate-500">
+      <div className="mb-2 flex items-center justify-between text-sm text-text-muted">
         <span>Revisão do dia</span>
         <span>
           {index + 1} / {items.length}
         </span>
       </div>
 
-      <div className="mb-6 h-2 w-full rounded bg-slate-200">
+      <div className="mb-6 h-2 w-full rounded-full bg-surface-2">
         <div
-          className="h-2 rounded bg-indigo-600 transition-all"
+          className="h-2 rounded-full bg-primary transition-all"
           style={{ width: `${progressPct}%` }}
         />
       </div>
 
-      <div className="rounded-lg bg-white p-6 shadow">
+      <div className="rounded-2xl border-2 border-border bg-surface p-6 shadow-card">
         <div className="mx-auto flex min-h-[14rem] w-full max-w-sm flex-col items-center justify-center text-center">
           {!revealed ? (
             <>
-              <span className="text-3xl font-bold text-slate-900">{vocab.word}</span>
+              <span className="font-display text-3xl font-extrabold text-text">
+                {vocab.word}
+              </span>
               {vocab.pronunciation_pt && (
-                <span className="mt-2 text-slate-500">{vocab.pronunciation_pt}</span>
+                <span className="mt-2 text-text-muted">{vocab.pronunciation_pt}</span>
               )}
-              <button
-                onClick={() => setRevealed(true)}
-                className="mt-6 rounded bg-indigo-600 px-6 py-2 font-medium text-white hover:bg-indigo-700"
-              >
+              <button onClick={() => setRevealed(true)} className="ef-juicy-btn mt-6 px-6">
                 Mostrar tradução
               </button>
             </>
           ) : (
             <>
-              <span className="text-2xl font-bold text-indigo-600">
+              <span className="font-display text-2xl font-extrabold text-primary">
                 {vocab.translation_pt}
               </span>
               {vocab.example_en && (
-                <p className="mt-3 text-sm text-slate-600">{vocab.example_en}</p>
+                <p className="mt-3 text-sm text-text">{vocab.example_en}</p>
               )}
               {vocab.example_pt && (
-                <p className="text-sm text-slate-400">{vocab.example_pt}</p>
+                <p className="text-sm text-text-muted">{vocab.example_pt}</p>
               )}
             </>
           )}
@@ -151,7 +147,7 @@ export function ReviewPage() {
               key={g.quality}
               onClick={() => grade(g.quality)}
               disabled={saving}
-              className={`rounded py-3 font-medium text-white transition disabled:opacity-50 ${g.style}`}
+              className={`rounded-2xl py-3 font-display font-bold text-white transition disabled:opacity-50 ${g.style}`}
             >
               {g.label}
             </button>
