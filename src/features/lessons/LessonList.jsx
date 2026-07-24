@@ -32,6 +32,11 @@ export function LessonList() {
 
       <main className="flex flex-1 justify-center gap-8 p-6 md:p-10">
         <div className="w-full max-w-3xl">
+          <h1 className="font-display text-2xl font-extrabold text-text">Suas lições</h1>
+          <p className="mb-6 text-text-muted">
+            Continue de onde parou e mantenha sua sequência.
+          </p>
+
           {error && <p className="text-error">{error}</p>}
           {!modules && !error && <p className="text-text-muted">Carregando lições...</p>}
 

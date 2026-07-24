@@ -14,12 +14,13 @@ export function Sidebar() {
 
   return (
     <aside className="ef-sidebar sticky top-0 flex h-screen w-[236px] flex-shrink-0 flex-col border-r-2 border-border bg-surface p-4 max-[760px]:w-[76px] max-[760px]:p-2">
-      <Link
-        to="/"
-        className="mb-6 flex items-center gap-2 px-2 font-display text-lg font-extrabold text-primary"
-      >
-        <span className="text-xl">📱</span>
-        <span className="ef-navlabel max-[760px]:hidden">EnglishFlow</span>
+      <Link to="/" className="mb-6 flex items-center gap-2 px-2">
+        <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-primary text-lg text-white">
+          📱
+        </span>
+        <span className="ef-navlabel font-display text-lg font-extrabold text-text max-[760px]:hidden">
+          EnglishFlow
+        </span>
       </Link>
 
       <nav className="flex flex-1 flex-col gap-1">
@@ -45,17 +46,27 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="mt-4 space-y-3 border-t-2 border-border pt-4">
-        <div className="ef-navlabel flex items-center justify-between px-2 text-sm font-semibold text-text-muted max-[760px]:hidden">
-          <span>⭐ {profile?.xp_total ?? 0} XP</span>
-          <span>🔥 {profile?.streak_current ?? 0}</span>
+      <div className="mt-4 space-y-3">
+        <div className="ef-navlabel grid grid-cols-2 gap-2 max-[760px]:hidden">
+          <div className="rounded-2xl border-2 border-border bg-surface-2 p-2 text-center">
+            <div className="font-display text-base font-extrabold text-streak">
+              🔥 {profile?.streak_current ?? 0}
+            </div>
+            <div className="text-[11px] text-text-muted">dias</div>
+          </div>
+          <div className="rounded-2xl border-2 border-border bg-surface-2 p-2 text-center">
+            <div className="font-display text-base font-extrabold text-xp">
+              ⭐ {profile?.xp_total ?? 0}
+            </div>
+            <div className="text-[11px] text-text-muted">XP</div>
+          </div>
         </div>
         <button
           onClick={signOut}
-          className="w-full rounded-2xl px-3 py-2 text-sm font-semibold text-text-muted hover:bg-surface-2"
+          className="flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-sm font-semibold text-text-muted hover:bg-surface-2 max-[760px]:justify-center"
         >
+          <span className="text-lg">🚪</span>
           <span className="ef-navlabel max-[760px]:hidden">Sair</span>
-          <span className="hidden max-[760px]:inline">🚪</span>
         </button>
       </div>
     </aside>
