@@ -65,8 +65,8 @@ Estrutura de longo prazo do curso, baseada no framework CEFR (o mesmo usado em c
 
 | Nível | Classificação | Módulos-alvo | Feitos |
 |---|---|---|---|
-| A1 | Iniciante | 15 | 5 |
-| A2 | Básico | 15 | 5 |
+| A1 | Iniciante | 15 | 6 |
+| A2 | Básico | 15 | 6 |
 | B1 | Intermediário | 20 | 0 |
 | B2 | Intermediário Avançado | 20 | 0 |
 | C1 | Avançado | 20 | 0 |
@@ -74,8 +74,8 @@ Estrutura de longo prazo do curso, baseada no framework CEFR (o mesmo usado em c
 
 **Temas de referência por nível** (ordem não é rígida, ajusta conforme o que fizer mais sentido no momento):
 
-- **A1:** Alfabeto e pronúncia, Greetings ✅, Numbers/Colors/Family ✅, Verb to be ✅, Present Simple ✅, Days/months, Food ✅, Directions
-- **A2:** Daily Routines ✅, Past Simple ✅ (feito como "Past Experiences"), Future (going to/will) ✅, Comparatives ✅, Countable x Uncountable ✅, Prepositions, Daily conversations, Shopping, Travel
+- **A1:** Alfabeto e pronúncia, Greetings ✅, Numbers/Colors/Family ✅, Verb to be ✅, Present Simple ✅, Food ✅, Months & Seasons ✅ (dias da semana já cobertos no A2 "Daily Routines"), Directions
+- **A2:** Daily Routines ✅ (já inclui dias da semana), Past Simple ✅ (feito como "Past Experiences"), Future (going to/will) ✅, Comparatives ✅, Countable x Uncountable ✅, Prepositions ✅, Daily conversations, Shopping, Travel
 - **B1:** Present Perfect, Modal verbs, Passive Voice, Reported Speech (introdução), Phrasal verbs básicos, Writing de e-mails, Listening intermediário
 - **B2:** Conditionals, Reported Speech completo, Passive avançada, Relative clauses, Idioms, Debate e argumentação, Business English básico
 - **C1:** Vocabulário acadêmico, Escrita formal, Expressões idiomáticas avançadas, Pronúncia refinada, Apresentações profissionais, Negociação
@@ -117,7 +117,7 @@ src/
                   vocabImageService
   lib/            dateUtils, textMatch, wavRecorder
 supabase/
-  migrations/     001..016
+  migrations/     001..018
   functions/      ai-proxy/, pronunciation-proxy/, tts-proxy/, vocab-image-proxy/
 public/           manifest.json, sw.js, icons/ (PWA), brand/ (logo/ícone UI)
 api/              send-reminders.js (cron da Vercel, 20h Brasília)
@@ -149,6 +149,8 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 - `014_seed_a2_comparatives.sql` — conteúdo A2 (módulo 4 "Comparatives", 5 lições, 30 palavras)
 - `015_seed_a1_food.sql` — conteúdo A1 (módulo 5 "Food", 5 lições, 30 palavras)
 - `016_seed_a2_countable_uncountable.sql` — conteúdo A2 (módulo 5 "Countable x Uncountable", 5 lições, 30 palavras)
+- `017_seed_a1_months_seasons.sql` — conteúdo A1 (módulo 6 "Months & Seasons", 5 lições, 30 palavras)
+- `018_seed_a2_prepositions.sql` — conteúdo A2 (módulo 6 "Prepositions", 5 lições, 30 palavras)
 
 **Edge Function `ai-proxy`:** tasks `correct_writing`, `chat`, `chat_feedback`, `generate_practice`. Valida JWT, aplica rate limit, chave em secret `ANTHROPIC_API_KEY`. Modelo `claude-sonnet-5`.
 
@@ -207,13 +209,15 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 | #27 | Conteúdo: módulo A1 "Verb to Be" + módulo A2 "Future (Going to / Will)" |
 | #28 | Conteúdo: módulo A1 "Present Simple" + módulo A2 "Comparatives" |
 | #29 | Conteúdo: módulo A1 "Food" + módulo A2 "Countable x Uncountable" |
+| #30 | Conteúdo: módulo A1 "Months & Seasons" + módulo A2 "Prepositions" |
 
 ---
 
 ## Próximos passos
 
-Ver seção **Roadmap de conteúdo (CEFR A1 → C2)** acima — próximo passo é escolher e construir os próximos 1-2 módulos de A1 e/ou A2 dessa lista (A1: Days/months, Directions · A2: Prepositions, Daily conversations, Shopping, Travel). Construção contínua até esgotar A1/A2 antes de avançar pro B1.
+Ver seção **Roadmap de conteúdo (CEFR A1 → C2)** acima — próximo passo é escolher e construir os próximos 1-2 módulos de A1 e/ou A2 dessa lista (A1: Directions · A2: Daily conversations, Shopping, Travel). Depois disso, A1 e A2 chegam em 7/15 módulos, restando ainda bastante conteúdo antes de avançar pro B1.
 
+- Módulo A1 "Months & Seasons" + módulo A2 "Prepositions" — ✅ feito (PR #30)
 - Módulo A1 "Food" + módulo A2 "Countable x Uncountable" — ✅ feito (PR #29)
 - Módulo A1 "Present Simple" + módulo A2 "Comparatives" — ✅ feito (PR #28)
 - Módulo A1 "Verb to Be" + módulo A2 "Future (Going to / Will)" — ✅ feito (PR #27)
