@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Header } from '../../components/Header';
+import { Sidebar } from '../../components/Sidebar';
 import { useAuth } from '../auth/AuthContext';
 import { fetchModulesWithProgress } from '../../services/lessonService';
 
@@ -22,9 +22,9 @@ export function LessonList() {
   }, [user.id]);
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <Header />
-      <main className="mx-auto max-w-3xl p-6">
+    <div className="flex min-h-screen bg-bg text-text">
+      <Sidebar />
+      <main className="mx-auto w-full max-w-3xl p-6">
         {error && <p className="text-red-600">{error}</p>}
         {!modules && !error && <p className="text-slate-500">Carregando lições...</p>}
 

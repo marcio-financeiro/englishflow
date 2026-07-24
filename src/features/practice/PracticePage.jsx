@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Header } from '../../components/Header';
+import { Sidebar } from '../../components/Sidebar';
 import { useAuth } from '../auth/AuthContext';
 import { fetchRecentMistakes } from '../../services/reviewService';
 import { generatePractice } from '../../services/aiService';
@@ -175,9 +175,9 @@ export function PracticePage() {
 
 function Shell({ children }) {
   return (
-    <div className="min-h-screen bg-slate-50">
-      <Header />
-      <main className="mx-auto max-w-2xl p-6">{children}</main>
+    <div className="flex min-h-screen bg-bg text-text">
+      <Sidebar />
+      <main className="mx-auto w-full max-w-2xl p-6">{children}</main>
     </div>
   );
 }
