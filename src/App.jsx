@@ -12,6 +12,7 @@ import { ChatPage } from './features/chat/ChatPage';
 import { DashboardPage } from './features/dashboard/DashboardPage';
 import { PracticePage } from './features/practice/PracticePage';
 import { CumulativeReviewPage } from './features/practice/CumulativeReviewPage';
+import { LevelTestPage } from './features/levelTest/LevelTestPage';
 import { ThemeToggle } from './components/ThemeToggle';
 
 function App() {
@@ -84,6 +85,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <CumulativeReviewPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/level-test"
+              element={
+                <ProtectedRoute>
+                  <LevelTestPage />
                 </ProtectedRoute>
               }
             />

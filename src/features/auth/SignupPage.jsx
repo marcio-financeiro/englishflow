@@ -33,6 +33,11 @@ export function SignupPage() {
 
       <div className="ef-authform flex flex-1 items-center justify-center p-8">
         <form onSubmit={handleSubmit} className="w-full max-w-[380px]">
+          <div className="mb-6 flex items-center gap-3 min-[681px]:hidden">
+            <img src="/brand/icon.png" alt="" className="h-10 w-10 rounded-xl" />
+            <span className="font-display text-lg font-bold text-text">EnglishFlow</span>
+          </div>
+
           <h1 className="mb-1 font-display text-3xl font-extrabold text-text">Criar conta</h1>
           <p className="mb-6 text-text-muted">Comece sua sequência de aprendizado hoje.</p>
 

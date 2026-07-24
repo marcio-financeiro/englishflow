@@ -57,6 +57,7 @@ PWA de aprendizado de inglês (A1 e A2), gamificado, com IA. Deploy na Vercel (a
 - **Lembretes:** botão "🔔 Lembrete diário" no painel ativa push notification (Web Push/VAPID); um cron na Vercel (20h Brasília) avisa quem ainda não estudou no dia. Só funciona com o app instalado na Tela de Início (iOS 16.4+).
 - **Prática adaptativa (Fase 6):** tela `/practice` que usa seus erros (`mistakes`) para a IA gerar exercícios de reforço (múltipla escolha / completar lacuna). Acesso pelo botão "Praticar meus erros" no dashboard. Cada exercício tem um botão **"🇧🇷 Traduzir"** (`TranslateToggle`) que revela sob demanda a tradução em pt-BR da frase/pergunta — ajuda um aluno A1 a entender frases com vocabulário que ainda não viu.
 - **Revisão cumulativa:** a cada 2 módulos completos de um nível, aparece um banner "🔁 Revisão cumulativa disponível" na tela de lições. Tela `/checkpoint` gera via IA (mesmo pipeline da prática adaptativa) 6-8 exercícios misturando palavras de módulos diferentes já completados (janela dos últimos 4 módulos). Reaproveita `ai-proxy` (task `generate_cumulative_review`), sem tabelas novas.
+- **Teste de Nivelamento (gate entre níveis):** ao completar 100% dos módulos de um nível (ex: A1), aparece o banner "🎓 Faça o Teste de Nivelamento" — tela `/level-test` gera via IA (task `generate_level_test`) 18 exercícios cobrindo o vocabulário do nível inteiro. Aprovação exige 80% de acerto (sem limite de tentativas), resultado salvo em `level_tests`. Enquanto não aprovado, os módulos do próximo nível ficam bloqueados (cadeado) em `fetchModulesWithProgress` — gate por nível inteiro, não por lição.
 
 ---
 
@@ -112,14 +113,15 @@ src/
     chat/         ChatPage
     dashboard/    DashboardPage, achievements.js
     practice/     PracticePage (prática adaptativa via IA), CumulativeReviewPage (revisão cumulativa)
+    levelTest/    LevelTestPage (teste de nivelamento, gate entre níveis)
   services/       supabaseClient, lessonService, srsService, reviewService,
                   aiService, speechService, ttsService, dashboardService,
                   pronunciationService, pushService, onboardingService,
-                  vocabImageService, cumulativeReviewService
+                  vocabImageService, cumulativeReviewService, levelTestService
   lib/            dateUtils, textMatch, wavRecorder, generatedExercise (validação/componentes
                   compartilhados entre PracticePage e CumulativeReviewPage)
 supabase/
-  migrations/     001..036
+  migrations/     001..037
   functions/      ai-proxy/, pronunciation-proxy/, tts-proxy/, vocab-image-proxy/
 public/           manifest.json, sw.js, icons/ (PWA), brand/ (logo/ícone UI)
 api/              send-reminders.js (cron da Vercel, 20h Brasília)
@@ -132,7 +134,7 @@ vercel.json       config do cron
 
 ## Banco de dados (Supabase)
 
-Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabulary`, `user_progress`, `review_items`, `mistakes`, `conversation_history`, `xp_events`, `ai_usage`, `daily_activity`, `push_subscriptions`, `tts_usage`.
+Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabulary`, `user_progress`, `review_items`, `mistakes`, `conversation_history`, `xp_events`, `ai_usage`, `daily_activity`, `push_subscriptions`, `tts_usage`, `level_tests`.
 
 **Migrations:**
 - `001_initial_schema.sql` — schema + RLS
@@ -171,8 +173,9 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 - `034_seed_a2_housing_neighborhood.sql` — conteúdo A2 (módulo 14 "Housing & Neighborhood", 5 lições, 30 palavras)
 - `035_seed_a1_jobs_workplace.sql` — conteúdo A1 (módulo 15 "Jobs & Workplace", 5 lições, 30 palavras) — **completa A1 15/15**
 - `036_seed_a2_technology_internet.sql` — conteúdo A2 (módulo 15 "Technology & Internet", 5 lições, 30 palavras) — **completa A2 15/15**
+- `037_level_tests.sql` — tabela `level_tests` (registra tentativas do Teste de Nivelamento entre níveis)
 
-**Edge Function `ai-proxy`:** tasks `correct_writing`, `chat`, `chat_feedback`, `generate_practice`, `generate_cumulative_review`. Valida JWT, aplica rate limit, chave em secret `ANTHROPIC_API_KEY`. Modelo `claude-sonnet-5`.
+**Edge Function `ai-proxy`:** tasks `correct_writing`, `chat`, `chat_feedback`, `generate_practice`, `generate_cumulative_review`, `generate_level_test`. Valida JWT, aplica rate limit, chave em secret `ANTHROPIC_API_KEY`. Modelo `claude-sonnet-5`.
 
 **Edge Function `pronunciation-proxy`:** recebe áudio WAV (base64) + texto de referência, chama a Azure Pronunciation Assessment (REST, formato "detailed"), devolve score geral + por palavra/fonema. Valida JWT, compartilha o rate limit diário com `ai-proxy` (mesma tabela `ai_usage`). Secrets: `AZURE_SPEECH_KEY`, `AZURE_SPEECH_REGION`.
 

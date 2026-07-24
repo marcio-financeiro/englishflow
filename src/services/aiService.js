@@ -33,3 +33,7 @@ export function generatePractice({ level, mistakes }) {
 export function generateCumulativeReview({ level, words }) {
   return aiRequest('generate_cumulative_review', { level, words });
 }
+
+export function generateLevelTest({ level, words }) {
+  return aiRequest('generate_level_test', { level, words });
+}
