@@ -65,8 +65,8 @@ Estrutura de longo prazo do curso, baseada no framework CEFR (o mesmo usado em c
 
 | Nível | Classificação | Módulos-alvo | Feitos |
 |---|---|---|---|
-| A1 | Iniciante | 15 | 12 |
-| A2 | Básico | 15 | 12 |
+| A1 | Iniciante | 15 | 13 |
+| A2 | Básico | 15 | 13 |
 | B1 | Intermediário | 20 | 0 |
 | B2 | Intermediário Avançado | 20 | 0 |
 | C1 | Avançado | 20 | 0 |
@@ -74,8 +74,8 @@ Estrutura de longo prazo do curso, baseada no framework CEFR (o mesmo usado em c
 
 **Temas de referência por nível** (ordem não é rígida, ajusta conforme o que fizer mais sentido no momento):
 
-- **A1:** Alfabeto e pronúncia (pendente — não é sobre vocabulário/gramática, fica pra quando fizer sentido), Greetings ✅, Numbers/Colors/Family ✅, Verb to be ✅, Present Simple ✅, Food ✅, Months & Seasons ✅ (dias da semana já cobertos no A2 "Daily Routines"), Directions ✅, Clothes & Shopping ✅, Body & Health ✅, House & Furniture ✅, Weather ✅, Sports & Hobbies ✅, Technology & Devices, Transportation, Jobs & Workplace (lista definida em conjunto com o Márcio pra fechar os 15 módulos-alvo)
-- **A2:** Daily Routines ✅ (já inclui dias da semana), Past Simple ✅ (feito como "Past Experiences"), Future (going to/will) ✅, Comparatives ✅, Countable x Uncountable ✅, Prepositions ✅, Daily conversations ✅, Shopping ✅, Travel ✅, Making Plans & Invitations ✅, Advice & Suggestions ✅, Feelings & Personality ✅, Restaurants & Dining Out, Housing & Neighborhood, Technology & Internet (6 novos temas definidos em conjunto com o Márcio pra fechar os 15 módulos-alvo, já que a lista original esgotou em Travel)
+- **A1:** Alfabeto e pronúncia (pendente — não é sobre vocabulário/gramática, fica pra quando fizer sentido), Greetings ✅, Numbers/Colors/Family ✅, Verb to be ✅, Present Simple ✅, Food ✅, Months & Seasons ✅ (dias da semana já cobertos no A2 "Daily Routines"), Directions ✅, Clothes & Shopping ✅, Body & Health ✅, House & Furniture ✅, Weather ✅, Sports & Hobbies ✅, Technology & Devices ✅, Transportation, Jobs & Workplace (lista definida em conjunto com o Márcio pra fechar os 15 módulos-alvo)
+- **A2:** Daily Routines ✅ (já inclui dias da semana), Past Simple ✅ (feito como "Past Experiences"), Future (going to/will) ✅, Comparatives ✅, Countable x Uncountable ✅, Prepositions ✅, Daily conversations ✅, Shopping ✅, Travel ✅, Making Plans & Invitations ✅, Advice & Suggestions ✅, Feelings & Personality ✅, Restaurants & Dining Out ✅, Housing & Neighborhood, Technology & Internet (6 novos temas definidos em conjunto com o Márcio pra fechar os 15 módulos-alvo, já que a lista original esgotou em Travel)
 - **B1:** Present Perfect, Modal verbs, Passive Voice, Reported Speech (introdução), Phrasal verbs básicos, Writing de e-mails, Listening intermediário
 - **B2:** Conditionals, Reported Speech completo, Passive avançada, Relative clauses, Idioms, Debate e argumentação, Business English básico
 - **C1:** Vocabulário acadêmico, Escrita formal, Expressões idiomáticas avançadas, Pronúncia refinada, Apresentações profissionais, Negociação
@@ -117,7 +117,7 @@ src/
                   vocabImageService
   lib/            dateUtils, textMatch, wavRecorder
 supabase/
-  migrations/     001..030
+  migrations/     001..032
   functions/      ai-proxy/, pronunciation-proxy/, tts-proxy/, vocab-image-proxy/
 public/           manifest.json, sw.js, icons/ (PWA), brand/ (logo/ícone UI)
 api/              send-reminders.js (cron da Vercel, 20h Brasília)
@@ -163,6 +163,8 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 - `028_seed_a2_advice_suggestions.sql` — conteúdo A2 (módulo 11 "Advice & Suggestions", 5 lições, 30 palavras)
 - `029_seed_a1_sports_hobbies.sql` — conteúdo A1 (módulo 12 "Sports & Hobbies", 5 lições, 30 palavras)
 - `030_seed_a2_feelings_personality.sql` — conteúdo A2 (módulo 12 "Feelings & Personality", 5 lições, 30 palavras)
+- `031_seed_a1_technology_devices.sql` — conteúdo A1 (módulo 13 "Technology & Devices", 5 lições, 30 palavras)
+- `032_seed_a2_restaurants_dining.sql` — conteúdo A2 (módulo 13 "Restaurants & Dining Out", 5 lições, 30 palavras)
 
 **Edge Function `ai-proxy`:** tasks `correct_writing`, `chat`, `chat_feedback`, `generate_practice`. Valida JWT, aplica rate limit, chave em secret `ANTHROPIC_API_KEY`. Modelo `claude-sonnet-5`.
 
@@ -228,13 +230,15 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 | #34 | Conteúdo: módulo A1 "House & Furniture" + módulo A2 "Making Plans & Invitations" |
 | #35 | Conteúdo: módulo A1 "Weather" + módulo A2 "Advice & Suggestions" |
 | #36 | Conteúdo: módulo A1 "Sports & Hobbies" + módulo A2 "Feelings & Personality" |
+| #37 | Conteúdo: módulo A1 "Technology & Devices" + módulo A2 "Restaurants & Dining Out" |
 
 ---
 
 ## Próximos passos
 
-Ver seção **Roadmap de conteúdo (CEFR A1 → C2)** acima. Próximos temas: A1 tem 3 temas restantes definidos com o Márcio pra completar os 15 módulos (Technology & Devices, Transportation, Jobs & Workplace). A2 tem 3 temas restantes da nova lista definida com o Márcio (Restaurants & Dining Out, Housing & Neighborhood, Technology & Internet).
+Ver seção **Roadmap de conteúdo (CEFR A1 → C2)** acima. Próximos temas: A1 tem 2 temas restantes definidos com o Márcio pra completar os 15 módulos (Transportation, Jobs & Workplace). A2 tem 2 temas restantes da nova lista definida com o Márcio (Housing & Neighborhood, Technology & Internet).
 
+- Módulo A1 "Technology & Devices" + módulo A2 "Restaurants & Dining Out" — ✅ feito (PR #37)
 - Módulo A1 "Sports & Hobbies" + módulo A2 "Feelings & Personality" — ✅ feito (PR #36)
 - Módulo A1 "Weather" + módulo A2 "Advice & Suggestions" — ✅ feito (PR #35)
 - Módulo A1 "House & Furniture" + módulo A2 "Making Plans & Invitations" — ✅ feito (PR #34)
