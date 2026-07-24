@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Sidebar } from '../../components/Sidebar';
 import { useAuth } from '../auth/AuthContext';
@@ -12,16 +12,58 @@ const NODE_ICON = {
   locked: '🔒',
 };
 
+function isModuleCompleted(module) {
+  return module.lessons.length > 0 && module.lessons.every((l) => l.status === 'completed');
+}
+
+// Módulo "atual" = primeiro módulo (na ordem) ainda não 100% concluído.
+// Por padrão só ele e o próximo da lista ficam expandidos; o resto (módulos
+// já concluídos e módulos futuros ainda não alcançados) começa recolhido —
+// evita rolagem infinita conforme o histórico cresce (A1→C2, ~110 módulos).
+function defaultExpandedState(modules) {
+  const currentIndex = modules.findIndex((m) => !isModuleCompleted(m));
+  const expanded = new Set();
+  if (currentIndex !== -1) {
+    expanded.add(modules[currentIndex].id);
+    if (modules[currentIndex + 1]) expanded.add(modules[currentIndex + 1].id);
+  }
+  return { expanded, currentModuleId: currentIndex !== -1 ? modules[currentIndex].id : null };
+}
+
 export function LessonList() {
   const { user, profile, dueReviewCount } = useAuth();
   const [modules, setModules] = useState(null);
   const [error, setError] = useState('');
+  const [expandedIds, setExpandedIds] = useState(new Set());
+  const [currentModuleId, setCurrentModuleId] = useState(null);
+  const currentModuleRef = useRef(null);
 
   useEffect(() => {
     fetchModulesWithProgress(user.id)
-      .then(setModules)
+      .then((data) => {
+        setModules(data);
+        const { expanded, currentModuleId: currentId } = defaultExpandedState(data);
+        setExpandedIds(expanded);
+        setCurrentModuleId(currentId);
+      })
       .catch((err) => setError(err.message));
   }, [user.id]);
+
+  // Ancora a tela no módulo em andamento ao carregar, em vez de sempre abrir no topo.
+  useEffect(() => {
+    if (currentModuleId && currentModuleRef.current) {
+      currentModuleRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [currentModuleId]);
+
+  function toggleModule(moduleId) {
+    setExpandedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(moduleId)) next.delete(moduleId);
+      else next.add(moduleId);
+      return next;
+    });
+  }
 
   const cumulativeReviewTarget = modules ? findCumulativeReviewTarget(modules) : null;
   const levelTestTarget = modules ? findLevelTestTarget(modules) : null;
@@ -83,18 +125,13 @@ export function LessonList() {
           )}
 
           {modules?.map((module) => (
-            <section key={module.id} className="mb-10">
-              <h2 className="font-display text-xl font-bold text-text">{module.title}</h2>
-              {module.description && (
-                <p className="mb-4 text-sm text-text-muted">{module.description}</p>
-              )}
-
-              <div className="flex flex-wrap gap-6">
-                {module.lessons.map((lesson) => (
-                  <LessonNode key={lesson.id} lesson={lesson} />
-                ))}
-              </div>
-            </section>
+            <ModuleSection
+              key={module.id}
+              module={module}
+              expanded={expandedIds.has(module.id)}
+              onToggle={() => toggleModule(module.id)}
+              sectionRef={module.id === currentModuleId ? currentModuleRef : undefined}
+            />
           ))}
         </div>
 
@@ -110,6 +147,55 @@ export function LessonList() {
         </aside>
       </main>
     </div>
+  );
+}
+
+function ModuleSection({ module, expanded, onToggle, sectionRef }) {
+  const completedCount = module.lessons.filter((l) => l.status === 'completed').length;
+  const total = module.lessons.length;
+  const allCompleted = completedCount === total && total > 0;
+  const icon = allCompleted ? '✅' : module.levelUnlocked ? '📘' : '🔒';
+
+  if (!expanded) {
+    return (
+      <button
+        ref={sectionRef}
+        onClick={onToggle}
+        className="mb-3 flex w-full items-center justify-between rounded-2xl border-2 border-border bg-surface px-4 py-3 text-left hover:bg-surface-2"
+      >
+        <span className="flex items-center gap-2 font-semibold text-text">
+          <span>{icon}</span> {module.title}
+        </span>
+        <span className="flex items-center gap-1 text-sm text-text-muted">
+          {completedCount}/{total} <span className="text-xs">▸</span>
+        </span>
+      </button>
+    );
+  }
+
+  return (
+    <section ref={sectionRef} className="mb-10">
+      <button
+        onClick={onToggle}
+        className="mb-1 flex w-full items-center justify-between gap-3 text-left"
+      >
+        <h2 className="font-display text-xl font-bold text-text">
+          {icon} {module.title}
+        </h2>
+        <span className="flex flex-shrink-0 items-center gap-1 text-sm text-text-muted">
+          {completedCount}/{total} <span className="text-xs">▾</span>
+        </span>
+      </button>
+      {module.description && (
+        <p className="mb-4 text-sm text-text-muted">{module.description}</p>
+      )}
+
+      <div className="flex flex-wrap gap-6">
+        {module.lessons.map((lesson) => (
+          <LessonNode key={lesson.id} lesson={lesson} />
+        ))}
+      </div>
+    </section>
   );
 }
 
