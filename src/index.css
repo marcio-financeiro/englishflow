@@ -48,3 +48,28 @@ body {
   font-family: 'Manrope', sans-serif;
   transition: background-color 0.25s, color 0.25s;
 }
+
+@keyframes ef-float-blob {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-16px, 14px) scale(1.05);
+  }
+}
+
+@layer components {
+  .ef-juicy-btn {
+    @apply rounded-2xl bg-primary px-4 py-3 font-display text-base font-bold text-white transition-transform;
+    box-shadow: 0 4px 0 var(--primary-dark);
+  }
+  .ef-juicy-btn:active:not(:disabled) {
+    transform: translateY(4px);
+    box-shadow: none;
+  }
+  .ef-juicy-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
