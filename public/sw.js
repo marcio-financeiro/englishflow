@@ -5,7 +5,7 @@
 //  - requisições a APIs externas (Supabase/Anthropic) e não-GET: nunca cacheadas
 //
 // Ao mudar esta lógica ou o app shell, incremente CACHE_VERSION.
-const CACHE_VERSION = 'ef-v9';
+const CACHE_VERSION = 'ef-v10';
 const APP_SHELL = ['/', '/manifest.json', '/icons/icon-192.png'];
 
 self.addEventListener('install', (event) => {
@@ -61,6 +61,36 @@ self.addEventListener('fetch', (event) => {
         })
         .catch(() => cached);
       return cached || network;
+    })
+  );
+});
+
+// Lembrete diário de estudo (enviado por api/send-reminders.js via cron).
+self.addEventListener('push', (event) => {
+  let payload = { title: 'EnglishFlow', body: 'Hora de praticar seu inglês! 🔥' };
+  try {
+    if (event.data) payload = { ...payload, ...event.data.json() };
+  } catch {
+    /* usa o payload padrão se não vier JSON */
+  }
+
+  event.waitUntil(
+    self.registration.showNotification(payload.title, {
+      body: payload.body,
+      icon: '/icons/icon-192.png',
+      badge: '/icons/icon-192.png',
+      tag: 'daily-reminder',
+    })
+  );
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window' }).then((clients) => {
+      const existing = clients.find((c) => 'focus' in c);
+      if (existing) return existing.focus();
+      return self.clients.openWindow('/');
     })
   );
 });
