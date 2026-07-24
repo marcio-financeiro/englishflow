@@ -66,7 +66,7 @@ export function DashboardPage() {
   return (
     <div className="flex min-h-screen flex-col bg-bg text-text min-[760px]:flex-row">
       <Sidebar />
-      <main className="mx-auto w-full max-w-2xl space-y-4 p-6">
+      <main className="mx-auto w-full max-w-2xl space-y-4 p-6 pb-24 min-[760px]:pb-6">
         <h1 className="font-display text-2xl font-extrabold text-text">Olá! 👋</h1>
         <p className="-mt-3 text-text-muted">Continue de onde parou hoje.</p>
         {error && <p className="text-error">{error}</p>}
