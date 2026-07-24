@@ -127,7 +127,10 @@ export function Sidebar() {
         <StatsAndSignOut profile={profile} signOut={signOut} />
       </aside>
 
-      {/* Mobile: barra de navegação fixa embaixo */}
+      {/* Mobile: logo fixa no topo + navegação fixa embaixo */}
+      <header className="sticky top-0 z-30 flex items-center border-b-2 border-border bg-surface px-4 py-3 min-[760px]:hidden">
+        <Brand />
+      </header>
       <BottomTabBar dueReviewCount={dueReviewCount} signOut={signOut} />
     </>
   );
