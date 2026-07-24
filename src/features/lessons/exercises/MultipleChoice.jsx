@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { TranslateToggle } from './TranslateToggle';
 
 export function MultipleChoice({ content, onAnswer }) {
   const [selected, setSelected] = useState(null);
@@ -15,7 +16,8 @@ export function MultipleChoice({ content, onAnswer }) {
 
   return (
     <div>
-      <p className="mb-4 text-lg font-medium text-slate-900">{content.question}</p>
+      <p className="mb-2 text-lg font-medium text-slate-900">{content.question}</p>
+      <TranslateToggle text={content.translation} />
       <div className="flex flex-col gap-2">
         {content.options.map((option, index) => {
           const isSelected = selected === index;
