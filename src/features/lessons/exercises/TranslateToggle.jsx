@@ -10,11 +10,11 @@ export function TranslateToggle({ text }) {
     <div className="mb-4">
       <button
         onClick={() => setShown((s) => !s)}
-        className="text-sm text-indigo-600 hover:underline"
+        className="text-sm font-semibold text-primary hover:underline"
       >
         🇧🇷 {shown ? 'Ocultar tradução' : 'Traduzir'}
       </button>
-      {shown && <p className="mt-1 text-sm text-slate-500">{text}</p>}
+      {shown && <p className="mt-1 text-sm text-text-muted">{text}</p>}
     </div>
   );
 }

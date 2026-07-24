@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { Header } from '../../components/Header';
 import { useAuth } from '../auth/AuthContext';
 import { fetchLessonExercises, completeLesson } from '../../services/lessonService';
 import {
@@ -110,83 +109,114 @@ export function LessonPlayer() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-slate-50">
-        <Header />
-        <main className="mx-auto max-w-2xl p-6">
-          <p className="text-red-600">{error}</p>
-          <Link to="/" className="text-indigo-600 hover:underline">
-            Voltar
-          </Link>
-        </main>
-      </div>
+      <PlayerShell>
+        <p className="text-error">{error}</p>
+        <Link to="/" className="font-semibold text-primary hover:underline">
+          Voltar
+        </Link>
+      </PlayerShell>
     );
   }
 
   if (!data) {
     return (
-      <div className="min-h-screen bg-slate-50">
-        <Header />
-        <main className="mx-auto max-w-2xl p-6 text-slate-500">Carregando lição...</main>
-      </div>
+      <PlayerShell>
+        <p className="text-text-muted">Carregando lição...</p>
+      </PlayerShell>
     );
   }
 
   if (finished) {
     return (
-      <div className="min-h-screen bg-slate-50">
-        <Header />
-        <main className="mx-auto max-w-2xl p-6 text-center">
-          <h2 className="text-2xl font-bold text-slate-900">Lição concluída! 🎉</h2>
-          <p className="mt-2 text-lg text-indigo-600">+{data.lesson.xp_reward} XP</p>
-          <p className="mt-1 text-slate-500">
+      <PlayerShell>
+        <div className="text-center">
+          <h2 className="font-display text-2xl font-extrabold text-text">
+            Lição concluída! 🎉
+          </h2>
+          <p className="mt-2 font-display text-lg font-bold text-xp">
+            +{data.lesson.xp_reward} XP
+          </p>
+          <p className="mt-1 text-text-muted">
             {correctCount} de {data.exercises.length} corretas
           </p>
-          <button
-            onClick={() => navigate('/')}
-            className="mt-6 rounded bg-indigo-600 px-6 py-2 font-medium text-white hover:bg-indigo-700"
-          >
+          <button onClick={() => navigate('/')} className="ef-juicy-btn mt-6 px-6">
             Voltar para as lições
           </button>
-        </main>
-      </div>
+        </div>
+      </PlayerShell>
     );
   }
 
   const exercise = data.exercises[index];
   const ExerciseComponent = EXERCISE_COMPONENTS[exercise.type];
-  const progressPct = Math.round((index / data.exercises.length) * 100);
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <Header />
+    <PlayerShell
+      lessonTitle={data.lesson.title}
+      total={data.exercises.length}
+      current={index}
+      streak={profile?.streak_current ?? 0}
+    >
+      <div className="rounded-2xl border-2 border-border bg-surface p-6 shadow-card">
+        <ExerciseComponent
+          key={exercise.id}
+          content={exercise.content}
+          vocabulary={data.vocabularyById[exercise.content.vocabulary_id]}
+          onAnswer={handleAnswer}
+        />
+      </div>
+
+      {answeredCurrent && (
+        <button onClick={handleNext} disabled={saving} className="ef-juicy-btn mt-6 w-full">
+          {saving
+            ? 'Salvando...'
+            : index === data.exercises.length - 1
+              ? 'Concluir lição'
+              : 'Próxima'}
+        </button>
+      )}
+    </PlayerShell>
+  );
+}
+
+function PlayerShell({ children, lessonTitle, total, current, streak }) {
+  return (
+    <div className="min-h-screen bg-bg text-text">
       <main className="mx-auto max-w-2xl p-6">
-        <h2 className="mb-2 text-lg font-semibold text-slate-900">{data.lesson.title}</h2>
-
-        <div className="mb-6 h-2 w-full rounded bg-slate-200">
-          <div
-            className="h-2 rounded bg-indigo-600 transition-all"
-            style={{ width: `${progressPct}%` }}
-          />
-        </div>
-
-        <div className="rounded-lg bg-white p-6 shadow">
-          <ExerciseComponent
-            key={exercise.id}
-            content={exercise.content}
-            vocabulary={data.vocabularyById[exercise.content.vocabulary_id]}
-            onAnswer={handleAnswer}
-          />
-        </div>
-
-        {answeredCurrent && (
-          <button
-            onClick={handleNext}
-            disabled={saving}
-            className="mt-6 w-full rounded bg-indigo-600 py-2 font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+        <div className="mb-4 flex items-center gap-4">
+          <Link
+            to="/"
+            className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border-2 border-border bg-surface text-text hover:bg-surface-2"
+            title="Sair da lição"
           >
-            {saving ? 'Salvando...' : index === data.exercises.length - 1 ? 'Concluir lição' : 'Próxima'}
-          </button>
+            ✕
+          </Link>
+
+          {total != null && (
+            <div className="flex flex-1 gap-1">
+              {Array.from({ length: total }).map((_, i) => (
+                <div
+                  key={i}
+                  className={`h-2 flex-1 rounded-full transition-colors ${
+                    i < current ? 'bg-success' : i === current ? 'bg-primary' : 'bg-surface-2'
+                  }`}
+                />
+              ))}
+            </div>
+          )}
+
+          {streak != null && (
+            <span className="flex-shrink-0 whitespace-nowrap font-display font-bold text-streak">
+              🔥 {streak}
+            </span>
+          )}
+        </div>
+
+        {lessonTitle && (
+          <h2 className="mb-4 font-display text-lg font-bold text-text">{lessonTitle}</h2>
         )}
+
+        {children}
       </main>
     </div>
   );

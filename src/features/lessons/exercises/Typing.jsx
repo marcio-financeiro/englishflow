@@ -41,7 +41,7 @@ export function Typing({ content, onAnswer }) {
 
   return (
     <div>
-      <p className="mb-3 text-lg font-medium text-slate-900">{content.prompt_pt}</p>
+      <p className="mb-3 font-display text-lg font-bold text-text">{content.prompt_pt}</p>
 
       <textarea
         value={answer}
@@ -50,16 +50,16 @@ export function Typing({ content, onAnswer }) {
         maxLength={MAX_LEN}
         rows={2}
         placeholder="Escreva em inglês..."
-        className="w-full rounded border border-slate-300 p-3 focus:border-indigo-500 focus:outline-none disabled:bg-slate-50"
+        className="w-full rounded-[14px] border-2 border-border bg-surface p-3 text-text outline-none transition-colors focus:border-primary disabled:opacity-60"
       />
 
-      {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+      {error && <p className="mt-2 text-sm text-error">{error}</p>}
 
       {!result && (
         <button
           onClick={handleCheck}
           disabled={loading || !answer.trim()}
-          className="mt-3 rounded bg-indigo-600 px-6 py-2 font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+          className="ef-juicy-btn mt-3 px-6"
         >
           {loading ? 'Corrigindo...' : 'Verificar'}
         </button>
@@ -67,33 +67,33 @@ export function Typing({ content, onAnswer }) {
 
       {result && (
         <div
-          className={`mt-4 rounded-lg border p-4 ${
-            passed ? 'border-emerald-300 bg-emerald-50' : 'border-amber-300 bg-amber-50'
+          className={`mt-4 rounded-2xl border-2 p-4 ${
+            passed ? 'border-success bg-surface-2' : 'border-xp bg-surface-2'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="font-semibold text-slate-900">
+            <span className="font-display font-bold text-text">
               {passed ? 'Muito bom! 🎉' : 'Quase lá'}
             </span>
-            <span className="text-sm text-slate-500">Nota: {result.score}/100</span>
+            <span className="text-sm text-text-muted">Nota: {result.score}/100</span>
           </div>
 
           {result.corrected && result.corrected !== answer.trim() && (
-            <p className="mt-2 text-sm text-slate-700">
-              <span className="text-slate-400">Correção: </span>
+            <p className="mt-2 text-sm text-text">
+              <span className="text-text-muted">Correção: </span>
               {result.corrected}
             </p>
           )}
 
           {result.natural_version && (
-            <p className="mt-1 text-sm text-slate-700">
-              <span className="text-slate-400">Mais natural: </span>
+            <p className="mt-1 text-sm text-text">
+              <span className="text-text-muted">Mais natural: </span>
               {result.natural_version}
             </p>
           )}
 
           {Array.isArray(result.errors) && result.errors.length > 0 && (
-            <ul className="mt-3 space-y-1 text-sm text-slate-600">
+            <ul className="mt-3 space-y-1 text-sm text-text-muted">
               {result.errors.map((e, i) => (
                 <li key={i}>• {e.explanation_pt}</li>
               ))}

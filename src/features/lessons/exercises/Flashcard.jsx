@@ -21,26 +21,28 @@ export function Flashcard({ content, vocabulary, onAnswer }) {
     <div className="text-center">
       <button
         onClick={reveal}
-        className="mx-auto flex h-56 w-full max-w-sm flex-col items-center justify-center rounded-lg border border-slate-200 bg-white p-6 shadow"
+        className="mx-auto flex h-56 w-full max-w-sm flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border bg-surface-2 p-6"
       >
         {!revealed ? (
           <>
-            <span className="text-3xl font-bold text-slate-900">{vocabulary.word}</span>
+            <span className="font-display text-3xl font-extrabold text-text">
+              {vocabulary.word}
+            </span>
             {vocabulary.pronunciation_pt && (
-              <span className="mt-2 text-slate-500">{vocabulary.pronunciation_pt}</span>
+              <span className="mt-2 text-text-muted">{vocabulary.pronunciation_pt}</span>
             )}
-            <span className="mt-4 text-sm text-slate-400">Toque para ver a tradução</span>
+            <span className="mt-4 text-sm text-text-muted">Toque para ver a tradução</span>
           </>
         ) : (
           <>
-            <span className="text-2xl font-bold text-indigo-600">
+            <span className="font-display text-2xl font-extrabold text-primary">
               {vocabulary.translation_pt}
             </span>
             {vocabulary.example_en && (
-              <p className="mt-3 text-sm text-slate-600">{vocabulary.example_en}</p>
+              <p className="mt-3 text-sm text-text">{vocabulary.example_en}</p>
             )}
             {vocabulary.example_pt && (
-              <p className="text-sm text-slate-400">{vocabulary.example_pt}</p>
+              <p className="text-sm text-text-muted">{vocabulary.example_pt}</p>
             )}
           </>
         )}

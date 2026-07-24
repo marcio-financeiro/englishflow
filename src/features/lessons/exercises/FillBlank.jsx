@@ -16,9 +16,9 @@ export function FillBlank({ content, onAnswer }) {
 
   return (
     <div>
-      <p className="mb-4 text-lg font-medium text-slate-900">
+      <p className="mb-4 font-display text-lg font-bold text-text">
         {parts[0]}
-        <span className="mx-1 inline-block min-w-[4rem] border-b-2 border-slate-400 text-center text-indigo-600">
+        <span className="mx-1 inline-block min-w-[4rem] border-b-2 border-primary text-center text-primary">
           {selected ?? '___'}
         </span>
         {parts[1]}
@@ -30,13 +30,13 @@ export function FillBlank({ content, onAnswer }) {
         {content.options.map((option) => {
           const isSelected = selected === option;
           const isCorrect = option === content.correct;
-          let style = 'border-slate-300 bg-white hover:bg-slate-50';
+          let style = 'border-border bg-surface hover:bg-surface-2';
           if (selected !== null && isSelected) {
             style = isCorrect
-              ? 'border-emerald-500 bg-emerald-50'
-              : 'border-red-500 bg-red-50';
+              ? 'border-success bg-surface-2 text-success-dark'
+              : 'border-error bg-surface-2 text-error-dark';
           } else if (selected !== null && isCorrect) {
-            style = 'border-emerald-500 bg-emerald-50';
+            style = 'border-success bg-surface-2 text-success-dark';
           }
 
           return (
@@ -44,14 +44,13 @@ export function FillBlank({ content, onAnswer }) {
               key={option}
               onClick={() => handleSelect(option)}
               disabled={selected !== null}
-              className={`rounded border px-4 py-2 transition ${style}`}
+              className={`rounded-2xl border-2 px-4 py-2 font-semibold transition ${style}`}
             >
               {option}
             </button>
           );
         })}
       </div>
-
     </div>
   );
 }

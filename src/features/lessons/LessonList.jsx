@@ -38,7 +38,7 @@ export function LessonList() {
           {dueReviewCount > 0 && (
             <Link
               to="/review"
-              className="mb-6 flex items-center justify-between rounded-2xl border-2 border-primary/30 bg-primary-soft px-4 py-3 text-primary-dark hover:brightness-105"
+              className="mb-6 flex items-center justify-between rounded-2xl border-2 border-primary bg-primary-soft px-4 py-3 text-primary-dark hover:brightness-105"
             >
               <span className="font-semibold">
                 📚 Você tem {dueReviewCount} {dueReviewCount === 1 ? 'palavra' : 'palavras'} para
