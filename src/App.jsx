@@ -11,6 +11,7 @@ import { ReviewPage } from './features/review/ReviewPage';
 import { ChatPage } from './features/chat/ChatPage';
 import { DashboardPage } from './features/dashboard/DashboardPage';
 import { PracticePage } from './features/practice/PracticePage';
+import { CumulativeReviewPage } from './features/practice/CumulativeReviewPage';
 import { ThemeToggle } from './components/ThemeToggle';
 
 function App() {
@@ -75,6 +76,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <PracticePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/checkpoint"
+              element={
+                <ProtectedRoute>
+                  <CumulativeReviewPage />
                 </ProtectedRoute>
               }
             />

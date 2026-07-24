@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Sidebar } from '../../components/Sidebar';
 import { useAuth } from '../auth/AuthContext';
 import { fetchModulesWithProgress } from '../../services/lessonService';
+import { findCumulativeReviewTarget } from '../../services/cumulativeReviewService';
 
 const NODE_ICON = {
   completed: '✓',
@@ -20,6 +21,8 @@ export function LessonList() {
       .then(setModules)
       .catch((err) => setError(err.message));
   }, [user.id]);
+
+  const cumulativeReviewTarget = modules ? findCumulativeReviewTarget(modules) : null;
 
   const totalLessons = modules?.reduce((sum, m) => sum + m.lessons.length, 0) ?? 0;
   const completedLessons =
@@ -48,6 +51,18 @@ export function LessonList() {
               <span className="font-semibold">
                 📚 Você tem {dueReviewCount} {dueReviewCount === 1 ? 'palavra' : 'palavras'} para
                 revisar hoje
+              </span>
+              <span className="font-semibold">Revisar →</span>
+            </Link>
+          )}
+
+          {cumulativeReviewTarget && (
+            <Link
+              to={`/checkpoint?level=${cumulativeReviewTarget.level}`}
+              className="mb-6 flex items-center justify-between rounded-2xl border-2 border-primary bg-primary-soft px-4 py-3 text-primary-dark hover:brightness-105"
+            >
+              <span className="font-semibold">
+                🔁 Revisão cumulativa disponível ({cumulativeReviewTarget.level})
               </span>
               <span className="font-semibold">Revisar →</span>
             </Link>
