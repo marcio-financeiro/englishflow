@@ -27,14 +27,12 @@ Deno.serve(async (req) => {
   try {
     // 1. Valida o usuário pelo JWT enviado pelo supabase.functions.invoke.
     const authHeader = req.headers.get('Authorization') ?? '';
+    const token = authHeader.replace('Bearer ', '');
     const supabaseUser = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-      { global: { headers: { Authorization: authHeader } } }
+      Deno.env.get('SUPABASE_ANON_KEY') ?? ''
     );
-    const {
-      data: { user },
-    } = await supabaseUser.auth.getUser();
+    const { data: { user } } = await supabaseUser.auth.getUser(token);
 
     if (!user) {
       return new Response(JSON.stringify({ error: 'Não autenticado' }), {
