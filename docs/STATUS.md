@@ -65,8 +65,8 @@ Estrutura de longo prazo do curso, baseada no framework CEFR (o mesmo usado em c
 
 | Nível | Classificação | Módulos-alvo | Feitos |
 |---|---|---|---|
-| A1 | Iniciante | 15 | 6 |
-| A2 | Básico | 15 | 6 |
+| A1 | Iniciante | 15 | 7 |
+| A2 | Básico | 15 | 7 |
 | B1 | Intermediário | 20 | 0 |
 | B2 | Intermediário Avançado | 20 | 0 |
 | C1 | Avançado | 20 | 0 |
@@ -74,8 +74,8 @@ Estrutura de longo prazo do curso, baseada no framework CEFR (o mesmo usado em c
 
 **Temas de referência por nível** (ordem não é rígida, ajusta conforme o que fizer mais sentido no momento):
 
-- **A1:** Alfabeto e pronúncia, Greetings ✅, Numbers/Colors/Family ✅, Verb to be ✅, Present Simple ✅, Food ✅, Months & Seasons ✅ (dias da semana já cobertos no A2 "Daily Routines"), Directions
-- **A2:** Daily Routines ✅ (já inclui dias da semana), Past Simple ✅ (feito como "Past Experiences"), Future (going to/will) ✅, Comparatives ✅, Countable x Uncountable ✅, Prepositions ✅, Daily conversations, Shopping, Travel
+- **A1:** Alfabeto e pronúncia (pendente — não é sobre vocabulário/gramática, fica pra quando fizer sentido), Greetings ✅, Numbers/Colors/Family ✅, Verb to be ✅, Present Simple ✅, Food ✅, Months & Seasons ✅ (dias da semana já cobertos no A2 "Daily Routines"), Directions ✅ — lista original esgotada, próximos temas do A1 (rumo a 15 módulos) ainda por definir
+- **A2:** Daily Routines ✅ (já inclui dias da semana), Past Simple ✅ (feito como "Past Experiences"), Future (going to/will) ✅, Comparatives ✅, Countable x Uncountable ✅, Prepositions ✅, Daily conversations ✅, Shopping, Travel
 - **B1:** Present Perfect, Modal verbs, Passive Voice, Reported Speech (introdução), Phrasal verbs básicos, Writing de e-mails, Listening intermediário
 - **B2:** Conditionals, Reported Speech completo, Passive avançada, Relative clauses, Idioms, Debate e argumentação, Business English básico
 - **C1:** Vocabulário acadêmico, Escrita formal, Expressões idiomáticas avançadas, Pronúncia refinada, Apresentações profissionais, Negociação
@@ -117,7 +117,7 @@ src/
                   vocabImageService
   lib/            dateUtils, textMatch, wavRecorder
 supabase/
-  migrations/     001..018
+  migrations/     001..020
   functions/      ai-proxy/, pronunciation-proxy/, tts-proxy/, vocab-image-proxy/
 public/           manifest.json, sw.js, icons/ (PWA), brand/ (logo/ícone UI)
 api/              send-reminders.js (cron da Vercel, 20h Brasília)
@@ -151,6 +151,8 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 - `016_seed_a2_countable_uncountable.sql` — conteúdo A2 (módulo 5 "Countable x Uncountable", 5 lições, 30 palavras)
 - `017_seed_a1_months_seasons.sql` — conteúdo A1 (módulo 6 "Months & Seasons", 5 lições, 30 palavras)
 - `018_seed_a2_prepositions.sql` — conteúdo A2 (módulo 6 "Prepositions", 5 lições, 30 palavras)
+- `019_seed_a1_directions.sql` — conteúdo A1 (módulo 7 "Directions", 5 lições, 30 palavras)
+- `020_seed_a2_daily_conversations.sql` — conteúdo A2 (módulo 7 "Daily Conversations", 5 lições, 30 palavras)
 
 **Edge Function `ai-proxy`:** tasks `correct_writing`, `chat`, `chat_feedback`, `generate_practice`. Valida JWT, aplica rate limit, chave em secret `ANTHROPIC_API_KEY`. Modelo `claude-sonnet-5`.
 
@@ -210,13 +212,15 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 | #28 | Conteúdo: módulo A1 "Present Simple" + módulo A2 "Comparatives" |
 | #29 | Conteúdo: módulo A1 "Food" + módulo A2 "Countable x Uncountable" |
 | #30 | Conteúdo: módulo A1 "Months & Seasons" + módulo A2 "Prepositions" |
+| #31 | Conteúdo: módulo A1 "Directions" + módulo A2 "Daily Conversations" |
 
 ---
 
 ## Próximos passos
 
-Ver seção **Roadmap de conteúdo (CEFR A1 → C2)** acima — próximo passo é escolher e construir os próximos 1-2 módulos de A1 e/ou A2 dessa lista (A1: Directions · A2: Daily conversations, Shopping, Travel). Depois disso, A1 e A2 chegam em 7/15 módulos, restando ainda bastante conteúdo antes de avançar pro B1.
+Ver seção **Roadmap de conteúdo (CEFR A1 → C2)** acima. A2 ainda tem 2 temas da lista original (Shopping, Travel). A1 esgotou a lista original de temas (só falta "Alfabeto e pronúncia", que é um tipo de conteúdo diferente) — para chegar em 15 módulos, os próximos temas do A1 precisam ser definidos com o Márcio antes de continuar.
 
+- Módulo A1 "Directions" + módulo A2 "Daily Conversations" — ✅ feito (PR #31)
 - Módulo A1 "Months & Seasons" + módulo A2 "Prepositions" — ✅ feito (PR #30)
 - Módulo A1 "Food" + módulo A2 "Countable x Uncountable" — ✅ feito (PR #29)
 - Módulo A1 "Present Simple" + módulo A2 "Comparatives" — ✅ feito (PR #28)
