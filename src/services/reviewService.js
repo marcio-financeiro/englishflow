@@ -4,6 +4,17 @@ import { hojeISO, addDaysISO } from '../lib/dateUtils';
 
 const MAX_DUE = 20;
 
+// Mapeia objetivo do onboarding -> tags de vocabulário existentes (ver onboardingService.js).
+// Objetivos sem tag correspondente ainda (travel, work, culture) não têm efeito
+// até existir vocabulário marcado com essas tags.
+const GOAL_TAG_MAP = {
+  daily: ['greetings', 'politeness', 'basics', 'pronouns'],
+  academic: ['grammar', 'to-be'],
+  travel: ['travel'],
+  work: ['work', 'business'],
+  culture: ['culture', 'entertainment'],
+};
+
 // Mapeia o tipo de exercício para a categoria do erro registrada em `mistakes`.
 const MISTAKE_TYPE_BY_EXERCISE = {
   multiple_choice: 'grammar',
@@ -32,7 +43,12 @@ export async function countDueReviews(userId) {
 }
 
 // Itens vencidos hoje, já com o vocabulário embutido (máx 20).
-export async function fetchDueReviews(userId) {
+// learningGoals (opcional): objetivos do onboarding, usados para priorizar
+// itens cujo vocabulário tenha tag relacionada.
+export async function fetchDueReviews(userId, learningGoals = []) {
+  const priorityTags = new Set(learningGoals.flatMap((goal) => GOAL_TAG_MAP[goal] ?? []));
+  const poolLimit = priorityTags.size > 0 ? MAX_DUE * 2 : MAX_DUE;
+
   const { data, error } = await supabase
     .from('review_items')
     .select(
@@ -41,10 +57,16 @@ export async function fetchDueReviews(userId) {
     .eq('user_id', userId)
     .lte('next_review_at', hojeISO())
     .order('next_review_at')
-    .limit(MAX_DUE);
+    .limit(poolLimit);
 
   if (error) throw error;
-  return data ?? [];
+  const items = data ?? [];
+
+  if (priorityTags.size === 0) return items.slice(0, MAX_DUE);
+
+  const matches = (item) => item.vocabulary?.tags?.some((tag) => priorityTags.has(tag)) ? 1 : 0;
+  const sorted = [...items].sort((a, b) => matches(b) - matches(a));
+  return sorted.slice(0, MAX_DUE);
 }
 
 // Aplica o SM-2 a um item de revisão e persiste. Retorna o item atualizado.
