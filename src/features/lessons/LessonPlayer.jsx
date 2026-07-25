@@ -16,6 +16,7 @@ import { Matching } from './exercises/Matching';
 import { Typing } from './exercises/Typing';
 import { Dictation } from './exercises/Dictation';
 import { Listening } from './exercises/Listening';
+import { ReadingComprehension } from './exercises/ReadingComprehension';
 
 const EXERCISE_COMPONENTS = {
   flashcard: Flashcard,
@@ -26,6 +27,7 @@ const EXERCISE_COMPONENTS = {
   typing: Typing,
   dictation: Dictation,
   listening: Listening,
+  reading: ReadingComprehension,
 };
 
 export function LessonPlayer() {

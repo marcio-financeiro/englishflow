@@ -11,6 +11,7 @@ const IMPLEMENTED_TYPES = [
   'typing',
   'dictation',
   'listening',
+  'reading',
 ];
 
 export async function fetchModulesWithProgress(userId) {

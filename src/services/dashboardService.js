@@ -18,6 +18,7 @@ const SKILL_BY_EXERCISE_TYPE = {
   dictation: 'listening',
   listening: 'listening',
   typing: 'writing',
+  reading: 'reading',
 };
 
 const MISTAKE_TYPE_TO_SKILL = {
@@ -25,20 +26,20 @@ const MISTAKE_TYPE_TO_SKILL = {
   grammar: 'grammar',
   listening: 'listening',
   writing: 'writing',
+  reading: 'reading',
 };
 
 // % de domínio por habilidade a partir de exercícios já feitos (lições concluídas)
-// e erros registrados — sem tabela nova. Speaking/Reading não têm dado
-// persistido ainda (score de pronúncia não é salvo, não há exercício de
-// leitura), então ficam de fora do retorno (tratados como "em breve" na UI).
+// e erros registrados — sem tabela nova. Speaking não entra aqui: seu % vem
+// à parte, da média de pronunciation_attempts (ver fetchDashboard).
 export function computeSkillMastery(exercisesInCompletedLessons, mistakesByType) {
-  const totalAttempts = { vocabulary: 0, grammar: 0, listening: 0, writing: 0 };
+  const totalAttempts = { vocabulary: 0, grammar: 0, listening: 0, writing: 0, reading: 0 };
   for (const ex of exercisesInCompletedLessons ?? []) {
     const skill = SKILL_BY_EXERCISE_TYPE[ex.type];
     if (skill) totalAttempts[skill] += 1;
   }
 
-  const errors = { vocabulary: 0, grammar: 0, listening: 0, writing: 0 };
+  const errors = { vocabulary: 0, grammar: 0, listening: 0, writing: 0, reading: 0 };
   for (const [mistakeType, count] of Object.entries(mistakesByType ?? {})) {
     const skill = MISTAKE_TYPE_TO_SKILL[mistakeType];
     if (skill) errors[skill] += count;
@@ -64,6 +65,7 @@ export async function fetchDashboard(userId) {
     reviews,
     conversations,
     activity,
+    pronunciationAttempts,
   ] = await Promise.all([
     supabase.from('lessons').select('id', { count: 'exact', head: true }),
     supabase
@@ -88,6 +90,13 @@ export async function fetchDashboard(userId) {
       .gte('day', firstOfMonthISO())
       .then((r) => r)
       .catch(() => ({ data: [] })),
+    // Tabela nova (migration 038); se não existir ainda, segue vazio.
+    supabase
+      .from('pronunciation_attempts')
+      .select('accuracy_score')
+      .eq('user_id', userId)
+      .then((r) => r)
+      .catch(() => ({ data: [] })),
   ]);
 
   const completedLessonIds = (completedProgress.data ?? []).map((p) => p.lesson_id);
@@ -99,7 +108,13 @@ export async function fetchDashboard(userId) {
     mistakesByType[t] = (mistakesByType[t] || 0) + 1;
   }
 
-  let skillMastery = { vocabulary: null, grammar: null, listening: null, writing: null };
+  let skillMastery = {
+    vocabulary: null,
+    grammar: null,
+    listening: null,
+    writing: null,
+    reading: null,
+  };
   if (completedLessonIds.length > 0) {
     const { data: exercises, error: exercisesError } = await supabase
       .from('exercises')
@@ -108,6 +123,14 @@ export async function fetchDashboard(userId) {
     if (exercisesError) throw exercisesError;
     skillMastery = computeSkillMastery(exercises, mistakesByType);
   }
+
+  // Speaking não é filtrado por lição concluída (a pronúncia é praticada em
+  // flashcards e na revisão também) — é a média de todas as tentativas já feitas.
+  const attemptScores = (pronunciationAttempts?.data ?? []).map((a) => a.accuracy_score);
+  skillMastery.speaking =
+    attemptScores.length === 0
+      ? null
+      : Math.round(attemptScores.reduce((sum, s) => sum + s, 0) / attemptScores.length);
 
   const activityData = activity?.data ?? [];
   const studyDays = new Set(activityData.filter((a) => a.minutes > 0).map((a) => a.day));

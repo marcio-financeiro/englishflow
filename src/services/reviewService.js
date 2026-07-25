@@ -24,6 +24,7 @@ const MISTAKE_TYPE_BY_EXERCISE = {
   typing: 'writing',
   dictation: 'listening',
   listening: 'listening',
+  reading: 'reading',
 };
 
 export function mistakeTypeFor(exerciseType) {
