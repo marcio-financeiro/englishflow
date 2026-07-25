@@ -73,7 +73,7 @@ export async function fetchDashboard(userId) {
       .select('lesson_id')
       .eq('user_id', userId)
       .eq('status', 'completed'),
-    supabase.from('mistakes').select('mistake_type').eq('user_id', userId),
+    supabase.from('mistakes').select('exercise_id, mistake_type').eq('user_id', userId),
     supabase
       .from('review_items')
       .select('id', { count: 'exact', head: true })
@@ -101,10 +101,16 @@ export async function fetchDashboard(userId) {
 
   const completedLessonIds = (completedProgress.data ?? []).map((p) => p.lesson_id);
 
-  // Erros por habilidade (mistake_type).
-  const mistakesByType = {};
+  // Erros por habilidade (mistake_type) — conta cada exercício uma única vez
+  // (não por tentativa), senão refazer uma lição várias vezes soma erro toda
+  // vez sem aumentar o total de tentativas, derrubando a % artificialmente.
+  const uniqueMistakes = new Map();
   for (const m of mistakes.data ?? []) {
-    const t = m.mistake_type || 'other';
+    const key = m.exercise_id ?? `no-exercise-${uniqueMistakes.size}`;
+    uniqueMistakes.set(key, m.mistake_type || 'other');
+  }
+  const mistakesByType = {};
+  for (const t of uniqueMistakes.values()) {
     mistakesByType[t] = (mistakesByType[t] || 0) + 1;
   }
 
