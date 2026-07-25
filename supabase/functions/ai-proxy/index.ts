@@ -11,7 +11,7 @@
 import { createClient } from 'jsr:@supabase/supabase-js@2';
 
 const MODEL = 'claude-sonnet-5'; // modelo custo-adequado; trocar aqui se necessário
-const DAILY_LIMIT = 50; // chamadas de IA por usuário por dia
+const DAILY_LIMIT = 100; // chamadas de IA por usuário por dia
 const ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages';
 
 const corsHeaders = {

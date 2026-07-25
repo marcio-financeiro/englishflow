@@ -11,7 +11,7 @@ import { createClient } from 'jsr:@supabase/supabase-js@2';
 
 // Compartilha o mesmo orçamento diário das chamadas de IA (ai-proxy) — evita
 // nova tabela/migration só para isso; suficiente para uso pessoal.
-const DAILY_LIMIT = 50;
+const DAILY_LIMIT = 100;
 const MAX_AUDIO_BYTES = 3_000_000; // ~3MB, folga generosa para poucos segundos de fala
 
 const corsHeaders = {
@@ -168,7 +168,18 @@ Deno.serve(async (req) => {
       sampleRate: Number(sampleRate) || 16000,
     });
 
-    return new Response(JSON.stringify(simplify(azureResult)), {
+    const result = simplify(azureResult);
+
+    // Alimenta o % de "Speaking" no painel — best-effort, não derruba a
+    // resposta ao usuário se o insert falhar.
+    if (result.recognized && typeof result.accuracyScore === 'number') {
+      const { error: insertError } = await admin
+        .from('pronunciation_attempts')
+        .insert({ user_id: user.id, accuracy_score: Math.round(result.accuracyScore) });
+      if (insertError) console.error('pronunciation_attempts insert failed', insertError);
+    }
+
+    return new Response(JSON.stringify(result), {
       headers: { ...corsHeaders, 'content-type': 'application/json' },
     });
   } catch (err) {
