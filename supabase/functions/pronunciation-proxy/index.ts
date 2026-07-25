@@ -67,6 +67,13 @@ async function callAzurePronunciationAssessment(opts: {
   return res.json();
 }
 
+// A Azure às vezes devolve os scores aninhados em `PronunciationAssessment.X`
+// (formato documentado) e às vezes direto em `X` no próprio objeto (o que
+// esse endpoint de short audio realmente devolve, na prática) — lê os dois.
+function score(obj: any, key: string): number | undefined {
+  return obj?.PronunciationAssessment?.[key] ?? obj?.[key];
+}
+
 // Simplifica a resposta bruta da Azure no formato que a UI precisa.
 function simplify(azureResult: any) {
   if (azureResult.RecognitionStatus !== 'Success' || !azureResult.NBest?.length) {
@@ -74,24 +81,25 @@ function simplify(azureResult: any) {
   }
 
   const best = azureResult.NBest[0];
-  const pa = best.PronunciationAssessment ?? {};
+  const overallAccuracy = score(best, 'AccuracyScore') ?? 0;
 
   const words = (best.Words ?? []).map((w: any) => ({
     word: w.Word,
-    accuracyScore: w.PronunciationAssessment?.AccuracyScore ?? 0,
-    errorType: w.PronunciationAssessment?.ErrorType ?? 'None',
+    accuracyScore: score(w, 'AccuracyScore') ?? 0,
+    errorType: w.PronunciationAssessment?.ErrorType ?? w.ErrorType ?? 'None',
     phonemes: (w.Phonemes ?? []).map((p: any) => ({
       phoneme: p.Phoneme,
-      accuracyScore: p.PronunciationAssessment?.AccuracyScore ?? 0,
+      accuracyScore: score(p, 'AccuracyScore') ?? 0,
     })),
   }));
 
   return {
     recognized: true,
-    accuracyScore: pa.AccuracyScore ?? 0,
-    fluencyScore: pa.FluencyScore ?? 0,
-    completenessScore: pa.CompletenessScore ?? 0,
-    pronScore: pa.PronScore ?? 0,
+    accuracyScore: overallAccuracy,
+    // Fluência/completude nem sempre vêm nesse endpoint — usa a nota geral como fallback.
+    fluencyScore: score(best, 'FluencyScore') ?? overallAccuracy,
+    completenessScore: score(best, 'CompletenessScore') ?? overallAccuracy,
+    pronScore: score(best, 'PronScore') ?? overallAccuracy,
     words,
   };
 }
