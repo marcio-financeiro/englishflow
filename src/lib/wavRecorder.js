@@ -9,9 +9,10 @@ export function isRecordingSupported() {
 export async function startWavRecording() {
   const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
   const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-  // Pede 16kHz (o que a Azure prefere); alguns browsers ignoram e usam a taxa
-  // do hardware — por isso sempre lemos audioContext.sampleRate real depois.
-  const audioContext = new AudioContextClass({ sampleRate: 16000 });
+  // Não força sampleRate: no Safari/iOS, pedir uma taxa diferente da nativa
+  // do hardware corrompe o áudio capturado (silêncio/ruído no ScriptProcessor).
+  // Grava na taxa nativa e manda ela pra Azure, que resample sozinha.
+  const audioContext = new AudioContextClass();
   const source = audioContext.createMediaStreamSource(stream);
   const processor = audioContext.createScriptProcessor(4096, 1, 1);
   const chunks = [];
