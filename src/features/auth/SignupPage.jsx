@@ -6,6 +6,7 @@ import { AuthBrandPanel } from './AuthBrandPanel';
 export function SignupPage() {
   const { signUp } = useAuth();
   const navigate = useNavigate();
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -18,7 +19,7 @@ export function SignupPage() {
     setInfo('');
     setSubmitting(true);
     try {
-      await signUp(email, password);
+      await signUp(email, password, name);
       setInfo('Conta criada. Verifique seu email para confirmar o cadastro.');
     } catch (err) {
       setError(err.message);
@@ -40,6 +41,16 @@ export function SignupPage() {
 
           <h1 className="mb-1 font-display text-3xl font-extrabold text-text">Criar conta</h1>
           <p className="mb-6 text-text-muted">Comece sua sequência de aprendizado hoje.</p>
+
+          <label className="mb-1 block text-sm font-semibold text-text">Nome</label>
+          <input
+            type="text"
+            required
+            placeholder="Seu nome"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="mb-4 w-full rounded-[14px] border-2 border-border bg-surface px-4 py-3 text-text outline-none transition-colors focus:border-primary"
+          />
 
           <label className="mb-1 block text-sm font-semibold text-text">Email</label>
           <input

@@ -16,7 +16,7 @@ async function ensureProfile(user) {
 
   const { data: created, error: insertError } = await supabase
     .from('profiles')
-    .insert({ id: user.id, display_name: user.email })
+    .insert({ id: user.id, display_name: user.user_metadata?.full_name || user.email })
     .select()
     .single();
 
@@ -66,8 +66,12 @@ export function AuthProvider({ children }) {
     if (error) throw error;
   }
 
-  async function signUp(email, password) {
-    const { error } = await supabase.auth.signUp({ email, password });
+  async function signUp(email, password, name) {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { full_name: name } },
+    });
     if (error) throw error;
   }
 

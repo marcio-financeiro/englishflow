@@ -67,12 +67,15 @@ export function DashboardPage() {
   const week = lastSevenDays();
   const cefr = currentLevelProgress(modules ?? []);
   const cefrPct = cefr.total > 0 ? Math.round((cefr.completed / cefr.total) * 100) : 0;
+  const firstName = profile?.display_name?.trim().split(' ')[0];
 
   return (
     <div className="flex min-h-screen flex-col bg-bg text-text min-[760px]:flex-row">
       <Sidebar />
       <main className="mx-auto w-full max-w-4xl space-y-4 p-6 pb-24 min-[760px]:pb-6">
-        <h1 className="font-display text-2xl font-extrabold text-text">Olá! 👋</h1>
+        <h1 className="font-display text-2xl font-extrabold text-text">
+          Olá{firstName ? `, ${firstName}` : ''}! 👋
+        </h1>
         <p className="-mt-3 text-text-muted">Continue de onde parou hoje.</p>
         {error && <p className="text-error">{error}</p>}
 
