@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Flame, Star, Check, Trophy, Sparkles, Brain, Lock, Bell } from 'lucide-react';
+import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
+import { Flame, Star, Check, Trophy, Sparkles, Brain, Lock, Bell, BookMarked } from 'lucide-react';
 import { Sidebar } from '../../components/Sidebar';
 import { useAuth } from '../auth/AuthContext';
 import { fetchDashboard, setDailyGoal } from '../../services/dashboardService';
@@ -26,6 +27,25 @@ function findNextLesson(modules) {
     if (lesson) return { ...lesson, moduleTitle: module.title };
   }
   return null;
+}
+
+// Anima um número inteiro subindo do valor anterior até `value` (ex: XP, streak).
+function CountUp({ value }) {
+  const motionValue = useMotionValue(0);
+  const rounded = useTransform(motionValue, (v) => Math.round(v));
+  const [display, setDisplay] = useState(0);
+
+  useEffect(() => {
+    const controls = animate(motionValue, value, { duration: 0.8, ease: 'easeOut' });
+    const unsubscribe = rounded.on('change', setDisplay);
+    return () => {
+      controls.stop();
+      unsubscribe();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
+
+  return <>{display}</>;
 }
 
 function lastSevenDays() {
@@ -80,30 +100,42 @@ export function DashboardPage() {
         <p className="-mt-3 text-text-muted">Continue de onde parou hoje.</p>
         {error && <p className="text-error">{error}</p>}
 
-        {/* Streak / XP / lições — chips rápidos */}
-        <section className="flex flex-wrap gap-2">
-          <div
-            className="flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-bold text-white shadow-card"
-            style={{ background: 'linear-gradient(135deg, var(--xp), var(--streak))' }}
-          >
-            <Flame size={16} /> {profile?.streak_current ?? 0}{' '}
-            <span className="font-normal opacity-85">sequência</span>
-          </div>
-          <div className="flex items-center gap-1.5 rounded-full border-2 border-border bg-surface px-4 py-2 text-sm font-bold text-text">
-            <Star size={16} /> {xp} <span className="font-normal text-text-muted">XP</span>
-          </div>
-          <div className="flex items-center gap-1.5 rounded-full border-2 border-border bg-surface px-4 py-2 text-sm font-bold text-text">
-            <Check size={16} /> {data ? `${data.lessonsCompleted}/${data.totalLessons}` : '...'}{' '}
-            <span className="font-normal text-text-muted">lições</span>
-          </div>
-        </section>
-
-        {/* Progresso no nível CEFR */}
-        <section
-          className="rounded-3xl p-5 text-white shadow-card"
-          style={{ background: 'linear-gradient(155deg, var(--primary), var(--primary-dark))' }}
+        {/* Card principal: streak / XP / nível CEFR / meta diária + CTA */}
+        <motion.section
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: 'easeOut' }}
+          className="relative overflow-hidden rounded-lg p-6 text-white shadow-elevation-3"
+          style={{
+            background:
+              'linear-gradient(155deg, color-mix(in srgb, var(--primary) 92%, black) 0%, var(--primary-dark) 55%, color-mix(in srgb, var(--secondary) 80%, black) 100%)',
+          }}
         >
-          <div className="flex items-center justify-between gap-3">
+          <div
+            className="pointer-events-none absolute inset-0 opacity-40"
+            style={{
+              backdropFilter: 'blur(var(--blur-md))',
+              background:
+                'radial-gradient(circle at 85% -10%, rgba(255,255,255,0.25), transparent 55%)',
+            }}
+          />
+
+          <div className="relative flex flex-wrap items-center gap-2">
+            <div className="flex items-center gap-1.5 rounded-full bg-white/15 px-4 py-2 text-sm font-bold backdrop-blur-sm">
+              <Flame size={16} />
+              <CountUp value={profile?.streak_current ?? 0} />{' '}
+              <span className="font-normal opacity-80">sequência</span>
+            </div>
+            <div className="flex items-center gap-1.5 rounded-full bg-white/15 px-4 py-2 text-sm font-bold backdrop-blur-sm">
+              <Star size={16} /> <CountUp value={xp} /> <span className="font-normal opacity-80">XP</span>
+            </div>
+            <div className="flex items-center gap-1.5 rounded-full bg-white/15 px-4 py-2 text-sm font-bold backdrop-blur-sm">
+              <Check size={16} /> {data ? `${data.lessonsCompleted}/${data.totalLessons}` : '...'}{' '}
+              <span className="font-normal opacity-80">lições</span>
+            </div>
+          </div>
+
+          <div className="relative mt-5 flex items-center justify-between gap-3">
             <div>
               <div className="font-display text-lg font-extrabold">Seu inglês está evoluindo!</div>
               <p className="text-sm text-white/85">
@@ -112,25 +144,70 @@ export function DashboardPage() {
                   : `Faltam ${100 - cefrPct}% para o próximo nível`}
               </p>
             </div>
-            <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-white/15 font-display text-lg font-extrabold">
+            <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-white/15 font-display text-lg font-extrabold backdrop-blur-sm">
               {cefr.level}
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-2">
+          <div className="relative mt-3 flex items-center gap-2">
             <div className="h-2 flex-1 rounded-full bg-white/25">
-              <div className="h-2 rounded-full bg-white transition-all" style={{ width: `${cefrPct}%` }} />
+              <motion.div
+                className="h-2 rounded-full bg-white"
+                initial={{ width: 0 }}
+                animate={{ width: `${cefrPct}%` }}
+                transition={{ duration: 0.7, ease: 'easeOut' }}
+              />
             </div>
             <span className="text-sm font-bold">{cefrPct}%</span>
           </div>
+
           {cefrPct >= 100 && (
             <Link
               to="/level-test"
-              className="mt-3 inline-flex items-center gap-1.5 rounded-2xl bg-white px-4 py-2 text-sm font-bold text-primary-dark"
+              className="relative mt-3 inline-flex items-center gap-1.5 rounded-2xl bg-white px-4 py-2 text-sm font-bold text-primary-dark"
             >
               <Trophy size={16} /> Fazer Teste de Nivelamento
             </Link>
           )}
-        </section>
+
+          <div className="relative mt-5 border-t border-white/20 pt-4">
+            <div className="mb-1 flex justify-between text-xs font-semibold text-white/85">
+              <span>Meta diária</span>
+              <span>{data ? `${data.minutesToday}/${goal} min` : '...'}</span>
+            </div>
+            <div className="h-2 rounded-full bg-white/25">
+              <motion.div
+                className="h-2 rounded-full bg-white"
+                initial={{ width: 0 }}
+                animate={{
+                  width: `${data ? Math.min(100, Math.round((data.minutesToday / goal) * 100)) : 0}%`,
+                }}
+                transition={{ duration: 0.7, ease: 'easeOut', delay: 0.15 }}
+              />
+            </div>
+          </div>
+
+          {nextLesson && (
+            <div className="relative mt-5 flex items-center justify-between gap-3 rounded-2xl bg-white/10 p-4 backdrop-blur-sm">
+              <div className="min-w-0">
+                <div className="text-xs font-bold uppercase tracking-wide text-white/70">
+                  Continue aprendendo
+                </div>
+                <div className="truncate font-display text-base font-bold">{nextLesson.title}</div>
+                <div className="text-xs text-white/75">
+                  {nextLesson.moduleTitle} · +{nextLesson.xp_reward} XP
+                </div>
+              </div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
+                <Link
+                  to={`/lesson/${nextLesson.id}`}
+                  className="flex-shrink-0 rounded-2xl bg-white px-6 py-2.5 font-display font-bold text-primary-dark"
+                >
+                  Continuar
+                </Link>
+              </motion.div>
+            </div>
+          )}
+        </motion.section>
 
         {/* Centro de Conhecimento + Níveis */}
         <div className="min-[1024px]:grid min-[1024px]:grid-cols-[1fr_260px] min-[1024px]:items-start min-[1024px]:gap-4 min-[1024px]:space-y-0 space-y-4">
@@ -138,23 +215,16 @@ export function DashboardPage() {
           <LevelTrack levelTests={levelTests ?? []} />
         </div>
 
-        {/* Continue aprendendo */}
-        {nextLesson && (
-          <section className="flex items-center justify-between rounded-2xl border-2 border-border bg-surface p-5">
-            <div>
-              <div className="text-xs font-bold uppercase tracking-wide text-primary">
-                Continue aprendendo
-              </div>
-              <div className="font-display text-lg font-bold text-text">{nextLesson.title}</div>
-              <div className="text-sm text-text-muted">
-                {nextLesson.moduleTitle} · +{nextLesson.xp_reward} XP
-              </div>
-            </div>
-            <Link to={`/lesson/${nextLesson.id}`} className="ef-juicy-btn px-6">
-              Continuar
-            </Link>
-          </section>
-        )}
+        {/* Nível de XP */}
+        <section className="rounded-2xl border-2 border-border bg-surface p-4">
+          <div className="mb-1 flex justify-between text-sm text-text-muted">
+            <span>Nível {level}</span>
+            <span>
+              {inLevel}/{perLevel} XP
+            </span>
+          </div>
+          <Bar pct={Math.round((inLevel / perLevel) * 100)} color="bg-primary" />
+        </section>
 
         {/* Sua semana + Revisão pendente */}
         <section className="grid grid-cols-2 gap-3">
@@ -172,52 +242,49 @@ export function DashboardPage() {
             </div>
           </div>
 
-          <Link
-            to="/review"
-            className={`rounded-2xl border-2 p-4 ${
-              dueReviewCount > 0
-                ? 'border-primary bg-primary-soft'
-                : 'border-border bg-surface hover:bg-surface-2'
-            }`}
-          >
-            <h3
-              className={`font-display font-bold ${
-                dueReviewCount > 0 ? 'text-primary-dark' : 'text-text'
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            <Link
+              to="/review"
+              className={`block rounded-2xl p-4 transition-shadow ${
+                dueReviewCount > 0 ? 'text-white' : 'border-2 border-border bg-surface hover:bg-surface-2'
               }`}
+              style={
+                dueReviewCount > 0
+                  ? {
+                      background: 'var(--gradient-primary)',
+                      boxShadow: '0 0 24px color-mix(in srgb, var(--primary) 45%, transparent)',
+                    }
+                  : undefined
+              }
             >
-              Revisão pendente
-            </h3>
-            <p
-              className={`flex items-center gap-1 text-sm ${
-                dueReviewCount > 0 ? 'text-primary-dark' : 'text-text-muted'
-              }`}
-            >
-              {dueReviewCount > 0 ? (
-                `${dueReviewCount} ${dueReviewCount === 1 ? 'palavra' : 'palavras'} para revisar`
-              ) : (
-                <>
-                  <Sparkles size={14} /> Nada pendente
-                </>
-              )}
-            </p>
-          </Link>
+              <h3
+                className={`flex items-center gap-1.5 font-display font-bold ${
+                  dueReviewCount > 0 ? 'text-white' : 'text-text'
+                }`}
+              >
+                <BookMarked size={16} /> Revisão pendente
+              </h3>
+              <p
+                className={`mt-1 flex items-center gap-1 text-sm ${
+                  dueReviewCount > 0 ? 'text-white/90' : 'text-text-muted'
+                }`}
+              >
+                {dueReviewCount > 0 ? (
+                  `${dueReviewCount} ${dueReviewCount === 1 ? 'palavra' : 'palavras'} · Revisar agora →`
+                ) : (
+                  <>
+                    <Sparkles size={14} /> Nada pendente
+                  </>
+                )}
+              </p>
+            </Link>
+          </motion.div>
         </section>
 
-        {/* Nível de XP */}
+        {/* Meta diária: ajustar */}
         <section className="rounded-2xl border-2 border-border bg-surface p-4">
-          <div className="mb-1 flex justify-between text-sm text-text-muted">
-            <span>Nível {level}</span>
-            <span>
-              {inLevel}/{perLevel} XP
-            </span>
-          </div>
-          <Bar pct={Math.round((inLevel / perLevel) * 100)} color="bg-primary" />
-        </section>
-
-        {/* Meta diária */}
-        <section className="rounded-2xl border-2 border-border bg-surface p-4">
-          <div className="mb-2 flex items-center justify-between">
-            <h3 className="font-display font-bold text-text">Meta diária</h3>
+          <div className="flex items-center justify-between">
+            <h3 className="font-display font-bold text-text">Ajustar meta diária</h3>
             <select
               value={goal}
               onChange={(e) => changeGoal(Number(e.target.value))}
@@ -230,13 +297,6 @@ export function DashboardPage() {
               ))}
             </select>
           </div>
-          <div className="mb-1 text-sm text-text-muted">
-            {data ? `${data.minutesToday} de ${goal} min hoje` : '...'}
-          </div>
-          <Bar
-            pct={data ? Math.min(100, Math.round((data.minutesToday / goal) * 100)) : 0}
-            color="bg-success"
-          />
         </section>
 
         {/* Lembretes diários */}
