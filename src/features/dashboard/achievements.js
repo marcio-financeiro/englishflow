@@ -1,44 +1,46 @@
+import { Target, Star, Flame, BookMarked, MessageCircle, Medal } from 'lucide-react';
+
 // Conquistas básicas, calculadas na hora a partir dos dados do usuário.
 // stats: { xpTotal, streakBest, lessonsCompleted, reviewCount, conversationCount }
 export const ACHIEVEMENTS = [
   {
     code: 'first_lesson',
-    icon: '🎯',
+    icon: Target,
     title: 'Primeiro passo',
     description: 'Complete sua primeira lição.',
     earned: (s) => s.lessonsCompleted >= 1,
   },
   {
     code: 'xp_100',
-    icon: '⭐',
+    icon: Star,
     title: '100 XP',
     description: 'Acumule 100 XP.',
     earned: (s) => s.xpTotal >= 100,
   },
   {
     code: 'streak_7',
-    icon: '🔥',
+    icon: Flame,
     title: '7 dias seguidos',
     description: 'Estude 7 dias em sequência.',
     earned: (s) => s.streakBest >= 7,
   },
   {
     code: 'words_50',
-    icon: '📚',
+    icon: BookMarked,
     title: '50 palavras',
     description: 'Tenha 50 palavras na revisão.',
     earned: (s) => s.reviewCount >= 50,
   },
   {
     code: 'first_chat',
-    icon: '💬',
+    icon: MessageCircle,
     title: 'Primeira conversa',
     description: 'Converse com a IA pela primeira vez.',
     earned: (s) => s.conversationCount >= 1,
   },
   {
     code: 'module_1',
-    icon: '🏅',
+    icon: Medal,
     title: 'Módulo concluído',
     description: 'Complete as 5 lições de um módulo.',
     earned: (s) => s.lessonsCompleted >= 5,

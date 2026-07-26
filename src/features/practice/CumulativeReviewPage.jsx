@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Repeat, PartyPopper } from 'lucide-react';
 import { Sidebar } from '../../components/Sidebar';
 import { useAuth } from '../auth/AuthContext';
 import { fetchModulesWithProgress } from '../../services/lessonService';
@@ -89,7 +90,9 @@ export function CumulativeReviewPage() {
     return (
       <Shell>
         <div className="text-center">
-          <p className="text-lg text-text">🔁 Montando sua revisão cumulativa...</p>
+          <p className="flex items-center justify-center gap-2 text-lg text-text">
+            <Repeat size={20} /> Montando sua revisão cumulativa...
+          </p>
           <p className="mt-2 text-sm text-text-muted">
             A IA está misturando palavras de módulos que você já completou.
           </p>
@@ -102,7 +105,9 @@ export function CumulativeReviewPage() {
     return (
       <Shell>
         <div className="text-center">
-          <h2 className="font-display text-2xl font-extrabold text-text">Revisão concluída! 🎉</h2>
+          <h2 className="flex items-center justify-center gap-2 font-display text-2xl font-extrabold text-text">
+            Revisão concluída! <PartyPopper size={22} />
+          </h2>
           <p className="mt-1 text-text-muted">
             {correctCount} de {exercises.length} corretas
           </p>

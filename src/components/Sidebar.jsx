@@ -1,11 +1,12 @@
 import { Link, useLocation } from 'react-router-dom';
+import { BookOpen, Home, Repeat, MessageCircle, Flame, Star, LogOut } from 'lucide-react';
 import { useAuth } from '../features/auth/AuthContext';
 
 const NAV_ITEMS = [
-  { to: '/', label: 'Lições', icon: '📖' },
-  { to: '/dashboard', label: 'Painel', icon: '🏠' },
-  { to: '/review', label: 'Revisão', icon: '🔁', badge: true },
-  { to: '/chat', label: 'Conversar', icon: '💬' },
+  { to: '/', label: 'Lições', icon: BookOpen },
+  { to: '/dashboard', label: 'Painel', icon: Home },
+  { to: '/review', label: 'Revisão', icon: Repeat, badge: true },
+  { to: '/chat', label: 'Conversar', icon: MessageCircle },
 ];
 
 function Brand() {
@@ -31,7 +32,7 @@ function NavLinks({ dueReviewCount }) {
               active ? 'bg-primary-soft text-primary-dark' : 'text-text-muted hover:bg-surface-2'
             }`}
           >
-            <span className="text-lg">{item.icon}</span>
+            <item.icon size={20} className="flex-shrink-0" />
             <span>{item.label}</span>
             {item.badge && dueReviewCount > 0 && (
               <span className="absolute right-2 top-2 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-streak px-1 text-xs font-bold text-white">
@@ -50,14 +51,14 @@ function StatsAndSignOut({ profile, signOut }) {
     <div className="mt-4 space-y-3">
       <div className="grid grid-cols-2 gap-2">
         <div className="rounded-2xl border-2 border-border bg-surface-2 p-2 text-center">
-          <div className="font-display text-base font-extrabold text-streak">
-            🔥 {profile?.streak_current ?? 0}
+          <div className="flex items-center justify-center gap-1 font-display text-base font-extrabold text-streak">
+            <Flame size={16} /> {profile?.streak_current ?? 0}
           </div>
           <div className="text-[11px] text-text-muted">dias</div>
         </div>
         <div className="rounded-2xl border-2 border-border bg-surface-2 p-2 text-center">
-          <div className="font-display text-base font-extrabold text-xp">
-            ⭐ {profile?.xp_total ?? 0}
+          <div className="flex items-center justify-center gap-1 font-display text-base font-extrabold text-xp">
+            <Star size={16} /> {profile?.xp_total ?? 0}
           </div>
           <div className="text-[11px] text-text-muted">XP</div>
         </div>
@@ -66,7 +67,7 @@ function StatsAndSignOut({ profile, signOut }) {
         onClick={signOut}
         className="flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-sm font-semibold text-text-muted hover:bg-surface-2"
       >
-        <span className="text-lg">🚪</span>
+        <LogOut size={20} className="flex-shrink-0" />
         <span>Sair</span>
       </button>
     </div>
@@ -75,7 +76,7 @@ function StatsAndSignOut({ profile, signOut }) {
 
 function BottomTabBar({ dueReviewCount, signOut }) {
   const location = useLocation();
-  const tabs = [...NAV_ITEMS, { label: 'Sair', icon: '🚪', action: signOut }];
+  const tabs = [...NAV_ITEMS, { label: 'Sair', icon: LogOut, action: signOut }];
 
   return (
     <nav
@@ -86,8 +87,8 @@ function BottomTabBar({ dueReviewCount, signOut }) {
         const active = item.to && location.pathname === item.to;
         const content = (
           <>
-            <span className="relative text-xl">
-              {item.icon}
+            <span className="relative">
+              <item.icon size={22} />
               {item.badge && dueReviewCount > 0 && (
                 <span className="absolute -right-1.5 -top-1 h-2.5 w-2.5 rounded-full bg-streak" />
               )}

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Brain, PartyPopper } from 'lucide-react';
 import { Sidebar } from '../../components/Sidebar';
 import { useAuth } from '../auth/AuthContext';
 import { fetchRecentMistakes } from '../../services/reviewService';
@@ -75,7 +76,9 @@ export function PracticePage() {
     return (
       <Shell>
         <div className="text-center">
-          <p className="text-lg text-slate-700">🧠 Montando sua prática...</p>
+          <p className="flex items-center justify-center gap-2 text-lg text-slate-700">
+            <Brain size={20} /> Montando sua prática...
+          </p>
           <p className="mt-2 text-sm text-slate-500">
             A IA está criando exercícios com base nos seus erros.
           </p>
@@ -88,7 +91,9 @@ export function PracticePage() {
     return (
       <Shell>
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-slate-900">Prática concluída! 🎉</h2>
+          <h2 className="flex items-center justify-center gap-2 text-2xl font-bold text-slate-900">
+            Prática concluída! <PartyPopper size={22} />
+          </h2>
           <p className="mt-1 text-slate-500">
             {correctCount} de {exercises.length} corretas
           </p>

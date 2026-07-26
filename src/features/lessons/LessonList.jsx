@@ -1,5 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import {
+  Check,
+  Play,
+  Lock,
+  BookOpen,
+  GraduationCap,
+  Repeat,
+  CheckCircle2,
+  BookMarked,
+  Star,
+  Flame,
+  ChevronRight,
+  ChevronDown,
+} from 'lucide-react';
 import { Sidebar } from '../../components/Sidebar';
 import { useAuth } from '../auth/AuthContext';
 import { fetchModulesWithProgress } from '../../services/lessonService';
@@ -7,9 +21,9 @@ import { findCumulativeReviewTarget } from '../../services/cumulativeReviewServi
 import { findLevelTestTarget } from '../../services/levelTestService';
 
 const NODE_ICON = {
-  completed: '✓',
-  available: '▶',
-  locked: '🔒',
+  completed: Check,
+  available: Play,
+  locked: Lock,
 };
 
 function isModuleCompleted(module) {
@@ -92,9 +106,9 @@ export function LessonList() {
               to="/review"
               className="mb-6 flex items-center justify-between rounded-2xl border-2 border-primary bg-primary-soft px-4 py-3 text-primary-dark hover:brightness-105"
             >
-              <span className="font-semibold">
-                📚 Você tem {dueReviewCount} {dueReviewCount === 1 ? 'palavra' : 'palavras'} para
-                revisar hoje
+              <span className="flex items-center gap-2 font-semibold">
+                <BookMarked size={18} /> Você tem {dueReviewCount}{' '}
+                {dueReviewCount === 1 ? 'palavra' : 'palavras'} para revisar hoje
               </span>
               <span className="font-semibold">Revisar →</span>
             </Link>
@@ -105,8 +119,9 @@ export function LessonList() {
               to={`/level-test?level=${levelTestTarget}`}
               className="mb-6 flex items-center justify-between rounded-2xl border-2 border-xp bg-primary-soft px-4 py-3 text-primary-dark hover:brightness-105"
             >
-              <span className="font-semibold">
-                🎓 Faça o Teste de Nivelamento {levelTestTarget} pra liberar o próximo nível
+              <span className="flex items-center gap-2 font-semibold">
+                <GraduationCap size={18} /> Faça o Teste de Nivelamento {levelTestTarget} pra
+                liberar o próximo nível
               </span>
               <span className="font-semibold">Começar →</span>
             </Link>
@@ -117,8 +132,8 @@ export function LessonList() {
               to={`/checkpoint?level=${cumulativeReviewTarget.level}`}
               className="mb-6 flex items-center justify-between rounded-2xl border-2 border-primary bg-primary-soft px-4 py-3 text-primary-dark hover:brightness-105"
             >
-              <span className="font-semibold">
-                🔁 Revisão cumulativa disponível ({cumulativeReviewTarget.level})
+              <span className="flex items-center gap-2 font-semibold">
+                <Repeat size={18} /> Revisão cumulativa disponível ({cumulativeReviewTarget.level})
               </span>
               <span className="font-semibold">Revisar →</span>
             </Link>
@@ -139,9 +154,9 @@ export function LessonList() {
           <div className="rounded-2xl border-2 border-border bg-surface p-5 shadow-card">
             <h3 className="mb-4 font-display text-base font-bold text-text">Seu progresso</h3>
             <div className="space-y-3 text-sm">
-              <StatRow icon="⭐" label="XP total" value={profile?.xp_total ?? 0} />
-              <StatRow icon="🔥" label="Sequência" value={`${profile?.streak_current ?? 0} dias`} />
-              <StatRow icon="📖" label="Lições" value={`${completedLessons}/${totalLessons}`} />
+              <StatRow icon={Star} label="XP total" value={profile?.xp_total ?? 0} />
+              <StatRow icon={Flame} label="Sequência" value={`${profile?.streak_current ?? 0} dias`} />
+              <StatRow icon={BookOpen} label="Lições" value={`${completedLessons}/${totalLessons}`} />
             </div>
           </div>
         </aside>
@@ -154,7 +169,7 @@ function ModuleSection({ module, expanded, onToggle, sectionRef }) {
   const completedCount = module.lessons.filter((l) => l.status === 'completed').length;
   const total = module.lessons.length;
   const allCompleted = completedCount === total && total > 0;
-  const icon = allCompleted ? '✅' : module.levelUnlocked ? '📘' : '🔒';
+  const ModuleIcon = allCompleted ? CheckCircle2 : module.levelUnlocked ? BookOpen : Lock;
 
   if (!expanded) {
     return (
@@ -164,10 +179,10 @@ function ModuleSection({ module, expanded, onToggle, sectionRef }) {
         className="mb-3 flex w-full items-center justify-between rounded-2xl border-2 border-border bg-surface px-4 py-3 text-left hover:bg-surface-2"
       >
         <span className="flex items-center gap-2 font-semibold text-text">
-          <span>{icon}</span> {module.title}
+          <ModuleIcon size={18} /> {module.title}
         </span>
         <span className="flex items-center gap-1 text-sm text-text-muted">
-          {completedCount}/{total} <span className="text-xs">▸</span>
+          {completedCount}/{total} <ChevronRight size={14} />
         </span>
       </button>
     );
@@ -179,11 +194,11 @@ function ModuleSection({ module, expanded, onToggle, sectionRef }) {
         onClick={onToggle}
         className="mb-1 flex w-full items-center justify-between gap-3 text-left"
       >
-        <h2 className="font-display text-xl font-bold text-text">
-          {icon} {module.title}
+        <h2 className="flex items-center gap-2 font-display text-xl font-bold text-text">
+          <ModuleIcon size={20} /> {module.title}
         </h2>
         <span className="flex flex-shrink-0 items-center gap-1 text-sm text-text-muted">
-          {completedCount}/{total} <span className="text-xs">▾</span>
+          {completedCount}/{total} <ChevronDown size={14} />
         </span>
       </button>
       {module.description && (
@@ -199,11 +214,11 @@ function ModuleSection({ module, expanded, onToggle, sectionRef }) {
   );
 }
 
-function StatRow({ icon, label, value }) {
+function StatRow({ icon: Icon, label, value }) {
   return (
     <div className="flex items-center justify-between">
-      <span className="text-text-muted">
-        {icon} {label}
+      <span className="flex items-center gap-1.5 text-text-muted">
+        <Icon size={16} /> {label}
       </span>
       <span className="font-display font-bold text-text">{value}</span>
     </div>
@@ -212,10 +227,11 @@ function StatRow({ icon, label, value }) {
 
 function LessonNode({ lesson }) {
   const locked = lesson.status === 'locked';
+  const Icon = NODE_ICON[lesson.status];
 
   const circle = (
     <div
-      className={`flex h-[68px] w-[68px] items-center justify-center rounded-full text-2xl transition-transform ${
+      className={`flex h-[68px] w-[68px] items-center justify-center rounded-full transition-transform ${
         lesson.status === 'completed'
           ? 'bg-success text-white shadow-card'
           : lesson.status === 'available'
@@ -223,7 +239,7 @@ function LessonNode({ lesson }) {
             : 'cursor-not-allowed border-2 border-dashed border-border bg-surface-2 text-text-muted opacity-65'
       }`}
     >
-      {NODE_ICON[lesson.status]}
+      <Icon size={26} />
     </div>
   );
 

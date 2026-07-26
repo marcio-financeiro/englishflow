@@ -1,8 +1,10 @@
+import { Flame, Star } from 'lucide-react';
+
 export function AuthBrandPanel() {
   return (
     <div
       className="ef-authbrand relative flex flex-1 flex-col justify-center overflow-hidden p-12 text-white max-[680px]:hidden"
-      style={{ background: 'linear-gradient(155deg, #0F8B8D 0%, #0C6E70 55%, #0A4F51 100%)' }}
+      style={{ background: 'linear-gradient(155deg, var(--primary) 0%, var(--primary-dark) 55%, var(--secondary) 100%)' }}
     >
       <div className="pointer-events-none absolute -left-16 -top-16 h-72 w-72 rounded-full bg-white/10 [animation:ef-float-blob_9s_ease-in-out_infinite]" />
       <div className="pointer-events-none absolute -bottom-24 -right-10 h-80 w-80 rounded-full bg-white/10 [animation:ef-float-blob_11s_ease-in-out_infinite]" />
@@ -21,10 +23,10 @@ export function AuthBrandPanel() {
 
       <div className="relative z-10 flex flex-wrap gap-3">
         <span className="flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold">
-          🔥 Sequências diárias
+          <Flame size={16} /> Sequências diárias
         </span>
         <span className="flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold">
-          ⭐ Ganhe XP a cada lição
+          <Star size={16} /> Ganhe XP a cada lição
         </span>
       </div>
     </div>

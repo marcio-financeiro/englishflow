@@ -1,10 +1,12 @@
+import { Headphones, BookOpen, Mic, BookText, PenLine, Pen, Lock } from 'lucide-react';
+
 const SKILLS = [
-  { key: 'listening', label: 'Listening', icon: '🎧', color: 'var(--skill-listening)', x: 50, y: 16 },
-  { key: 'vocabulary', label: 'Vocabulary', icon: '📖', color: 'var(--primary)', x: 15, y: 32 },
-  { key: 'speaking', label: 'Speaking', icon: '🎤', color: 'var(--skill-speaking)', x: 85, y: 32 },
-  { key: 'reading', label: 'Reading', icon: '📗', color: 'var(--success)', x: 15, y: 68 },
-  { key: 'grammar', label: 'Grammar', icon: '✏️', color: 'var(--xp)', x: 85, y: 68 },
-  { key: 'writing', label: 'Writing', icon: '🖊️', color: 'var(--skill-writing)', x: 50, y: 84 },
+  { key: 'listening', label: 'Listening', icon: Headphones, color: 'var(--skill-listening)', x: 50, y: 16 },
+  { key: 'vocabulary', label: 'Vocabulary', icon: BookOpen, color: 'var(--primary)', x: 15, y: 32 },
+  { key: 'speaking', label: 'Speaking', icon: Mic, color: 'var(--skill-speaking)', x: 85, y: 32 },
+  { key: 'reading', label: 'Reading', icon: BookText, color: 'var(--success)', x: 15, y: 68 },
+  { key: 'grammar', label: 'Grammar', icon: PenLine, color: 'var(--xp)', x: 85, y: 68 },
+  { key: 'writing', label: 'Writing', icon: Pen, color: 'var(--skill-writing)', x: 50, y: 84 },
 ];
 
 function DotBar({ pct }) {
@@ -34,7 +36,7 @@ function SkillHex({ skill, pct }) {
       style={{ left: `${skill.x}%`, top: `${skill.y}%`, width: '21%' }}
     >
       <div
-        className="flex aspect-square w-full items-center justify-center rounded-full text-2xl"
+        className="flex aspect-square w-full items-center justify-center rounded-full text-white"
         style={{
           background: hasData
             ? `linear-gradient(155deg, color-mix(in srgb, ${skill.color} 80%, white) 0%, ${skill.color} 45%, color-mix(in srgb, ${skill.color} 65%, black) 100%)`
@@ -43,7 +45,7 @@ function SkillHex({ skill, pct }) {
         }}
       >
         <span style={{ filter: hasData ? 'drop-shadow(0 1px 1px rgba(0,0,0,.35))' : 'grayscale(1) opacity(0.6)' }}>
-          {hasData ? skill.icon : '🔒'}
+          {hasData ? <skill.icon size={26} /> : <Lock size={22} />}
         </span>
       </div>
       <div className="text-center leading-tight">

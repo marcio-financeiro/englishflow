@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Volume2, VolumeX } from 'lucide-react';
 import { speak, isSpeakSupported } from '../../../services/speechService';
 
 export function Listening({ content, onAnswer }) {
@@ -24,13 +25,13 @@ export function Listening({ content, onAnswer }) {
       {supported ? (
         <button
           onClick={() => speak(content.audio_text)}
-          className="mb-4 rounded-full bg-primary-soft px-4 py-2 font-semibold text-primary-dark hover:brightness-95"
+          className="mb-4 flex items-center gap-2 rounded-full bg-primary-soft px-4 py-2 font-semibold text-primary-dark hover:brightness-95"
         >
-          🔊 Ouvir de novo
+          <Volume2 size={18} /> Ouvir de novo
         </button>
       ) : (
-        <p className="mb-4 text-sm text-xp">
-          🔇 Áudio não suportado neste navegador (use Chrome, Edge ou Safari).
+        <p className="mb-4 flex items-center gap-2 text-sm text-xp">
+          <VolumeX size={16} /> Áudio não suportado neste navegador (use Chrome, Edge ou Safari).
         </p>
       )}
 

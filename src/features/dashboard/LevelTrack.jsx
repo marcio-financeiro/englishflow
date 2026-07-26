@@ -1,3 +1,4 @@
+import { Check, Lock } from 'lucide-react';
 import { LEVEL_ORDER, hasPassedLevel } from '../../services/levelTestService';
 
 const LEVEL_TITLES = {
@@ -27,7 +28,7 @@ function LevelRow({ level, state }) {
         className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl text-xs font-extrabold"
         style={badgeStyle}
       >
-        {state === 'done' ? '✓' : state === 'locked' ? '🔒' : level}
+        {state === 'done' ? <Check size={16} /> : state === 'locked' ? <Lock size={14} /> : level}
       </div>
       <div className="min-w-0">
         <div

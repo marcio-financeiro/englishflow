@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { GraduationCap, PartyPopper } from 'lucide-react';
 import { Sidebar } from '../../components/Sidebar';
 import { useAuth } from '../auth/AuthContext';
 import {
@@ -89,7 +90,9 @@ export function LevelTestPage() {
     return (
       <Shell>
         <div className="text-center">
-          <p className="text-lg text-text">🎓 Montando seu Teste de Nivelamento {level}...</p>
+          <p className="flex items-center justify-center gap-2 text-lg text-text">
+            <GraduationCap size={20} /> Montando seu Teste de Nivelamento {level}...
+          </p>
           <p className="mt-2 text-sm text-text-muted">
             A IA está reunindo exercícios de todos os módulos que você completou.
           </p>
@@ -102,8 +105,14 @@ export function LevelTestPage() {
     return (
       <Shell>
         <div className="text-center">
-          <h2 className="font-display text-2xl font-extrabold text-text">
-            {result.passed ? 'Aprovado! 🎉' : 'Quase lá!'}
+          <h2 className="flex items-center justify-center gap-2 font-display text-2xl font-extrabold text-text">
+            {result.passed ? (
+              <>
+                Aprovado! <PartyPopper size={22} />
+              </>
+            ) : (
+              'Quase lá!'
+            )}
           </h2>
           <p className="mt-2 text-text-muted">
             Você acertou {result.score}% (mínimo de {Math.round(PASS_THRESHOLD * 100)}%).

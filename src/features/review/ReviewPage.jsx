@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { PartyPopper, Sparkles } from 'lucide-react';
 import { Sidebar } from '../../components/Sidebar';
 import { useAuth } from '../auth/AuthContext';
 import { fetchDueReviews, applyReview } from '../../services/reviewService';
@@ -72,8 +73,16 @@ export function ReviewPage() {
     return (
       <Shell>
         <div className="text-center">
-          <h2 className="font-display text-2xl font-extrabold text-text">
-            {done ? 'Revisão concluída! 🎉' : 'Nada para revisar hoje ✨'}
+          <h2 className="flex items-center justify-center gap-2 font-display text-2xl font-extrabold text-text">
+            {done ? (
+              <>
+                Revisão concluída! <PartyPopper size={22} />
+              </>
+            ) : (
+              <>
+                Nada para revisar hoje <Sparkles size={20} />
+              </>
+            )}
           </h2>
           <p className="mt-2 text-text-muted">
             {done

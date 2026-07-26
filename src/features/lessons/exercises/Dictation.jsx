@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Volume2, VolumeX, PartyPopper } from 'lucide-react';
 import { speak, isSpeakSupported } from '../../../services/speechService';
 import { similarity } from '../../../lib/textMatch';
 
@@ -34,9 +35,9 @@ export function Dictation({ content, onAnswer }) {
 
       <button
         onClick={() => speak(content.audio_text)}
-        className="mb-4 rounded-full bg-primary-soft px-4 py-2 font-semibold text-primary-dark hover:brightness-95"
+        className="mb-4 flex items-center gap-2 rounded-full bg-primary-soft px-4 py-2 font-semibold text-primary-dark hover:brightness-95"
       >
-        🔊 Ouvir
+        <Volume2 size={18} /> Ouvir
       </button>
 
       <input
@@ -64,8 +65,14 @@ export function Dictation({ content, onAnswer }) {
             result.correct ? 'border-success bg-surface-2' : 'border-xp bg-surface-2'
           }`}
         >
-          <p className="font-display font-bold text-text">
-            {result.correct ? 'Correto! 🎉' : 'Quase lá'}{' '}
+          <p className="flex items-center gap-1.5 font-display font-bold text-text">
+            {result.correct ? (
+              <>
+                Correto! <PartyPopper size={18} />
+              </>
+            ) : (
+              'Quase lá'
+            )}{' '}
             <span className="text-sm font-normal text-text-muted">({result.score}%)</span>
           </p>
           <p className="mt-1 text-sm text-text">
@@ -81,9 +88,9 @@ export function Dictation({ content, onAnswer }) {
 function UnsupportedAudio({ onContinue }) {
   return (
     <div className="text-center">
-      <p className="text-text-muted">
-        🔇 Seu navegador não tem suporte a áudio. Use o Chrome, Edge ou Safari para os
-        exercícios de áudio.
+      <p className="flex items-center justify-center gap-2 text-text-muted">
+        <VolumeX size={18} /> Seu navegador não tem suporte a áudio. Use o Chrome, Edge ou Safari
+        para os exercícios de áudio.
       </p>
       <button onClick={onContinue} className="ef-juicy-btn mt-4 px-6">
         Continuar

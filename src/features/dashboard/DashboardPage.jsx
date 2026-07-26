@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Flame, Star, Check, Trophy, Sparkles, Brain, Lock, Bell } from 'lucide-react';
 import { Sidebar } from '../../components/Sidebar';
 import { useAuth } from '../auth/AuthContext';
 import { fetchDashboard, setDailyGoal } from '../../services/dashboardService';
@@ -74,7 +75,7 @@ export function DashboardPage() {
       <Sidebar />
       <main className="mx-auto w-full max-w-4xl space-y-4 p-6 pb-24 min-[760px]:pb-6">
         <h1 className="font-display text-2xl font-extrabold text-text">
-          Olá{firstName ? `, ${firstName}` : ''}! 👋
+          Olá{firstName ? `, ${firstName}` : ''}!
         </h1>
         <p className="-mt-3 text-text-muted">Continue de onde parou hoje.</p>
         {error && <p className="text-error">{error}</p>}
@@ -85,13 +86,14 @@ export function DashboardPage() {
             className="flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-bold text-white shadow-card"
             style={{ background: 'linear-gradient(135deg, var(--xp), var(--streak))' }}
           >
-            🔥 {profile?.streak_current ?? 0} <span className="font-normal opacity-85">sequência</span>
+            <Flame size={16} /> {profile?.streak_current ?? 0}{' '}
+            <span className="font-normal opacity-85">sequência</span>
           </div>
           <div className="flex items-center gap-1.5 rounded-full border-2 border-border bg-surface px-4 py-2 text-sm font-bold text-text">
-            ⭐ {xp} <span className="font-normal text-text-muted">XP</span>
+            <Star size={16} /> {xp} <span className="font-normal text-text-muted">XP</span>
           </div>
           <div className="flex items-center gap-1.5 rounded-full border-2 border-border bg-surface px-4 py-2 text-sm font-bold text-text">
-            ✓ {data ? `${data.lessonsCompleted}/${data.totalLessons}` : '...'}{' '}
+            <Check size={16} /> {data ? `${data.lessonsCompleted}/${data.totalLessons}` : '...'}{' '}
             <span className="font-normal text-text-muted">lições</span>
           </div>
         </section>
@@ -123,9 +125,9 @@ export function DashboardPage() {
           {cefrPct >= 100 && (
             <Link
               to="/level-test"
-              className="mt-3 inline-block rounded-2xl bg-white px-4 py-2 text-sm font-bold text-primary-dark"
+              className="mt-3 inline-flex items-center gap-1.5 rounded-2xl bg-white px-4 py-2 text-sm font-bold text-primary-dark"
             >
-              🏆 Fazer Teste de Nivelamento
+              <Trophy size={16} /> Fazer Teste de Nivelamento
             </Link>
           )}
         </section>
@@ -185,10 +187,18 @@ export function DashboardPage() {
             >
               Revisão pendente
             </h3>
-            <p className={`text-sm ${dueReviewCount > 0 ? 'text-primary-dark' : 'text-text-muted'}`}>
-              {dueReviewCount > 0
-                ? `${dueReviewCount} ${dueReviewCount === 1 ? 'palavra' : 'palavras'} para revisar`
-                : 'Nada pendente ✨'}
+            <p
+              className={`flex items-center gap-1 text-sm ${
+                dueReviewCount > 0 ? 'text-primary-dark' : 'text-text-muted'
+              }`}
+            >
+              {dueReviewCount > 0 ? (
+                `${dueReviewCount} ${dueReviewCount === 1 ? 'palavra' : 'palavras'} para revisar`
+              ) : (
+                <>
+                  <Sparkles size={14} /> Nada pendente
+                </>
+              )}
             </p>
           </Link>
         </section>
@@ -238,8 +248,8 @@ export function DashboardPage() {
           <MonthCalendar studyDays={data?.studyDays ?? new Set()} />
         </section>
 
-        <Link to="/practice" className="ef-juicy-btn block text-center">
-          🧠 Praticar meus erros
+        <Link to="/practice" className="ef-juicy-btn flex items-center justify-center gap-2">
+          <Brain size={18} /> Praticar meus erros
         </Link>
 
         {/* Conquistas */}
@@ -263,7 +273,9 @@ export function DashboardPage() {
                     }`}
                     style={earned ? { filter: 'drop-shadow(0 0 8px color-mix(in srgb, var(--xp) 50%, transparent))' } : undefined}
                   >
-                    <div className="text-2xl">{earned ? a.icon : '🔒'}</div>
+                    <div className="flex justify-center text-2xl">
+                      {earned ? <a.icon size={28} /> : <Lock size={24} />}
+                    </div>
                     <div className="mt-1 text-sm font-semibold text-text">{a.title}</div>
                     <div className="text-xs text-text-muted">{a.description}</div>
                   </div>
@@ -318,7 +330,9 @@ function ReminderToggle({ userId }) {
     <section className="rounded-2xl border-2 border-border bg-surface p-4">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h3 className="font-display font-bold text-text">🔔 Lembrete diário</h3>
+          <h3 className="flex items-center gap-2 font-display font-bold text-text">
+            <Bell size={18} /> Lembrete diário
+          </h3>
           <p className="text-sm text-text-muted">
             {subscribed
               ? 'Ativado — você recebe um aviso às 20h se ainda não estudou.'

@@ -10,39 +10,56 @@
   --border: #e6ddcb;
   --text: #241f1b;
   --text-muted: #7c7266;
-  --primary: #0f8b8d;
+  --primary: #0e9b98;
   --primary-dark: #0b6567;
   --primary-soft: #dcf2f1;
-  --success: #3fa34d;
-  --success-dark: #2b7a37;
-  --xp: #f2a93b;
-  --streak: #ef6c4d;
-  --error: #e24c5d;
+  --secondary: #5b6ef7;
+  --success: #2fa968;
+  --success-dark: #1f8353;
+  --xp: #e0982a;
+  --warning: #e0982a;
+  --streak: #e2573f;
+  --error: #dc3a55;
   --error-dark: #b23545;
   --shadow-card: 0 10px 30px rgba(50, 40, 20, 0.1);
+  --shadow-elevation-1: 0 2px 8px rgba(20, 20, 30, 0.06);
+  --shadow-elevation-2: 0 8px 24px rgba(20, 20, 30, 0.1);
+  --shadow-elevation-3: 0 16px 48px rgba(20, 20, 30, 0.16);
+  --radius-sm: 10px;
+  --radius-md: 18px;
+  --radius-lg: 28px;
+  --blur-sm: 8px;
+  --blur-md: 20px;
+  --gradient-primary: linear-gradient(135deg, var(--primary), var(--secondary));
   --skill-listening: #2f7dd6;
   --skill-speaking: #d94f8c;
   --skill-writing: #7c5cd6;
 }
 
 [data-theme='dark'] {
-  --bg: #17140f;
-  --bg-soft: #201b14;
-  --surface: #252017;
-  --surface-2: #2d271c;
-  --border: #3c3323;
-  --text: #f5efe3;
-  --text-muted: #b6a98e;
-  --primary: #3fbfb8;
-  --primary-dark: #0f8b8d;
-  --primary-soft: #1e3a38;
-  --success: #5fcb70;
-  --success-dark: #2b7a37;
-  --xp: #ffc85c;
-  --streak: #ff8560;
-  --error: #ff6b7a;
-  --error-dark: #b23545;
-  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --bg: #08111b;
+  --bg-soft: #0c1826;
+  --surface: #102131;
+  --surface-2: #14283a;
+  --border: rgba(255, 255, 255, 0.1);
+  --text: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.7);
+  --primary: #20d6d2;
+  --primary-dark: #17a3a0;
+  --primary-soft: rgba(32, 214, 210, 0.14);
+  --secondary: #5b6ef7;
+  --success: #3ddc84;
+  --success-dark: #2bb26a;
+  --xp: #ffc857;
+  --warning: #ffc857;
+  --streak: #ff5c74;
+  --error: #ff5c74;
+  --error-dark: #d43e56;
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.4);
+  --shadow-elevation-1: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-elevation-2: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-elevation-3: 0 16px 48px rgba(0, 0, 0, 0.5);
+  --gradient-primary: linear-gradient(135deg, var(--primary), var(--secondary));
   --skill-listening: #5b9bf0;
   --skill-speaking: #f07bb0;
   --skill-writing: #a58af0;
@@ -51,7 +68,7 @@
 body {
   background-color: var(--bg);
   color: var(--text);
-  font-family: 'Manrope', sans-serif;
+  font-family: 'Inter', sans-serif;
   transition: background-color 0.25s, color 0.25s;
 }
 

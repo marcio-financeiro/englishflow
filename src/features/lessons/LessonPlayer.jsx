@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
+import { PartyPopper, X, Flame } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
 import { fetchLessonExercises, completeLesson } from '../../services/lessonService';
 import {
@@ -132,8 +133,8 @@ export function LessonPlayer() {
     return (
       <PlayerShell>
         <div className="text-center">
-          <h2 className="font-display text-2xl font-extrabold text-text">
-            Lição concluída! 🎉
+          <h2 className="flex items-center justify-center gap-2 font-display text-2xl font-extrabold text-text">
+            Lição concluída! <PartyPopper size={24} />
           </h2>
           <p className="mt-2 font-display text-lg font-bold text-xp">
             +{data.lesson.xp_reward} XP
@@ -191,7 +192,7 @@ function PlayerShell({ children, lessonTitle, total, current, streak }) {
             className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full border-2 border-border bg-surface text-text hover:bg-surface-2"
             title="Sair da lição"
           >
-            ✕
+            <X size={18} />
           </Link>
 
           {total != null && (
@@ -208,8 +209,8 @@ function PlayerShell({ children, lessonTitle, total, current, streak }) {
           )}
 
           {streak != null && (
-            <span className="flex-shrink-0 whitespace-nowrap font-display font-bold text-streak">
-              🔥 {streak}
+            <span className="flex flex-shrink-0 items-center gap-1 whitespace-nowrap font-display font-bold text-streak">
+              <Flame size={16} /> {streak}
             </span>
           )}
         </div>

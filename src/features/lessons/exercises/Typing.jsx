@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { PartyPopper } from 'lucide-react';
 import { useAuth } from '../../auth/AuthContext';
 import { correctWriting } from '../../../services/aiService';
 
@@ -72,8 +73,14 @@ export function Typing({ content, onAnswer }) {
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="font-display font-bold text-text">
-              {passed ? 'Muito bom! 🎉' : 'Quase lá'}
+            <span className="flex items-center gap-1.5 font-display font-bold text-text">
+              {passed ? (
+                <>
+                  Muito bom! <PartyPopper size={18} />
+                </>
+              ) : (
+                'Quase lá'
+              )}
             </span>
             <span className="text-sm text-text-muted">Nota: {result.score}/100</span>
           </div>

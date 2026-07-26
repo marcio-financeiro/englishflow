@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { UtensilsCrossed, Briefcase, MessageCircle, PartyPopper } from 'lucide-react';
 import { Sidebar } from '../../components/Sidebar';
 import { useAuth } from '../auth/AuthContext';
 import { supabase } from '../../services/supabaseClient';
@@ -9,17 +10,20 @@ const MAX_LEN = 300;
 
 const SCENARIOS = {
   waiter: {
-    label: 'Garçom 🍽️',
+    label: 'Garçom',
+    icon: UtensilsCrossed,
     description: 'Peça comida em um restaurante.',
     greeting: 'Hello! Welcome to our restaurant. What would you like to order?',
   },
   interview: {
-    label: 'Entrevista de emprego 💼',
+    label: 'Entrevista de emprego',
+    icon: Briefcase,
     description: 'Responda perguntas de um entrevistador.',
     greeting: 'Good morning! Thanks for coming. Can you tell me about yourself?',
   },
   free_talk: {
-    label: 'Conversa livre 💬',
+    label: 'Conversa livre',
+    icon: MessageCircle,
     description: 'Bate-papo casual do dia a dia.',
     greeting: 'Hi! How are you today?',
   },
@@ -93,7 +97,9 @@ export function ChatPage() {
               onClick={() => setScenario(key)}
               className="rounded-lg border border-slate-300 bg-white px-4 py-4 text-left hover:bg-slate-50"
             >
-              <span className="block font-medium text-slate-900">{s.label}</span>
+              <span className="flex items-center gap-2 font-medium text-slate-900">
+                <s.icon size={18} /> {s.label}
+              </span>
               <span className="text-sm text-slate-500">{s.description}</span>
             </button>
           ))}
@@ -107,7 +113,9 @@ export function ChatPage() {
     return (
       <Shell>
         <div className="rounded-lg bg-white p-6 shadow">
-          <h2 className="text-2xl font-bold text-slate-900">Conversa concluída! 🎉</h2>
+          <h2 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
+            Conversa concluída! <PartyPopper size={22} />
+          </h2>
           <p className="mt-1 text-lg text-indigo-600">Nota: {feedback.score}/100</p>
 
           <FeedbackList

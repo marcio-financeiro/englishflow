@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Volume2, Square, Mic } from 'lucide-react';
 import { speak, isSpeakSupported } from '../../../services/speechService';
 import { isRecordingSupported, startWavRecording } from '../../../lib/wavRecorder';
 import { assessPronunciation } from '../../../services/pronunciationService';
@@ -76,30 +77,40 @@ export function AudioControls({ target, example }) {
         {canSpeak && (
           <button
             onClick={() => speak(target)}
-            className="rounded-full bg-primary-soft px-3 py-1 text-sm font-semibold text-primary-dark hover:brightness-95"
+            className="flex items-center gap-1.5 rounded-full bg-primary-soft px-3 py-1 text-sm font-semibold text-primary-dark hover:brightness-95"
           >
-            🔊 Ouvir
+            <Volume2 size={16} /> Ouvir
           </button>
         )}
         {canSpeak && example && (
           <button
             onClick={() => speak(example)}
-            className="rounded-full bg-primary-soft px-3 py-1 text-sm font-semibold text-primary-dark hover:brightness-95"
+            className="flex items-center gap-1.5 rounded-full bg-primary-soft px-3 py-1 text-sm font-semibold text-primary-dark hover:brightness-95"
           >
-            🔊 Frase
+            <Volume2 size={16} /> Frase
           </button>
         )}
         {canRecord && (
           <button
             onClick={toggleMic}
             disabled={assessing}
-            className={`rounded-full px-3 py-1 text-sm font-semibold disabled:opacity-50 ${
+            className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold disabled:opacity-50 ${
               recording
                 ? 'bg-error text-white hover:brightness-95'
                 : 'bg-surface-2 text-streak hover:brightness-95'
             }`}
           >
-            {recording ? '⏹️ Parar' : assessing ? 'Avaliando...' : '🎤 Falar'}
+            {recording ? (
+              <>
+                <Square size={14} /> Parar
+              </>
+            ) : assessing ? (
+              'Avaliando...'
+            ) : (
+              <>
+                <Mic size={14} /> Falar
+              </>
+            )}
           </button>
         )}
       </div>
