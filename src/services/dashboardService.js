@@ -140,6 +140,7 @@ export async function fetchDashboard(userId) {
 
   const activityData = activity?.data ?? [];
   const studyDays = new Set(activityData.filter((a) => a.minutes > 0).map((a) => a.day));
+  const minutesByDay = Object.fromEntries(activityData.map((a) => [a.day, a.minutes]));
   const today = hojeISO();
   const minutesToday = activityData.find((a) => a.day === today)?.minutes ?? 0;
 
@@ -151,6 +152,7 @@ export async function fetchDashboard(userId) {
     mistakesByType,
     skillMastery,
     studyDays,
+    minutesByDay,
     minutesToday,
   };
 }

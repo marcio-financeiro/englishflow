@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
 import { Flame, Star, Check, Trophy, Sparkles, Brain, Lock, Bell, BookMarked } from 'lucide-react';
@@ -13,6 +13,8 @@ import { LevelTrack } from './LevelTrack';
 import { hojeISO } from '../../lib/dateUtils';
 import { celebrate } from '../../lib/celebration';
 import { Mascot } from '../../components/Mascot';
+
+const WeekChart = lazy(() => import('./WeekChart'));
 import {
   isPushSupported,
   isSubscribed,
@@ -247,16 +249,9 @@ export function DashboardPage() {
         <section className="grid grid-cols-2 gap-3">
           <div className="rounded-2xl border-2 border-border bg-surface p-4">
             <h3 className="mb-3 font-display font-bold text-text">Sua semana</h3>
-            <div className="flex gap-1">
-              {week.map(({ iso }) => (
-                <div
-                  key={iso}
-                  className={`h-8 flex-1 rounded-lg ${
-                    data?.studyDays?.has(iso) ? 'bg-success' : 'bg-surface-2'
-                  }`}
-                />
-              ))}
-            </div>
+            <Suspense fallback={<div className="h-[80px]" />}>
+              <WeekChart week={week} minutesByDay={data?.minutesByDay} />
+            </Suspense>
           </div>
 
           <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
