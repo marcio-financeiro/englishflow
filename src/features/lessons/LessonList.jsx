@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import {
   Check,
   Play,
@@ -169,19 +170,37 @@ function ModuleSection({ module, expanded, onToggle, sectionRef }) {
   const completedCount = module.lessons.filter((l) => l.status === 'completed').length;
   const total = module.lessons.length;
   const allCompleted = completedCount === total && total > 0;
+  const pct = total > 0 ? Math.round((completedCount / total) * 100) : 0;
   const ModuleIcon = allCompleted ? CheckCircle2 : module.levelUnlocked ? BookOpen : Lock;
+  const badgeStyle = allCompleted
+    ? { background: 'var(--success)', color: '#fff' }
+    : module.levelUnlocked
+      ? { background: 'var(--gradient-primary)', color: '#fff' }
+      : { background: 'var(--surface-2)', color: 'var(--text-muted)' };
 
   if (!expanded) {
     return (
       <button
         ref={sectionRef}
         onClick={onToggle}
-        className="mb-3 flex w-full items-center justify-between rounded-2xl border-2 border-border bg-surface px-4 py-3 text-left hover:bg-surface-2"
+        className="mb-3 flex w-full items-center gap-3 rounded-2xl border-2 border-border bg-surface px-4 py-3 text-left shadow-elevation-1 hover:bg-surface-2"
       >
-        <span className="flex items-center gap-2 font-semibold text-text">
-          <ModuleIcon size={18} /> {module.title}
-        </span>
-        <span className="flex items-center gap-1 text-sm text-text-muted">
+        <div
+          className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl"
+          style={badgeStyle}
+        >
+          <ModuleIcon size={18} />
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="truncate font-semibold text-text">{module.title}</div>
+          <div className="mt-1 h-1.5 w-full rounded-full bg-surface-2">
+            <div
+              className="h-1.5 rounded-full bg-primary transition-all"
+              style={{ width: `${pct}%` }}
+            />
+          </div>
+        </div>
+        <span className="flex flex-shrink-0 items-center gap-1 text-sm text-text-muted">
           {completedCount}/{total} <ChevronRight size={14} />
         </span>
       </button>
@@ -192,11 +211,26 @@ function ModuleSection({ module, expanded, onToggle, sectionRef }) {
     <section ref={sectionRef} className="mb-10">
       <button
         onClick={onToggle}
-        className="mb-1 flex w-full items-center justify-between gap-3 text-left"
+        className="mb-3 flex w-full items-center gap-3 rounded-2xl border-2 border-border bg-surface px-4 py-3 text-left shadow-elevation-1 hover:bg-surface-2"
       >
-        <h2 className="flex items-center gap-2 font-display text-xl font-bold text-text">
-          <ModuleIcon size={20} /> {module.title}
-        </h2>
+        <div
+          className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl"
+          style={badgeStyle}
+        >
+          <ModuleIcon size={20} />
+        </div>
+        <div className="min-w-0 flex-1">
+          <h2 className="truncate font-display text-lg font-bold text-text">{module.title}</h2>
+          <div className="mt-1.5 flex items-center gap-2">
+            <div className="h-1.5 flex-1 rounded-full bg-surface-2">
+              <div
+                className="h-1.5 rounded-full bg-primary transition-all"
+                style={{ width: `${pct}%` }}
+              />
+            </div>
+            <span className="flex-shrink-0 text-xs font-semibold text-text-muted">{pct}%</span>
+          </div>
+        </div>
         <span className="flex flex-shrink-0 items-center gap-1 text-sm text-text-muted">
           {completedCount}/{total} <ChevronDown size={14} />
         </span>
@@ -205,7 +239,7 @@ function ModuleSection({ module, expanded, onToggle, sectionRef }) {
         <p className="mb-4 text-sm text-text-muted">{module.description}</p>
       )}
 
-      <div className="flex flex-wrap gap-6">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         {module.lessons.map((lesson) => (
           <LessonNode key={lesson.id} lesson={lesson} />
         ))}
@@ -227,27 +261,46 @@ function StatRow({ icon: Icon, label, value }) {
 
 function LessonNode({ lesson }) {
   const locked = lesson.status === 'locked';
+  const completed = lesson.status === 'completed';
   const Icon = NODE_ICON[lesson.status];
 
-  const circle = (
-    <div
-      className={`flex h-[68px] w-[68px] items-center justify-center rounded-full transition-transform ${
-        lesson.status === 'completed'
-          ? 'bg-success text-white shadow-card'
-          : lesson.status === 'available'
-            ? 'ef-node-available border-[3px] border-primary bg-surface text-primary hover:scale-105'
-            : 'cursor-not-allowed border-2 border-dashed border-border bg-surface-2 text-text-muted opacity-65'
-      }`}
-    >
-      <Icon size={26} />
-    </div>
+  const cardClass = `flex h-full flex-col gap-3 rounded-2xl border-2 p-4 text-left transition-colors ${
+    completed
+      ? 'border-success bg-surface-2'
+      : lesson.status === 'available'
+        ? 'ef-node-available border-primary bg-surface'
+        : 'cursor-not-allowed border-dashed border-border bg-surface-2 opacity-60'
+  }`;
+
+  const badgeClass = `flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full ${
+    completed
+      ? 'bg-success text-white'
+      : lesson.status === 'available'
+        ? 'bg-primary-soft text-primary'
+        : 'bg-surface text-text-muted'
+  }`;
+
+  const content = (
+    <>
+      <div className={badgeClass}>
+        <Icon size={20} />
+      </div>
+      <div>
+        <div className="line-clamp-2 text-sm font-semibold text-text">{lesson.title}</div>
+        <div className="mt-1 text-xs font-bold text-xp">{lesson.xp_reward} XP</div>
+      </div>
+    </>
   );
 
+  if (locked) {
+    return <div className={cardClass}>{content}</div>;
+  }
+
   return (
-    <div className="flex w-[84px] flex-col items-center gap-2 text-center">
-      {locked ? circle : <Link to={`/lesson/${lesson.id}`}>{circle}</Link>}
-      <span className="line-clamp-2 text-xs font-semibold text-text">{lesson.title}</span>
-      <span className="text-xs font-bold text-xp">{lesson.xp_reward} XP</span>
-    </div>
+    <motion.div whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.98 }}>
+      <Link to={`/lesson/${lesson.id}`} className={`${cardClass} shadow-elevation-1`}>
+        {content}
+      </Link>
+    </motion.div>
   );
 }
