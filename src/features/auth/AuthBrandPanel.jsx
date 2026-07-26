@@ -1,4 +1,5 @@
 import { Flame, Star } from 'lucide-react';
+import { Mascot } from '../../components/Mascot';
 
 export function AuthBrandPanel() {
   return (
@@ -13,6 +14,8 @@ export function AuthBrandPanel() {
         <img src="/brand/icon.png" alt="" className="h-10 w-10 rounded-xl" />
         <span className="font-display text-lg font-bold">EnglishFlow</span>
       </div>
+
+      <Mascot mood="wave" tone="light" size={88} className="relative z-10 mb-2" />
 
       <h2 className="relative z-10 mb-4 max-w-md font-display text-4xl font-extrabold leading-tight">
         Aprenda inglês todo dia, de um jeito que gruda.

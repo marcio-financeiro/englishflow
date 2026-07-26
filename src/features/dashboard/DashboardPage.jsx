@@ -12,6 +12,7 @@ import { KnowledgeHexGrid } from './KnowledgeHexGrid';
 import { LevelTrack } from './LevelTrack';
 import { hojeISO } from '../../lib/dateUtils';
 import { celebrate } from '../../lib/celebration';
+import { Mascot } from '../../components/Mascot';
 import {
   isPushSupported,
   isSubscribed,
@@ -105,10 +106,15 @@ export function DashboardPage() {
     <div className="flex min-h-screen flex-col bg-bg text-text min-[760px]:flex-row">
       <Sidebar />
       <main className="mx-auto w-full max-w-4xl space-y-4 p-6 pb-24 min-[760px]:pb-6">
-        <h1 className="font-display text-2xl font-extrabold text-text">
-          Olá{firstName ? `, ${firstName}` : ''}!
-        </h1>
-        <p className="-mt-3 text-text-muted">Continue de onde parou hoje.</p>
+        <div className="flex items-center gap-3">
+          <Mascot mood="idle" size={56} />
+          <div>
+            <h1 className="font-display text-2xl font-extrabold text-text">
+              Olá{firstName ? `, ${firstName}` : ''}!
+            </h1>
+            <p className="text-text-muted">Continue de onde parou hoje.</p>
+          </div>
+        </div>
         {error && <p className="text-error">{error}</p>}
 
         {/* Card principal: streak / XP / nível CEFR / meta diária + CTA */}

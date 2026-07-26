@@ -11,6 +11,7 @@ import {
 import { addStudyMinutes } from '../../services/dashboardService';
 import { levelFromXp } from '../dashboard/achievements';
 import { celebrate, celebrateBig } from '../../lib/celebration';
+import { Mascot } from '../../components/Mascot';
 import { Flashcard } from './exercises/Flashcard';
 import { MultipleChoice } from './exercises/MultipleChoice';
 import { FillBlank } from './exercises/FillBlank';
@@ -152,6 +153,7 @@ export function LessonPlayer() {
     return (
       <PlayerShell>
         <div className="text-center">
+          <Mascot mood="celebrate" size={80} className="mx-auto mb-2" />
           <h2 className="flex items-center justify-center gap-2 font-display text-2xl font-extrabold text-text">
             Lição concluída! <PartyPopper size={24} />
           </h2>
