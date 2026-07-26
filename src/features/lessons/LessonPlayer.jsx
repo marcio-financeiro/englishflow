@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { PartyPopper, X, Flame } from 'lucide-react';
+import { PartyPopper, X, Flame, TrendingUp } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
 import { fetchLessonExercises, completeLesson } from '../../services/lessonService';
 import {
@@ -9,6 +9,8 @@ import {
   mistakeTypeFor,
 } from '../../services/reviewService';
 import { addStudyMinutes } from '../../services/dashboardService';
+import { levelFromXp } from '../dashboard/achievements';
+import { celebrate, celebrateBig } from '../../lib/celebration';
 import { Flashcard } from './exercises/Flashcard';
 import { MultipleChoice } from './exercises/MultipleChoice';
 import { FillBlank } from './exercises/FillBlank';
@@ -43,6 +45,7 @@ export function LessonPlayer() {
   const [answeredCurrent, setAnsweredCurrent] = useState(false);
   const [finished, setFinished] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [milestone, setMilestone] = useState(null); // 'levelup' | 'streak' | null
 
   // Acumuladores para o SRS e o registro de erros (Fase 2), salvos ao concluir.
   const reviewOutcomes = useRef([]);
@@ -90,7 +93,10 @@ export function LessonPlayer() {
     setSaving(true);
     try {
       const score = Math.round((correctCount / data.exercises.length) * 100);
-      await completeLesson({
+      const oldLevel = levelFromXp(profile.xp_total).level;
+      const oldStreak = profile.streak_current;
+
+      const updatedProfile = await completeLesson({
         userId: user.id,
         lessonId,
         xpReward: data.lesson.xp_reward,
@@ -102,6 +108,12 @@ export function LessonPlayer() {
       await addStudyMinutes((Date.now() - startedAt.current) / 60000);
       await refreshProfile();
       await refreshDueReviews();
+
+      const newLevel = levelFromXp(updatedProfile.xp_total).level;
+      const newStreak = updatedProfile.streak_current;
+      if (newLevel > oldLevel) setMilestone('levelup');
+      else if (newStreak > oldStreak && newStreak % 7 === 0) setMilestone('streak');
+
       setFinished(true);
     } catch (err) {
       setError(err.message);
@@ -109,6 +121,13 @@ export function LessonPlayer() {
       setSaving(false);
     }
   }
+
+  // Confetti ao concluir a lição — burst maior se subiu de nível ou bateu um marco de sequência.
+  useEffect(() => {
+    if (!finished) return;
+    if (milestone) celebrateBig();
+    else celebrate();
+  }, [finished, milestone]);
 
   if (error) {
     return (
@@ -142,6 +161,16 @@ export function LessonPlayer() {
           <p className="mt-1 text-text-muted">
             {correctCount} de {data.exercises.length} corretas
           </p>
+          {milestone === 'levelup' && (
+            <p className="mt-3 flex items-center justify-center gap-2 font-display font-bold text-primary">
+              <TrendingUp size={18} /> Você subiu de nível!
+            </p>
+          )}
+          {milestone === 'streak' && (
+            <p className="mt-3 flex items-center justify-center gap-2 font-display font-bold text-streak">
+              <Flame size={18} /> Sequência de {profile.streak_current} dias!
+            </p>
+          )}
           <button onClick={() => navigate('/')} className="ef-juicy-btn mt-6 px-6">
             Voltar para as lições
           </button>

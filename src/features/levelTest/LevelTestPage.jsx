@@ -11,6 +11,7 @@ import {
 import { generateLevelTest } from '../../services/aiService';
 import { addStudyMinutes } from '../../services/dashboardService';
 import { GENERATED_EXERCISE_COMPONENTS, isValidGeneratedExercise } from '../../lib/generatedExercise';
+import { celebrateBig } from '../../lib/celebration';
 
 export function LevelTestPage() {
   const { user } = useAuth();
@@ -74,6 +75,10 @@ export function LevelTestPage() {
     });
     setResult(outcome);
   }
+
+  useEffect(() => {
+    if (result?.passed) celebrateBig();
+  }, [result]);
 
   if (error) {
     return (

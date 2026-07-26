@@ -10,6 +10,8 @@ import { fetchLevelTests, currentLevelProgress } from '../../services/levelTestS
 import { ACHIEVEMENTS, levelFromXp } from './achievements';
 import { KnowledgeHexGrid } from './KnowledgeHexGrid';
 import { LevelTrack } from './LevelTrack';
+import { hojeISO } from '../../lib/dateUtils';
+import { celebrate } from '../../lib/celebration';
 import {
   isPushSupported,
   isSubscribed,
@@ -89,6 +91,15 @@ export function DashboardPage() {
   const cefr = currentLevelProgress(modules ?? []);
   const cefrPct = cefr.total > 0 ? Math.round((cefr.completed / cefr.total) * 100) : 0;
   const firstName = profile?.display_name?.trim().split(' ')[0];
+
+  // Comemora a meta diária uma vez por dia (flag em localStorage evita repetir a cada visita).
+  useEffect(() => {
+    if (!data || data.minutesToday < goal) return;
+    const key = `ef_goal_hit_${user.id}_${hojeISO()}`;
+    if (localStorage.getItem(key)) return;
+    localStorage.setItem(key, '1');
+    celebrate();
+  }, [data, goal, user.id]);
 
   return (
     <div className="flex min-h-screen flex-col bg-bg text-text min-[760px]:flex-row">
