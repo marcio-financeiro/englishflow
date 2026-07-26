@@ -40,8 +40,7 @@ export function Mascot({ mood = 'idle', size = 72, className = '', tone = 'brand
       width={size}
       height={size}
       className={className}
-      role="img"
-      aria-label="Mascote EnglishFlow"
+      aria-hidden="true"
     >
       <defs>
         <linearGradient id="ef-mascot-grad" x1="0" y1="0" x2="1" y2="1">

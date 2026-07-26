@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { MotionConfig } from 'framer-motion';
 import { AuthProvider } from './features/auth/AuthContext';
 import { ThemeProvider } from './features/theme/ThemeContext';
 import { ProtectedRoute } from './features/auth/ProtectedRoute';
@@ -18,87 +19,89 @@ import { ThemeToggle } from './components/ThemeToggle';
 function App() {
   return (
     <ThemeProvider>
-      <BrowserRouter>
-        <AuthProvider>
-          <ThemeToggle />
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-            <Route
-              path="/onboarding"
-              element={
-                <ProtectedRoute>
-                  <OnboardingPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute>
-                  <LessonList />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/lesson/:lessonId"
-              element={
-                <ProtectedRoute>
-                  <LessonPlayer />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/review"
-              element={
-                <ProtectedRoute>
-                  <ReviewPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/chat"
-              element={
-                <ProtectedRoute>
-                  <ChatPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <DashboardPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/practice"
-              element={
-                <ProtectedRoute>
-                  <PracticePage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/checkpoint"
-              element={
-                <ProtectedRoute>
-                  <CumulativeReviewPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/level-test"
-              element={
-                <ProtectedRoute>
-                  <LevelTestPage />
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
-        </AuthProvider>
-      </BrowserRouter>
+      <MotionConfig reducedMotion="user">
+        <BrowserRouter>
+          <AuthProvider>
+            <ThemeToggle />
+            <Routes>
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+              <Route
+                path="/onboarding"
+                element={
+                  <ProtectedRoute>
+                    <OnboardingPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute>
+                    <LessonList />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/lesson/:lessonId"
+                element={
+                  <ProtectedRoute>
+                    <LessonPlayer />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/review"
+                element={
+                  <ProtectedRoute>
+                    <ReviewPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/chat"
+                element={
+                  <ProtectedRoute>
+                    <ChatPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <DashboardPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/practice"
+                element={
+                  <ProtectedRoute>
+                    <PracticePage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/checkpoint"
+                element={
+                  <ProtectedRoute>
+                    <CumulativeReviewPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/level-test"
+                element={
+                  <ProtectedRoute>
+                    <LevelTestPage />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </AuthProvider>
+        </BrowserRouter>
+      </MotionConfig>
     </ThemeProvider>
   );
 }

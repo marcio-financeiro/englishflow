@@ -40,6 +40,20 @@ PWA de aprendizado de inglês (A1 e A2), gamificado, com IA. Deploy na Vercel (a
 | 11 — Onboarding | Wizard pós-cadastro (tempo diário, objetivo, nível) — prioriza revisão por objetivo | ✅ |
 | 12 — Imagens | Flashcards/múltipla escolha com foto automática da palavra (Unsplash) | ✅ |
 | 13 — Voz neural | Leitura via Azure TTS (SSML, pausas reais) no lugar da Web Speech API | ✅ |
+| 14 — Redesign visual 2.0 | Nova identidade dark-first (tokens, Inter, ícones Lucide), hero card do painel, cards de lição, navegação com indicador animado, confetti em marcos de gamificação, mascote placeholder, gráfico de estatísticas, auditoria final (lint/acessibilidade/responsividade) | ✅ |
+
+---
+
+### Bibliotecas adicionadas na Fase 14 (redesign visual 2.0)
+
+| Lib | Motivo |
+|---|---|
+| `lucide-react` | Ícones SVG consistentes no lugar de emojis inline |
+| `framer-motion` | Microinterações e animações (hero card, indicador de navegação, cards de lição, mascote), com suporte a `prefers-reduced-motion` via `<MotionConfig reducedMotion="user">` |
+| `canvas-confetti` | Celebração visual em lição concluída, subida de nível, marco de sequência, meta diária e teste de nivelamento aprovado |
+| `recharts` | Gráfico de minutos estudados por semana no painel — isolado em `WeekChart.jsx` e carregado via `React.lazy` para não engordar o bundle principal |
+
+Mascote (`src/components/Mascot.jsx`) é um placeholder em SVG + Framer Motion — ainda não usa Lottie porque depende de um asset real (a ser encomendado/gerado separadamente).
 
 ---
 

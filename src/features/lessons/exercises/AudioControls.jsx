@@ -117,7 +117,7 @@ export function AudioControls({ target, example }) {
 
       {recording && (
         <p className="mt-2 text-center text-sm text-text-muted">
-          Ouvindo... fale "{target}" e toque em Parar.
+          Ouvindo... fale &quot;{target}&quot; e toque em Parar.
         </p>
       )}
 

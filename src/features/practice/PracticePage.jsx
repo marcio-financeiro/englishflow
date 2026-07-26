@@ -64,8 +64,8 @@ export function PracticePage() {
   if (error) {
     return (
       <Shell>
-        <p className="text-slate-700">{error}</p>
-        <Link to="/" className="mt-4 inline-block text-indigo-600 hover:underline">
+        <p className="text-text">{error}</p>
+        <Link to="/" className="mt-4 inline-block text-primary hover:underline">
           ← Voltar
         </Link>
       </Shell>
@@ -76,10 +76,10 @@ export function PracticePage() {
     return (
       <Shell>
         <div className="text-center">
-          <p className="flex items-center justify-center gap-2 text-lg text-slate-700">
+          <p className="flex items-center justify-center gap-2 text-lg text-text">
             <Brain size={20} /> Montando sua prática...
           </p>
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-2 text-sm text-text-muted">
             A IA está criando exercícios com base nos seus erros.
           </p>
         </div>
@@ -91,15 +91,15 @@ export function PracticePage() {
     return (
       <Shell>
         <div className="text-center">
-          <h2 className="flex items-center justify-center gap-2 text-2xl font-bold text-slate-900">
+          <h2 className="flex items-center justify-center gap-2 text-2xl font-bold text-text">
             Prática concluída! <PartyPopper size={22} />
           </h2>
-          <p className="mt-1 text-slate-500">
+          <p className="mt-1 text-text-muted">
             {correctCount} de {exercises.length} corretas
           </p>
           <button
             onClick={() => navigate('/')}
-            className="mt-6 rounded bg-indigo-600 px-6 py-2 font-medium text-white hover:bg-indigo-700"
+            className="mt-6 rounded bg-primary px-6 py-2 font-medium text-white hover:brightness-105"
           >
             Voltar
           </button>
@@ -114,21 +114,21 @@ export function PracticePage() {
 
   return (
     <Shell>
-      <div className="mb-2 flex items-center justify-between text-sm text-slate-500">
+      <div className="mb-2 flex items-center justify-between text-sm text-text-muted">
         <span>Praticando seus erros</span>
         <span>
           {index + 1} / {exercises.length}
         </span>
       </div>
 
-      <div className="mb-6 h-2 w-full rounded bg-slate-200">
+      <div className="mb-6 h-2 w-full rounded bg-surface-2">
         <div
-          className="h-2 rounded bg-indigo-600 transition-all"
+          className="h-2 rounded bg-primary transition-all"
           style={{ width: `${progressPct}%` }}
         />
       </div>
 
-      <div className="rounded-lg bg-white p-6 shadow">
+      <div className="rounded-lg border-2 border-border bg-surface p-6 shadow-card">
         <ExerciseComponent
           key={index}
           content={exercise.content}
@@ -139,7 +139,7 @@ export function PracticePage() {
       {answered && (
         <button
           onClick={next}
-          className="mt-6 w-full rounded bg-indigo-600 py-2 font-medium text-white hover:bg-indigo-700"
+          className="mt-6 w-full rounded bg-primary py-2 font-medium text-white hover:brightness-105"
         >
           {index === exercises.length - 1 ? 'Concluir' : 'Próxima'}
         </button>

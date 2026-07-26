@@ -89,18 +89,18 @@ export function ChatPage() {
   if (!scenario) {
     return (
       <Shell>
-        <h2 className="mb-4 text-xl font-bold text-slate-900">Escolha um cenário</h2>
+        <h2 className="mb-4 text-xl font-bold text-text">Escolha um cenário</h2>
         <div className="flex flex-col gap-3">
           {Object.entries(SCENARIOS).map(([key, s]) => (
             <button
               key={key}
               onClick={() => setScenario(key)}
-              className="rounded-lg border border-slate-300 bg-white px-4 py-4 text-left hover:bg-slate-50"
+              className="rounded-lg border-2 border-border bg-surface px-4 py-4 text-left hover:bg-surface-2"
             >
-              <span className="flex items-center gap-2 font-medium text-slate-900">
+              <span className="flex items-center gap-2 font-medium text-text">
                 <s.icon size={18} /> {s.label}
               </span>
-              <span className="text-sm text-slate-500">{s.description}</span>
+              <span className="text-sm text-text-muted">{s.description}</span>
             </button>
           ))}
         </div>
@@ -112,11 +112,11 @@ export function ChatPage() {
   if (feedback) {
     return (
       <Shell>
-        <div className="rounded-lg bg-white p-6 shadow">
-          <h2 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
+        <div className="rounded-lg border-2 border-border bg-surface p-6 shadow-card">
+          <h2 className="flex items-center gap-2 text-2xl font-bold text-text">
             Conversa concluída! <PartyPopper size={22} />
           </h2>
-          <p className="mt-1 text-lg text-indigo-600">Nota: {feedback.score}/100</p>
+          <p className="mt-1 text-lg text-primary">Nota: {feedback.score}/100</p>
 
           <FeedbackList
             title="Pontos a melhorar"
@@ -136,7 +136,7 @@ export function ChatPage() {
 
           <Link
             to="/"
-            className="mt-6 inline-block rounded bg-indigo-600 px-6 py-2 font-medium text-white hover:bg-indigo-700"
+            className="mt-6 inline-block rounded bg-primary px-6 py-2 font-medium text-white hover:brightness-105"
           >
             Voltar
           </Link>
@@ -149,17 +149,17 @@ export function ChatPage() {
   return (
     <Shell>
       <div className="mb-4 flex items-center justify-between">
-        <span className="font-medium text-slate-700">{SCENARIOS[scenario].label}</span>
+        <span className="font-medium text-text">{SCENARIOS[scenario].label}</span>
         <button
           onClick={endConversation}
           disabled={ending || messages.length === 0}
-          className="rounded bg-emerald-600 px-3 py-1 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-50"
+          className="rounded bg-success px-3 py-1 text-sm font-medium text-white hover:brightness-105 disabled:opacity-50"
         >
           {ending ? 'Analisando...' : 'Encerrar e ver feedback'}
         </button>
       </div>
 
-      <div className="mb-4 flex flex-col gap-2 rounded-lg bg-white p-4 shadow">
+      <div className="mb-4 flex flex-col gap-2 rounded-lg border-2 border-border bg-surface p-4 shadow-card">
         <Bubble role="assistant">{SCENARIOS[scenario].greeting}</Bubble>
         {messages.map((m, i) => (
           <Bubble key={i} role={m.role}>
@@ -169,7 +169,7 @@ export function ChatPage() {
         {sending && <Bubble role="assistant">...</Bubble>}
       </div>
 
-      {error && <p className="mb-2 text-sm text-red-600">{error}</p>}
+      {error && <p className="mb-2 text-sm text-error">{error}</p>}
 
       <div className="flex gap-2">
         <input
@@ -179,12 +179,12 @@ export function ChatPage() {
           disabled={sending}
           maxLength={MAX_LEN}
           placeholder="Escreva em inglês..."
-          className="flex-1 rounded border border-slate-300 p-2 focus:border-indigo-500 focus:outline-none disabled:bg-slate-50"
+          className="flex-1 rounded border-2 border-border bg-surface p-2 text-text focus:border-primary focus:outline-none disabled:bg-surface-2"
         />
         <button
           onClick={send}
           disabled={sending || !input.trim()}
-          className="rounded bg-indigo-600 px-4 py-2 font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+          className="rounded bg-primary px-4 py-2 font-medium text-white hover:brightness-105 disabled:opacity-50"
         >
           Enviar
         </button>
@@ -199,8 +199,8 @@ function Bubble({ role, children }) {
     <div
       className={`max-w-[80%] rounded-lg px-3 py-2 text-sm ${
         mine
-          ? 'self-end bg-indigo-600 text-white'
-          : 'self-start bg-slate-100 text-slate-800'
+          ? 'self-end bg-primary text-white'
+          : 'self-start bg-surface-2 text-text'
       }`}
     >
       {children}
@@ -212,8 +212,8 @@ function FeedbackList({ title, items, render }) {
   if (!Array.isArray(items) || items.length === 0) return null;
   return (
     <div className="mt-4">
-      <h3 className="text-sm font-semibold text-slate-900">{title}</h3>
-      <ul className="mt-1 space-y-1 text-sm text-slate-600">
+      <h3 className="text-sm font-semibold text-text">{title}</h3>
+      <ul className="mt-1 space-y-1 text-sm text-text-muted">
         {items.map((item, i) => (
           <li key={i}>• {render(item)}</li>
         ))}

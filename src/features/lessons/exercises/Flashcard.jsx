@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { AudioControls } from './AudioControls';
 import { VocabImage } from './VocabImage';
 
-export function Flashcard({ content, vocabulary, onAnswer }) {
+export function Flashcard({ vocabulary, onAnswer }) {
   const [revealed, setRevealed] = useState(false);
 
   // Reseta ao trocar de palavra (defesa extra caso o componente seja reutilizado)
