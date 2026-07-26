@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { BookOpen, Home, Repeat, MessageCircle, Flame, Star, LogOut } from 'lucide-react';
 import { useAuth } from '../features/auth/AuthContext';
 
@@ -28,12 +29,19 @@ function NavLinks({ dueReviewCount }) {
           <Link
             key={item.to}
             to={item.to}
-            className={`relative flex items-center gap-3 rounded-2xl px-3 py-3 font-semibold transition-colors ${
-              active ? 'bg-primary-soft text-primary-dark' : 'text-text-muted hover:bg-surface-2'
+            className={`relative flex items-center gap-3 rounded-2xl px-3 py-3 font-semibold transition-colors active:scale-[0.98] ${
+              active ? 'text-primary-dark' : 'text-text-muted hover:bg-surface-2'
             }`}
           >
-            <item.icon size={20} className="flex-shrink-0" />
-            <span>{item.label}</span>
+            {active && (
+              <motion.span
+                layoutId="desktop-nav-pill"
+                className="absolute inset-0 rounded-2xl bg-primary-soft"
+                transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+              />
+            )}
+            <item.icon size={20} className="relative flex-shrink-0" />
+            <span className="relative">{item.label}</span>
             {item.badge && dueReviewCount > 0 && (
               <span className="absolute right-2 top-2 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-streak px-1 text-xs font-bold text-white">
                 {dueReviewCount}
@@ -80,13 +88,20 @@ function BottomTabBar({ dueReviewCount, signOut }) {
 
   return (
     <nav
-      className="fixed inset-x-0 bottom-0 z-40 flex border-t-2 border-border bg-surface pb-[env(safe-area-inset-bottom)] min-[760px]:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 flex border-t-2 border-border bg-surface/85 pb-[env(safe-area-inset-bottom)] backdrop-blur-md min-[760px]:hidden"
       aria-label="Navegação principal"
     >
       {tabs.map((item) => {
         const active = item.to && location.pathname === item.to;
         const content = (
           <>
+            {active && (
+              <motion.span
+                layoutId="mobile-nav-indicator"
+                className="absolute top-0 h-0.5 w-8 rounded-full bg-primary"
+                transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+              />
+            )}
             <span className="relative">
               <item.icon size={22} />
               {item.badge && dueReviewCount > 0 && (
@@ -96,7 +111,7 @@ function BottomTabBar({ dueReviewCount, signOut }) {
             <span className="text-[11px] font-semibold leading-none">{item.label}</span>
           </>
         );
-        const className = `flex flex-1 flex-col items-center justify-center gap-1 py-2.5 ${
+        const className = `relative flex flex-1 flex-col items-center justify-center gap-1 py-2.5 transition-colors active:scale-95 ${
           active ? 'text-primary' : 'text-text-muted'
         }`;
 
@@ -129,7 +144,7 @@ export function Sidebar() {
       </aside>
 
       {/* Mobile: logo fixa no topo + navegação fixa embaixo */}
-      <header className="sticky top-0 z-30 flex items-center border-b-2 border-border bg-surface px-4 py-3 min-[760px]:hidden">
+      <header className="sticky top-0 z-30 flex items-center border-b-2 border-border bg-surface/85 px-4 py-3 backdrop-blur-md min-[760px]:hidden">
         <Brand />
       </header>
       <BottomTabBar dueReviewCount={dueReviewCount} signOut={signOut} />
