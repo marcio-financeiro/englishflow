@@ -83,7 +83,7 @@ Estrutura de longo prazo do curso, baseada no framework CEFR (o mesmo usado em c
 |---|---|---|---|
 | A1 | Iniciante | 15 | 15 ✅ |
 | A2 | Básico | 15 | 15 ✅ |
-| B1 | Intermediário | 20 | 3 |
+| B1 | Intermediário | 20 | 3 (+2 escritos, pendentes de aplicar) |
 | B2 | Intermediário Avançado | 20 | 0 |
 | C1 | Avançado | 20 | 0 |
 | C2 | Proficiência | 20 | 0 |
@@ -92,7 +92,7 @@ Estrutura de longo prazo do curso, baseada no framework CEFR (o mesmo usado em c
 
 - **A1 (15/15 ✅ completo):** Alfabeto e pronúncia (pendente — não é sobre vocabulário/gramática, fica pra quando fizer sentido, não conta como módulo), Greetings ✅, Numbers/Colors/Family ✅, Verb to be ✅, Present Simple ✅, Food ✅, Months & Seasons ✅ (dias da semana já cobertos no A2 "Daily Routines"), Directions ✅, Clothes & Shopping ✅, Body & Health ✅, House & Furniture ✅, Weather ✅, Sports & Hobbies ✅, Technology & Devices ✅, Transportation ✅, Jobs & Workplace ✅
 - **A2 (15/15 ✅ completo):** Daily Routines ✅ (já inclui dias da semana), Past Simple ✅ (feito como "Past Experiences"), Future (going to/will) ✅, Comparatives ✅, Countable x Uncountable ✅, Prepositions ✅, Daily conversations ✅, Shopping ✅, Travel ✅, Making Plans & Invitations ✅, Advice & Suggestions ✅, Feelings & Personality ✅, Restaurants & Dining Out ✅, Housing & Neighborhood ✅, Technology & Internet ✅
-- **B1 (3/20):** Present Perfect ✅, Modal verbs ✅, Passive Voice ✅, Reported Speech (introdução), Phrasal verbs básicos, Writing de e-mails, Listening intermediário
+- **B1 (3/20 aplicados, +2 escritos pendentes):** Present Perfect ✅, Modal verbs ✅, Passive Voice ✅, Reported Speech (introdução) — escrito, pendente de aplicar, Phrasal verbs básicos — escrito, pendente de aplicar, Writing de e-mails, Listening intermediário
 - **B2:** Conditionals, Reported Speech completo, Passive avançada, Relative clauses, Idioms, Debate e argumentação, Business English básico
 - **C1:** Vocabulário acadêmico, Escrita formal, Expressões idiomáticas avançadas, Pronúncia refinada, Apresentações profissionais, Negociação
 - **C2:** Nuances da linguagem, Literatura, Humor e sarcasmo, Diferentes sotaques, Escrita avançada, Preparação para exames de proficiência (IELTS, TOEFL, Cambridge C2)
@@ -195,6 +195,8 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 - `042_seed_b1_present_perfect.sql` — conteúdo B1 (módulo 1 "Present Perfect", 5 lições, 30 palavras, 71 exercícios) — **abre o B1**
 - `043_seed_b1_modal_verbs.sql` — conteúdo B1 (módulo 2 "Modal Verbs", 5 lições, 30 palavras, 71 exercícios)
 - `044_seed_b1_passive_voice.sql` — conteúdo B1 (módulo 3 "Passive Voice", 5 lições, 30 palavras, 71 exercícios)
+- `045_seed_b1_reported_speech.sql` — conteúdo B1 (módulo 4 "Reported Speech", 5 lições, 30 palavras, 71 exercícios)
+- `046_seed_b1_phrasal_verbs.sql` — conteúdo B1 (módulo 5 "Phrasal Verbs", 5 lições, 30 palavras, 71 exercícios)
 
 **Edge Function `ai-proxy`:** tasks `correct_writing`, `chat`, `chat_feedback`, `generate_practice`, `generate_cumulative_review`, `generate_level_test`. Valida JWT, aplica rate limit, chave em secret `ANTHROPIC_API_KEY`. Modelo `claude-sonnet-5`.
 
@@ -268,8 +270,9 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 
 ## Próximos passos
 
-**A1 e A2 completos (15/15 módulos cada). B1 em andamento (3/20 módulos).** Próximo passo: confirmar com o Márcio o próximo tema do B1 (Reported Speech introdução é o próximo da lista de referência) antes de escrever mais conteúdo — mesma abordagem de lotes pequenos.
+**A1 e A2 completos (15/15 módulos cada). B1 em andamento (5/20 módulos, faltam aplicar os 2 últimos no Supabase).** Próximo passo: confirmar com o Márcio o próximo lote do B1 (Writing de e-mails + Listening intermediário fecham a lista de referência atual) antes de escrever mais conteúdo — mesma abordagem de lotes de 2 em 2.
 
+- Módulo B1 "Reported Speech" + módulo B1 "Phrasal Verbs" — ✅ escrito, aguardando aplicação no Supabase — **B1 em 5/20**
 - Módulo B1 "Passive Voice" — ✅ feito e aplicado no Supabase — **B1 em 3/20**
 - Módulo B1 "Present Perfect" + módulo B1 "Modal Verbs" — ✅ feito e aplicado no Supabase — **abre o B1 (2/20)**
 - Módulo A1 "Jobs & Workplace" + módulo A2 "Technology & Internet" — ✅ feito (PR #39) — **A1 e A2 em 15/15**
