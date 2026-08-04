@@ -60,7 +60,7 @@ Mascote (`src/components/Mascot.jsx`) é um placeholder em SVG + Framer Motion �
 ## Funcionalidades
 
 - **Auth:** login, cadastro, rota protegida, perfil automático.
-- **Lições:** módulos/lições com progresso (cadeado/em andamento/concluída); 8 tipos de exercício (flashcard, múltipla escolha, completar lacuna, ordenar palavras, associação, escrita/typing, ditado, listening).
+- **Lições:** módulos/lições com progresso (cadeado/em andamento/concluída); 9 tipos de exercício (flashcard, múltipla escolha, completar lacuna, ordenar palavras, associação, escrita/typing, ditado, listening, leitura).
 - **Revisão espaçada (SM-2):** palavras vistas entram na fila; autoavaliação Errei/Difícil/Fácil; badge de pendências.
 - **IA:** correção de escrita em pt-BR (erros, versão natural, nota); chat por cenário (Garçom / Entrevista / Conversa livre) com feedback final. Rate limit de 50 chamadas/dia.
 - **Áudio:** ouvir palavra/frase com voz neural (Azure TTS via `tts-proxy`, pausas reais em vírgulas/pontos via SSML; cai pra Web Speech API nativa se a Azure falhar); prática de fala com score de pronúncia **por fonema** (Azure Pronunciation Assessment — grava áudio real via `wavRecorder.js`, mostra cada fonema colorido por precisão + nota geral), toggle Falar/Parar; ditado e listening usam a mesma leitura neural.
@@ -83,7 +83,7 @@ Estrutura de longo prazo do curso, baseada no framework CEFR (o mesmo usado em c
 |---|---|---|---|
 | A1 | Iniciante | 15 | 15 ✅ |
 | A2 | Básico | 15 | 15 ✅ |
-| B1 | Intermediário | 20 | 0 |
+| B1 | Intermediário | 20 | 2 |
 | B2 | Intermediário Avançado | 20 | 0 |
 | C1 | Avançado | 20 | 0 |
 | C2 | Proficiência | 20 | 0 |
@@ -92,7 +92,7 @@ Estrutura de longo prazo do curso, baseada no framework CEFR (o mesmo usado em c
 
 - **A1 (15/15 ✅ completo):** Alfabeto e pronúncia (pendente — não é sobre vocabulário/gramática, fica pra quando fizer sentido, não conta como módulo), Greetings ✅, Numbers/Colors/Family ✅, Verb to be ✅, Present Simple ✅, Food ✅, Months & Seasons ✅ (dias da semana já cobertos no A2 "Daily Routines"), Directions ✅, Clothes & Shopping ✅, Body & Health ✅, House & Furniture ✅, Weather ✅, Sports & Hobbies ✅, Technology & Devices ✅, Transportation ✅, Jobs & Workplace ✅
 - **A2 (15/15 ✅ completo):** Daily Routines ✅ (já inclui dias da semana), Past Simple ✅ (feito como "Past Experiences"), Future (going to/will) ✅, Comparatives ✅, Countable x Uncountable ✅, Prepositions ✅, Daily conversations ✅, Shopping ✅, Travel ✅, Making Plans & Invitations ✅, Advice & Suggestions ✅, Feelings & Personality ✅, Restaurants & Dining Out ✅, Housing & Neighborhood ✅, Technology & Internet ✅
-- **B1:** Present Perfect, Modal verbs, Passive Voice, Reported Speech (introdução), Phrasal verbs básicos, Writing de e-mails, Listening intermediário
+- **B1 (2/20):** Present Perfect ✅, Modal verbs ✅, Passive Voice, Reported Speech (introdução), Phrasal verbs básicos, Writing de e-mails, Listening intermediário
 - **B2:** Conditionals, Reported Speech completo, Passive avançada, Relative clauses, Idioms, Debate e argumentação, Business English básico
 - **C1:** Vocabulário acadêmico, Escrita formal, Expressões idiomáticas avançadas, Pronúncia refinada, Apresentações profissionais, Negociação
 - **C2:** Nuances da linguagem, Literatura, Humor e sarcasmo, Diferentes sotaques, Escrita avançada, Preparação para exames de proficiência (IELTS, TOEFL, Cambridge C2)
@@ -107,7 +107,7 @@ Estrutura de longo prazo do curso, baseada no framework CEFR (o mesmo usado em c
 | Listening / Speaking / Pronúncia | dictation, listening, `AudioControls` (TTS neural Azure + avaliação de pronúncia por fonema) |
 | Revisão espaçada | Já existe (SM-2, `ReviewPage`) |
 | Missão prática (conversação) | Já existe via `ChatPage` (cenários Garçom / Entrevista / Conversa livre) |
-| Leitura (texto curto + perguntas) | **Não existe ainda** — fica como possível novo tipo de exercício quando fizer sentido (a partir do B1, onde "compreender textos curtos" aparece na classificação CEFR) |
+| Leitura (texto curto + perguntas) | Já existe — tipo de exercício `reading` (migration 039), retrofitado em todo A1/A2 e já usado desde o primeiro módulo do B1 |
 
 ---
 
@@ -188,6 +188,12 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 - `035_seed_a1_jobs_workplace.sql` — conteúdo A1 (módulo 15 "Jobs & Workplace", 5 lições, 30 palavras) — **completa A1 15/15**
 - `036_seed_a2_technology_internet.sql` — conteúdo A2 (módulo 15 "Technology & Internet", 5 lições, 30 palavras) — **completa A2 15/15**
 - `037_level_tests.sql` — tabela `level_tests` (registra tentativas do Teste de Nivelamento entre níveis)
+- `038_pronunciation_attempts.sql` — histórico de tentativas de pronúncia
+- `039_reading_exercise_type.sql` — novo tipo de exercício `reading` (leitura + pergunta)
+- `040_reading_exercise_a1_remaining.sql` — backfill de exercícios `reading` no restante do A1
+- `041_reading_exercise_a2_all.sql` — backfill de exercícios `reading` em todo o A2
+- `042_seed_b1_present_perfect.sql` — conteúdo B1 (módulo 1 "Present Perfect", 5 lições, 30 palavras, 71 exercícios) — **abre o B1**
+- `043_seed_b1_modal_verbs.sql` — conteúdo B1 (módulo 2 "Modal Verbs", 5 lições, 30 palavras, 71 exercícios)
 
 **Edge Function `ai-proxy`:** tasks `correct_writing`, `chat`, `chat_feedback`, `generate_practice`, `generate_cumulative_review`, `generate_level_test`. Valida JWT, aplica rate limit, chave em secret `ANTHROPIC_API_KEY`. Modelo `claude-sonnet-5`.
 
@@ -261,8 +267,9 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 
 ## Próximos passos
 
-**A1 e A2 completos (15/15 módulos cada)** — ver seção **Roadmap de conteúdo (CEFR A1 → C2)** acima. Próximo passo: definir com o Márcio o plano de módulos do **B1** (20 módulos-alvo) antes de começar a escrever conteúdo novo — mesma abordagem usada em A1/A2 (lotes pequenos, confirmar antes de gerar).
+**A1 e A2 completos (15/15 módulos cada). B1 iniciado (2/20 módulos).** Próximo passo: confirmar com o Márcio o próximo tema do B1 (Passive Voice é o próximo da lista de referência) antes de escrever mais conteúdo — mesma abordagem de lotes pequenos.
 
+- Módulo B1 "Present Perfect" + módulo B1 "Modal Verbs" — ✅ feito e aplicado no Supabase — **abre o B1 (2/20)**
 - Módulo A1 "Jobs & Workplace" + módulo A2 "Technology & Internet" — ✅ feito (PR #39) — **A1 e A2 em 15/15**
 - Módulo A1 "Transportation" + módulo A2 "Housing & Neighborhood" — ✅ feito (PR #38)
 - Módulo A1 "Technology & Devices" + módulo A2 "Restaurants & Dining Out" — ✅ feito (PR #37)
