@@ -83,7 +83,7 @@ Estrutura de longo prazo do curso, baseada no framework CEFR (o mesmo usado em c
 |---|---|---|---|
 | A1 | Iniciante | 15 | 15 ✅ |
 | A2 | Básico | 15 | 15 ✅ |
-| B1 | Intermediário | 20 | 3 (+2 escritos, pendentes de aplicar) |
+| B1 | Intermediário | 20 | 5 ✅ |
 | B2 | Intermediário Avançado | 20 | 0 |
 | C1 | Avançado | 20 | 0 |
 | C2 | Proficiência | 20 | 0 |
@@ -92,7 +92,7 @@ Estrutura de longo prazo do curso, baseada no framework CEFR (o mesmo usado em c
 
 - **A1 (15/15 ✅ completo):** Alfabeto e pronúncia (pendente — não é sobre vocabulário/gramática, fica pra quando fizer sentido, não conta como módulo), Greetings ✅, Numbers/Colors/Family ✅, Verb to be ✅, Present Simple ✅, Food ✅, Months & Seasons ✅ (dias da semana já cobertos no A2 "Daily Routines"), Directions ✅, Clothes & Shopping ✅, Body & Health ✅, House & Furniture ✅, Weather ✅, Sports & Hobbies ✅, Technology & Devices ✅, Transportation ✅, Jobs & Workplace ✅
 - **A2 (15/15 ✅ completo):** Daily Routines ✅ (já inclui dias da semana), Past Simple ✅ (feito como "Past Experiences"), Future (going to/will) ✅, Comparatives ✅, Countable x Uncountable ✅, Prepositions ✅, Daily conversations ✅, Shopping ✅, Travel ✅, Making Plans & Invitations ✅, Advice & Suggestions ✅, Feelings & Personality ✅, Restaurants & Dining Out ✅, Housing & Neighborhood ✅, Technology & Internet ✅
-- **B1 (3/20 aplicados, +2 escritos pendentes):** Present Perfect ✅, Modal verbs ✅, Passive Voice ✅, Reported Speech (introdução) — escrito, pendente de aplicar, Phrasal verbs básicos — escrito, pendente de aplicar, Writing de e-mails, Listening intermediário
+- **B1 (5/20):** Present Perfect ✅, Modal verbs ✅, Passive Voice ✅, Reported Speech (introdução) ✅, Phrasal verbs básicos ✅, Writing de e-mails, Listening intermediário
 - **B2:** Conditionals, Reported Speech completo, Passive avançada, Relative clauses, Idioms, Debate e argumentação, Business English básico
 - **C1:** Vocabulário acadêmico, Escrita formal, Expressões idiomáticas avançadas, Pronúncia refinada, Apresentações profissionais, Negociação
 - **C2:** Nuances da linguagem, Literatura, Humor e sarcasmo, Diferentes sotaques, Escrita avançada, Preparação para exames de proficiência (IELTS, TOEFL, Cambridge C2)
@@ -270,9 +270,9 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 
 ## Próximos passos
 
-**A1 e A2 completos (15/15 módulos cada). B1 em andamento (5/20 módulos, faltam aplicar os 2 últimos no Supabase).** Próximo passo: confirmar com o Márcio o próximo lote do B1 (Writing de e-mails + Listening intermediário fecham a lista de referência atual) antes de escrever mais conteúdo — mesma abordagem de lotes de 2 em 2.
+**A1 e A2 completos (15/15 módulos cada). B1 em andamento (5/20 módulos, todos aplicados no Supabase).** Próximo passo: confirmar com o Márcio o próximo lote do B1 (Writing de e-mails + Listening intermediário fecham a lista de referência atual) antes de escrever mais conteúdo — mesma abordagem de lotes de 2 em 2.
 
-- Módulo B1 "Reported Speech" + módulo B1 "Phrasal Verbs" — ✅ escrito, aguardando aplicação no Supabase — **B1 em 5/20**
+- Módulo B1 "Reported Speech" + módulo B1 "Phrasal Verbs" — ✅ feito e aplicado no Supabase — **B1 em 5/20**
 - Módulo B1 "Passive Voice" — ✅ feito e aplicado no Supabase — **B1 em 3/20**
 - Módulo B1 "Present Perfect" + módulo B1 "Modal Verbs" — ✅ feito e aplicado no Supabase — **abre o B1 (2/20)**
 - Módulo A1 "Jobs & Workplace" + módulo A2 "Technology & Internet" — ✅ feito (PR #39) — **A1 e A2 em 15/15**
