@@ -83,7 +83,7 @@ Estrutura de longo prazo do curso, baseada no framework CEFR (o mesmo usado em c
 |---|---|---|---|
 | A1 | Iniciante | 15 | 15 ✅ |
 | A2 | Básico | 15 | 15 ✅ |
-| B1 | Intermediário | 20 | 5 (+2 escritos, pendentes de aplicar) |
+| B1 | Intermediário | 20 | 7 ✅ |
 | B2 | Intermediário Avançado | 20 | 0 |
 | C1 | Avançado | 20 | 0 |
 | C2 | Proficiência | 20 | 0 |
@@ -92,7 +92,7 @@ Estrutura de longo prazo do curso, baseada no framework CEFR (o mesmo usado em c
 
 - **A1 (15/15 ✅ completo):** Alfabeto e pronúncia (pendente — não é sobre vocabulário/gramática, fica pra quando fizer sentido, não conta como módulo), Greetings ✅, Numbers/Colors/Family ✅, Verb to be ✅, Present Simple ✅, Food ✅, Months & Seasons ✅ (dias da semana já cobertos no A2 "Daily Routines"), Directions ✅, Clothes & Shopping ✅, Body & Health ✅, House & Furniture ✅, Weather ✅, Sports & Hobbies ✅, Technology & Devices ✅, Transportation ✅, Jobs & Workplace ✅
 - **A2 (15/15 ✅ completo):** Daily Routines ✅ (já inclui dias da semana), Past Simple ✅ (feito como "Past Experiences"), Future (going to/will) ✅, Comparatives ✅, Countable x Uncountable ✅, Prepositions ✅, Daily conversations ✅, Shopping ✅, Travel ✅, Making Plans & Invitations ✅, Advice & Suggestions ✅, Feelings & Personality ✅, Restaurants & Dining Out ✅, Housing & Neighborhood ✅, Technology & Internet ✅
-- **B1 (5/20 aplicados, +2 escritos pendentes):** Present Perfect ✅, Modal verbs ✅, Passive Voice ✅, Reported Speech (introdução) ✅, Phrasal verbs básicos ✅, Writing de e-mails — escrito, pendente de aplicar, Listening intermediário — escrito, pendente de aplicar
+- **B1 (7/20 — leva de referência completa):** Present Perfect ✅, Modal verbs ✅, Passive Voice ✅, Reported Speech (introdução) ✅, Phrasal verbs básicos ✅, Writing de e-mails ✅, Listening intermediário ✅
 - **B2:** Conditionals, Reported Speech completo, Passive avançada, Relative clauses, Idioms, Debate e argumentação, Business English básico
 - **C1:** Vocabulário acadêmico, Escrita formal, Expressões idiomáticas avançadas, Pronúncia refinada, Apresentações profissionais, Negociação
 - **C2:** Nuances da linguagem, Literatura, Humor e sarcasmo, Diferentes sotaques, Escrita avançada, Preparação para exames de proficiência (IELTS, TOEFL, Cambridge C2)
@@ -272,9 +272,9 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 
 ## Próximos passos
 
-**A1 e A2 completos (15/15 módulos cada). B1 em andamento (5/20 módulos aplicados, +2 escritos aguardando aplicar).** A leva atual de temas de referência do B1 está completa (Present Perfect, Modal Verbs, Passive Voice, Reported Speech, Phrasal Verbs, Email Writing, Listening Intermediário). Próximo passo: confirmar com o Márcio novos temas pra continuar o B1 rumo aos 20 módulos (ex: Conditionals, Relative Clauses, Business English básico — temas hoje listados no B2, mas que também cabem no B1 dependendo da profundidade).
+**A1 e A2 completos (15/15 módulos cada). B1 em andamento (7/20 módulos, todos aplicados no Supabase).** A leva atual de temas de referência do B1 está completa (Present Perfect, Modal Verbs, Passive Voice, Reported Speech, Phrasal Verbs, Email Writing, Listening Intermediário). Próximo passo: confirmar com o Márcio novos temas pra continuar o B1 rumo aos 20 módulos (ex: Conditionals, Relative Clauses, Business English básico — temas hoje listados no B2, mas que também cabem no B1 dependendo da profundidade).
 
-- Módulo B1 "Email Writing" + módulo B1 "Listening Intermediário" — ✅ escrito, aguardando aplicação no Supabase — **B1 em 7/20 quando aplicado**
+- Módulo B1 "Email Writing" + módulo B1 "Listening Intermediário" — ✅ feito e aplicado no Supabase — **B1 em 7/20, fecha a leva de referência atual**
 - Módulo B1 "Reported Speech" + módulo B1 "Phrasal Verbs" — ✅ feito e aplicado no Supabase — **B1 em 5/20**
 - Módulo B1 "Passive Voice" — ✅ feito e aplicado no Supabase — **B1 em 3/20**
 - Módulo B1 "Present Perfect" + módulo B1 "Modal Verbs" — ✅ feito e aplicado no Supabase — **abre o B1 (2/20)**
