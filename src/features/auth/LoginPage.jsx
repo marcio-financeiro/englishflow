@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Eye, EyeOff } from 'lucide-react';
 import { useAuth } from './AuthContext';
 import { AuthBrandPanel } from './AuthBrandPanel';
 
@@ -8,6 +9,7 @@ export function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -52,13 +54,23 @@ export function LoginPage() {
           />
 
           <label className="mb-1 block text-sm font-semibold text-text">Senha</label>
-          <input
-            type="password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="mb-6 w-full rounded-[14px] border-2 border-border bg-surface px-4 py-3 text-text outline-none transition-colors focus:border-primary"
-          />
+          <div className="relative mb-6">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full rounded-[14px] border-2 border-border bg-surface px-4 py-3 pr-11 text-text outline-none transition-colors focus:border-primary"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text"
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
 
           {error && <p className="mb-4 text-sm text-error">{error}</p>}
 
