@@ -2,7 +2,7 @@
 
 > Documento vivo. Atualizado a cada avanço para servir de referência rápida do que existe.
 >
-> **Última atualização:** 2026-07-24 · **Estado:** MVP (Fases 0–6) em produção · Redesign visual completo · seguindo roadmap CEFR (A1→C2, ver seção abaixo).
+> **Última atualização:** 2026-08-05 · **Estado:** MVP (Fases 0–6) em produção · Redesign visual completo · seguindo roadmap CEFR (A1→C2, ver seção abaixo).
 
 PWA de aprendizado de inglês (A1 e A2), gamificado, com IA. Deploy na Vercel (auto-deploy da `main`), banco no Supabase.
 
@@ -83,7 +83,7 @@ Estrutura de longo prazo do curso, baseada no framework CEFR (o mesmo usado em c
 |---|---|---|---|
 | A1 | Iniciante | 15 | 15 ✅ |
 | A2 | Básico | 15 | 15 ✅ |
-| B1 | Intermediário | 20 | 11 (+2 escritos, pendentes de aplicar) |
+| B1 | Intermediário | 20 | 13 |
 | B2 | Intermediário Avançado | 20 | 0 |
 | C1 | Avançado | 20 | 0 |
 | C2 | Proficiência | 20 | 0 |
@@ -92,7 +92,7 @@ Estrutura de longo prazo do curso, baseada no framework CEFR (o mesmo usado em c
 
 - **A1 (15/15 ✅ completo):** Alfabeto e pronúncia (pendente — não é sobre vocabulário/gramática, fica pra quando fizer sentido, não conta como módulo), Greetings ✅, Numbers/Colors/Family ✅, Verb to be ✅, Present Simple ✅, Food ✅, Months & Seasons ✅ (dias da semana já cobertos no A2 "Daily Routines"), Directions ✅, Clothes & Shopping ✅, Body & Health ✅, House & Furniture ✅, Weather ✅, Sports & Hobbies ✅, Technology & Devices ✅, Transportation ✅, Jobs & Workplace ✅
 - **A2 (15/15 ✅ completo):** Daily Routines ✅ (já inclui dias da semana), Past Simple ✅ (feito como "Past Experiences"), Future (going to/will) ✅, Comparatives ✅, Countable x Uncountable ✅, Prepositions ✅, Daily conversations ✅, Shopping ✅, Travel ✅, Making Plans & Invitations ✅, Advice & Suggestions ✅, Feelings & Personality ✅, Restaurants & Dining Out ✅, Housing & Neighborhood ✅, Technology & Internet ✅
-- **B1 (11/20 aplicados, +2 escritos pendentes):** Present Perfect ✅, Modal verbs ✅, Passive Voice ✅, Reported Speech (introdução) ✅, Phrasal verbs básicos ✅, Writing de e-mails ✅, Listening intermediário ✅, Conditionals (1st & 2nd) ✅, Relative Clauses (introdução) ✅, Idioms ✅, Business English básico ✅, Reported Speech completo — escrito, pendente de aplicar, Passive avançada — escrito, pendente de aplicar
+- **B1 (13/20 ✅ aplicados):** Present Perfect ✅, Modal verbs ✅, Passive Voice ✅, Reported Speech (introdução) ✅, Phrasal verbs básicos ✅, Writing de e-mails ✅, Listening intermediário ✅, Conditionals (1st & 2nd) ✅, Relative Clauses (introdução) ✅, Idioms ✅, Business English básico ✅, Reported Speech completo ✅, Passive avançada ✅
 - **B2:** Debate e argumentação (Conditionals, Relative Clauses, Idioms, Business English básico, Reported Speech completo e Passive avançada adiantados pro B1 — ver acima)
 - **C1:** Vocabulário acadêmico, Escrita formal, Expressões idiomáticas avançadas, Pronúncia refinada, Apresentações profissionais, Negociação
 - **C2:** Nuances da linguagem, Literatura, Humor e sarcasmo, Diferentes sotaques, Escrita avançada, Preparação para exames de proficiência (IELTS, TOEFL, Cambridge C2)
@@ -278,9 +278,9 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 
 ## Próximos passos
 
-**A1 e A2 completos (15/15 módulos cada). B1 em andamento (11/20 módulos aplicados, +2 escritos aguardando aplicar).** Depois de fechar a leva de referência original, avançamos com seis temas adiantados do B2 (Conditionals, Relative Clauses, Idioms, Business English básico, Reported Speech completo e Passive avançada, com profundidade B1). Próximo passo: confirmar com o Márcio o próximo lote pra continuar rumo aos 20 módulos do B1 (ex: Debate e argumentação, temas do C1 adiantados, ou revisão cumulativa dos módulos já feitos).
+**A1 e A2 completos (15/15 módulos cada). B1 em andamento (13/20 módulos aplicados).** Depois de fechar a leva de referência original, avançamos com seis temas adiantados do B2 (Conditionals, Relative Clauses, Idioms, Business English básico, Reported Speech completo e Passive avançada, com profundidade B1). Próximo passo: confirmar com o Márcio o próximo lote pra continuar rumo aos 20 módulos do B1 (ex: Debate e argumentação, temas do C1 adiantados, ou revisão cumulativa dos módulos já feitos).
 
-- Módulo B1 "Reported Speech Completo" + módulo B1 "Passive Avançada" — ✅ escrito, aguardando aplicação no Supabase — **B1 em 13/20 quando aplicado**
+- Módulo B1 "Reported Speech Completo" + módulo B1 "Passive Avançada" — ✅ feito e aplicado no Supabase — **B1 em 13/20**
 - Módulo B1 "Idioms" + módulo B1 "Business English" (básico) — ✅ feito e aplicado no Supabase — **B1 em 11/20**
 - Módulo B1 "Conditionals" (1st & 2nd) + módulo B1 "Relative Clauses" (introdução) — ✅ feito e aplicado no Supabase — **B1 em 9/20**
 - Módulo B1 "Email Writing" + módulo B1 "Listening Intermediário" — ✅ feito e aplicado no Supabase — **B1 em 7/20, fecha a leva de referência atual**
