@@ -85,7 +85,7 @@ Estrutura de longo prazo do curso, baseada no framework CEFR (o mesmo usado em c
 | A1 | Iniciante | 15 | 15 ✅ |
 | A2 | Básico | 15 | 15 ✅ |
 | B1 | Intermediário | 20 | 20 ✅ |
-| B2 | Intermediário Avançado | 20 | 2 ✅ |
+| B2 | Intermediário Avançado | 20 | 4 (escritos, pendentes de aplicar) |
 | C1 | Avançado | 20 | 0 |
 | C2 | Proficiência | 20 | 0 |
 
@@ -94,7 +94,7 @@ Estrutura de longo prazo do curso, baseada no framework CEFR (o mesmo usado em c
 - **A1 (15/15 ✅ completo):** Alfabeto e pronúncia (pendente — não é sobre vocabulário/gramática, fica pra quando fizer sentido, não conta como módulo), Greetings ✅, Numbers/Colors/Family ✅, Verb to be ✅, Present Simple ✅, Food ✅, Months & Seasons ✅ (dias da semana já cobertos no A2 "Daily Routines"), Directions ✅, Clothes & Shopping ✅, Body & Health ✅, House & Furniture ✅, Weather ✅, Sports & Hobbies ✅, Technology & Devices ✅, Transportation ✅, Jobs & Workplace ✅
 - **A2 (15/15 ✅ completo):** Daily Routines ✅ (já inclui dias da semana), Past Simple ✅ (feito como "Past Experiences"), Future (going to/will) ✅, Comparatives ✅, Countable x Uncountable ✅, Prepositions ✅, Daily conversations ✅, Shopping ✅, Travel ✅, Making Plans & Invitations ✅, Advice & Suggestions ✅, Feelings & Personality ✅, Restaurants & Dining Out ✅, Housing & Neighborhood ✅, Technology & Internet ✅
 - **B1 (20/20 ✅ COMPLETO):** Present Perfect ✅, Modal verbs ✅, Passive Voice ✅, Reported Speech (introdução) ✅, Phrasal verbs básicos ✅, Writing de e-mails ✅, Listening intermediário ✅, Conditionals (1st & 2nd) ✅, Relative Clauses (introdução) ✅, Idioms ✅, Business English básico ✅, Reported Speech completo ✅, Passive avançada ✅, Debate e Argumentação ✅, Past Perfect & Narrative Tenses ✅, Gerúndios e Infinitivos ✅, Meio Ambiente e Sustentabilidade ✅, Perguntas Indiretas e Question Tags ✅, Saúde e Bem-estar ✅, Tecnologia e Redes Sociais ✅
-- **B2 (2/20 ✅ aplicados):** Third Conditional & Mixed Conditionals ✅, Modal Verbs of Deduction (Passado) ✅. (Conditionals, Relative Clauses, Idioms, Business English básico, Reported Speech completo, Passive avançada, Debate e Argumentação, Past Perfect & Narrative Tenses, Gerúndios e Infinitivos, Meio Ambiente e Sustentabilidade, Perguntas Indiretas e Question Tags, Saúde e Bem-estar e Tecnologia e Redes Sociais já foram adiantados pro B1 — ver acima); restante do roadmap do B2 a definir com o Márcio
+- **B2 (2/20 aplicados, +2 escritos pendentes):** Third Conditional & Mixed Conditionals ✅, Modal Verbs of Deduction (Passado) ✅, Relative Clauses Avançado — escrito, pendente de aplicar, Ênfase e Inversão — escrito, pendente de aplicar. (Conditionals, Relative Clauses intro, Idioms, Business English básico, Reported Speech completo, Passive avançada, Debate e Argumentação, Past Perfect & Narrative Tenses, Gerúndios e Infinitivos, Meio Ambiente e Sustentabilidade, Perguntas Indiretas e Question Tags, Saúde e Bem-estar e Tecnologia e Redes Sociais já foram adiantados pro B1 — ver acima); restante do roadmap do B2 a definir com o Márcio
 - **C1:** Vocabulário acadêmico, Escrita formal, Expressões idiomáticas avançadas, Pronúncia refinada, Apresentações profissionais, Negociação
 - **C2:** Nuances da linguagem, Literatura, Humor e sarcasmo, Diferentes sotaques, Escrita avançada, Preparação para exames de proficiência (IELTS, TOEFL, Cambridge C2)
 
@@ -215,6 +215,8 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 - `061_seed_b1_technology_social_media.sql` — conteúdo B1 (módulo 20 "Tecnologia e Redes Sociais", 5 lições, 30 palavras, 71 exercícios) — **completa o B1 (20/20)**
 - `062_seed_b2_third_conditional.sql` — conteúdo B2 (módulo 1 "Third Conditional & Mixed Conditionals", 5 lições, 30 palavras, 71 exercícios) — **abre o B2**
 - `063_seed_b2_modal_deduction_past.sql` — conteúdo B2 (módulo 2 "Modal Verbs of Deduction — Passado", 5 lições, 30 palavras, 71 exercícios, tema de investigação/mistério)
+- `064_seed_b2_advanced_relative_clauses.sql` — conteúdo B2 (módulo 3 "Relative Clauses Avançado", 5 lições, 30 palavras, 71 exercícios)
+- `065_seed_b2_emphasis_inversion.sql` — conteúdo B2 (módulo 4 "Ênfase e Inversão", 5 lições, 30 palavras, 71 exercícios)
 
 **Edge Function `ai-proxy`:** tasks `correct_writing`, `chat`, `chat_feedback`, `generate_practice`, `generate_cumulative_review`, `generate_level_test`. Valida JWT, aplica rate limit, chave em secret `ANTHROPIC_API_KEY`. Modelo `claude-sonnet-5`.
 
@@ -288,8 +290,9 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 
 ## Próximos passos
 
-**A1 e A2 100% completos (15/15 cada). B1 100% completo (20/20). B2 iniciado (2/20 aplicados).** O B1 foi construído em lotes de 1-2 módulos, começando pela leva de referência original (Present Perfect, Modal Verbs, Passive Voice, Reported Speech, Phrasal Verbs, Email Writing, Listening) e depois adiantando temas do B2/C1 (Conditionals, Relative Clauses, Idioms, Business English, Reported Speech completo, Passive avançada, Debate e Argumentação, Past Perfect & Narrative Tenses, Gerúndios e Infinitivos, Meio Ambiente e Sustentabilidade, Perguntas Indiretas e Question Tags, Saúde e Bem-estar, Tecnologia e Redes Sociais). O B2 abriu com dois módulos que dão continuidade direta à gramática do B1: Third Conditional & Mixed Conditionals (segue "Conditionals" do B1) e Modal Verbs of Deduction — Passado (segue "Modal Verbs" do B1, com tema de investigação/mistério). Próximo passo: confirmar com o Márcio o próximo lote do B2.
+**A1 e A2 100% completos (15/15 cada). B1 100% completo (20/20). B2 em andamento (2/20 aplicados, +2 escritos pendentes).** O B1 foi construído em lotes de 1-2 módulos, começando pela leva de referência original (Present Perfect, Modal Verbs, Passive Voice, Reported Speech, Phrasal Verbs, Email Writing, Listening) e depois adiantando temas do B2/C1 (Conditionals, Relative Clauses, Idioms, Business English, Reported Speech completo, Passive avançada, Debate e Argumentação, Past Perfect & Narrative Tenses, Gerúndios e Infinitivos, Meio Ambiente e Sustentabilidade, Perguntas Indiretas e Question Tags, Saúde e Bem-estar, Tecnologia e Redes Sociais). O B2 vem sendo construído dando continuidade direta à gramática do B1: Third Conditional & Mixed Conditionals (segue "Conditionals"), Modal Verbs of Deduction — Passado (segue "Modal Verbs", tema de investigação/mistério), Relative Clauses Avançado (segue "Relative Clauses" intro — não-restritivas, whom/whose, preposição + pronome) e Ênfase e Inversão (estrutura nova do B2). Próximo passo: confirmar com o Márcio o próximo lote do B2.
 
+- Módulo B2 "Relative Clauses Avançado" + módulo B2 "Ênfase e Inversão" — ✅ escrito, aguardando aplicação no Supabase — **B2 em 4/20 quando aplicado**
 - Módulo B2 "Third Conditional & Mixed Conditionals" + módulo B2 "Modal Verbs of Deduction (Passado)" — ✅ feito e aplicado no Supabase — **abre o B2 (2/20)**
 - Módulo B1 "Perguntas Indiretas e Question Tags" + módulo B1 "Saúde e Bem-estar" + módulo B1 "Tecnologia e Redes Sociais" — ✅ feito e aplicado no Supabase — **B1 em 20/20 — NÍVEL COMPLETO 🎉**
 - Módulo B1 "Gerúndios e Infinitivos" + módulo B1 "Meio Ambiente e Sustentabilidade" — ✅ feito e aplicado no Supabase — **B1 em 17/20**
