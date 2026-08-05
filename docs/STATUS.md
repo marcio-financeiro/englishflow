@@ -84,7 +84,7 @@ Estrutura de longo prazo do curso, baseada no framework CEFR (o mesmo usado em c
 |---|---|---|---|
 | A1 | Iniciante | 15 | 15 ✅ |
 | A2 | Básico | 15 | 15 ✅ |
-| B1 | Intermediário | 20 | 17 (+3 escritos, pendentes de aplicar) |
+| B1 | Intermediário | 20 | 20 ✅ |
 | B2 | Intermediário Avançado | 20 | 0 |
 | C1 | Avançado | 20 | 0 |
 | C2 | Proficiência | 20 | 0 |
@@ -93,8 +93,8 @@ Estrutura de longo prazo do curso, baseada no framework CEFR (o mesmo usado em c
 
 - **A1 (15/15 ✅ completo):** Alfabeto e pronúncia (pendente — não é sobre vocabulário/gramática, fica pra quando fizer sentido, não conta como módulo), Greetings ✅, Numbers/Colors/Family ✅, Verb to be ✅, Present Simple ✅, Food ✅, Months & Seasons ✅ (dias da semana já cobertos no A2 "Daily Routines"), Directions ✅, Clothes & Shopping ✅, Body & Health ✅, House & Furniture ✅, Weather ✅, Sports & Hobbies ✅, Technology & Devices ✅, Transportation ✅, Jobs & Workplace ✅
 - **A2 (15/15 ✅ completo):** Daily Routines ✅ (já inclui dias da semana), Past Simple ✅ (feito como "Past Experiences"), Future (going to/will) ✅, Comparatives ✅, Countable x Uncountable ✅, Prepositions ✅, Daily conversations ✅, Shopping ✅, Travel ✅, Making Plans & Invitations ✅, Advice & Suggestions ✅, Feelings & Personality ✅, Restaurants & Dining Out ✅, Housing & Neighborhood ✅, Technology & Internet ✅
-- **B1 (17/20 aplicados, +3 escritos pendentes — lote final):** Present Perfect ✅, Modal verbs ✅, Passive Voice ✅, Reported Speech (introdução) ✅, Phrasal verbs básicos ✅, Writing de e-mails ✅, Listening intermediário ✅, Conditionals (1st & 2nd) ✅, Relative Clauses (introdução) ✅, Idioms ✅, Business English básico ✅, Reported Speech completo ✅, Passive avançada ✅, Debate e Argumentação ✅, Past Perfect & Narrative Tenses ✅, Gerúndios e Infinitivos ✅, Meio Ambiente e Sustentabilidade ✅, Perguntas Indiretas e Question Tags — escrito, pendente de aplicar, Saúde e Bem-estar — escrito, pendente de aplicar, Tecnologia e Redes Sociais — escrito, pendente de aplicar
-- **B2:** Debate e argumentação (Conditionals, Relative Clauses, Idioms, Business English básico, Reported Speech completo e Passive avançada adiantados pro B1 — ver acima)
+- **B1 (20/20 ✅ COMPLETO):** Present Perfect ✅, Modal verbs ✅, Passive Voice ✅, Reported Speech (introdução) ✅, Phrasal verbs básicos ✅, Writing de e-mails ✅, Listening intermediário ✅, Conditionals (1st & 2nd) ✅, Relative Clauses (introdução) ✅, Idioms ✅, Business English básico ✅, Reported Speech completo ✅, Passive avançada ✅, Debate e Argumentação ✅, Past Perfect & Narrative Tenses ✅, Gerúndios e Infinitivos ✅, Meio Ambiente e Sustentabilidade ✅, Perguntas Indiretas e Question Tags ✅, Saúde e Bem-estar ✅, Tecnologia e Redes Sociais ✅
+- **B2:** ainda sem temas definidos — Conditionals, Relative Clauses, Idioms, Business English básico, Reported Speech completo, Passive avançada, Debate e Argumentação, Past Perfect & Narrative Tenses, Gerúndios e Infinitivos, Meio Ambiente e Sustentabilidade, Perguntas Indiretas e Question Tags, Saúde e Bem-estar e Tecnologia e Redes Sociais foram todos adiantados pro B1 (ver acima); roadmap do B2 a definir com o Márcio
 - **C1:** Vocabulário acadêmico, Escrita formal, Expressões idiomáticas avançadas, Pronúncia refinada, Apresentações profissionais, Negociação
 - **C2:** Nuances da linguagem, Literatura, Humor e sarcasmo, Diferentes sotaques, Escrita avançada, Preparação para exames de proficiência (IELTS, TOEFL, Cambridge C2)
 
@@ -212,7 +212,7 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 - `058_seed_b1_environment.sql` — conteúdo B1 (módulo 17 "Meio Ambiente e Sustentabilidade", 5 lições, 30 palavras, 71 exercícios)
 - `059_seed_b1_indirect_questions.sql` — conteúdo B1 (módulo 18 "Perguntas Indiretas e Question Tags", 5 lições, 30 palavras, 71 exercícios)
 - `060_seed_b1_health_wellbeing.sql` — conteúdo B1 (módulo 19 "Saúde e Bem-estar", 5 lições, 30 palavras, 71 exercícios)
-- `061_seed_b1_technology_social_media.sql` — conteúdo B1 (módulo 20 "Tecnologia e Redes Sociais", 5 lições, 30 palavras, 71 exercícios) — **completa o B1 quando aplicado**
+- `061_seed_b1_technology_social_media.sql` — conteúdo B1 (módulo 20 "Tecnologia e Redes Sociais", 5 lições, 30 palavras, 71 exercícios) — **completa o B1 (20/20)**
 
 **Edge Function `ai-proxy`:** tasks `correct_writing`, `chat`, `chat_feedback`, `generate_practice`, `generate_cumulative_review`, `generate_level_test`. Valida JWT, aplica rate limit, chave em secret `ANTHROPIC_API_KEY`. Modelo `claude-sonnet-5`.
 
@@ -286,9 +286,9 @@ Tabelas (todas com RLS): `profiles`, `modules`, `lessons`, `exercises`, `vocabul
 
 ## Próximos passos
 
-**A1 e A2 completos (15/15 módulos cada). B1 em andamento (17/20 módulos aplicados, +3 escritos aguardando aplicar — lote final).** Depois de fechar a leva de referência original, avançamos com temas adiantados do B2/C1 até completar os 20 módulos: Conditionals, Relative Clauses, Idioms, Business English básico, Reported Speech completo, Passive avançada, Debate e Argumentação, Past Perfect & Narrative Tenses, Gerúndios e Infinitivos, Meio Ambiente e Sustentabilidade, Perguntas Indiretas e Question Tags, Saúde e Bem-estar, Tecnologia e Redes Sociais. Assim que o Márcio confirmar a aplicação dos 3 últimos SQLs, o B1 estará 100% completo (20/20) e poderemos planejar o início do B2.
+**A1, A2 e B1 100% completos (15/15, 15/15 e 20/20 módulos).** O B1 foi construído em lotes de 1-2 módulos, começando pela leva de referência original (Present Perfect, Modal Verbs, Passive Voice, Reported Speech, Phrasal Verbs, Email Writing, Listening) e depois adiantando temas do B2/C1 (Conditionals, Relative Clauses, Idioms, Business English, Reported Speech completo, Passive avançada, Debate e Argumentação, Past Perfect & Narrative Tenses, Gerúndios e Infinitivos, Meio Ambiente e Sustentabilidade, Perguntas Indiretas e Question Tags, Saúde e Bem-estar, Tecnologia e Redes Sociais). Próximo passo: decidir com o Márcio como abrir o B2 — retomar os temas de referência de B2 que foram citados aqui, ou definir um novo roadmap de módulos B2 do zero.
 
-- Módulo B1 "Perguntas Indiretas e Question Tags" + módulo B1 "Saúde e Bem-estar" + módulo B1 "Tecnologia e Redes Sociais" — ✅ escrito, aguardando aplicação no Supabase — **B1 em 20/20 quando aplicado (COMPLETA O NÍVEL)**
+- Módulo B1 "Perguntas Indiretas e Question Tags" + módulo B1 "Saúde e Bem-estar" + módulo B1 "Tecnologia e Redes Sociais" — ✅ feito e aplicado no Supabase — **B1 em 20/20 — NÍVEL COMPLETO 🎉**
 - Módulo B1 "Gerúndios e Infinitivos" + módulo B1 "Meio Ambiente e Sustentabilidade" — ✅ feito e aplicado no Supabase — **B1 em 17/20**
 - Módulo B1 "Debate e Argumentação" + módulo B1 "Past Perfect & Narrative Tenses" — ✅ feito e aplicado no Supabase — **B1 em 15/20**
 - Módulo B1 "Reported Speech Completo" + módulo B1 "Passive Avançada" — ✅ feito e aplicado no Supabase — **B1 em 13/20**
